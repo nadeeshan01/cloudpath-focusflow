@@ -56,6 +56,10 @@ app.get('/api/v1/version', (req, res) => {
   });
 });
 
+// API routes
+app.use('/api/v1/tasks', taskRoutes);
+app.use('/api/v1/journal', journalRoutes);
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
@@ -80,9 +84,5 @@ app.use((err, req, res, next) => {
       : err.message
   });
 });
-
-// routers
-app.use('/api/v1/tasks', taskRoutes);
-app.use('/api/v1/journal', journalRoutes);
 
 module.exports = app;
