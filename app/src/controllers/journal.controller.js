@@ -5,17 +5,17 @@ exports.getJournalEntries = (req, res) => {
   try {
     const entries = dataStore.getAllJournalEntries();
     logger.info(`Retrieved ${entries.length} journal entries`);
-    
+
     res.status(200).json({
       success: true,
       count: entries.length,
-      data: entries
+      data: entries,
     });
   } catch (error) {
     logger.error('Error fetching journal entries', { error: error.message });
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch journal entries'
+      message: 'Failed to fetch journal entries',
     });
   }
 };
@@ -28,7 +28,7 @@ exports.createJournalEntry = (req, res) => {
     if (!title || title.trim() === '') {
       return res.status(400).json({
         success: false,
-        message: 'Journal title is required'
+        message: 'Journal title is required',
       });
     }
 
@@ -37,21 +37,24 @@ exports.createJournalEntry = (req, res) => {
       content: content || '',
       mood: mood || 'neutral',
       tags: tags || [],
-      entryDate: new Date().toISOString()
+      entryDate: new Date().toISOString(),
     });
 
-    logger.info('Journal entry created', { entryId: entry.id, title: entry.title });
+    logger.info('Journal entry created', {
+      entryId: entry.id,
+      title: entry.title,
+    });
 
     res.status(201).json({
       success: true,
       message: 'Journal entry created successfully',
-      data: entry
+      data: entry,
     });
   } catch (error) {
     logger.error('Error creating journal entry', { error: error.message });
     res.status(500).json({
       success: false,
-      message: 'Failed to create journal entry'
+      message: 'Failed to create journal entry',
     });
   }
 };

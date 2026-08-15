@@ -7,18 +7,18 @@ const logger = winston.createLogger({
     winston.format.errors({ stack: true }),
     winston.format.json()
   ),
-  defaultMeta: { 
+  defaultMeta: {
     service: process.env.APP_NAME || 'focusflow-api',
-    version: process.env.APP_VERSION || '0.1.0'
+    version: process.env.APP_VERSION || '0.1.0',
   },
   transports: [
     new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize(),
         winston.format.simple()
-      )
-    })
-  ]
+      ),
+    }),
+  ],
 });
 
 module.exports = logger;

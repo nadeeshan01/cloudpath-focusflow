@@ -9,9 +9,19 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write \"src/**/*.js\"",
-    "test": "echo \"Tests will be added\" && exit 0"
+    "test": "jest --verbose --coverage",
+    "test:watch": "jest --watch"
   },
-  "keywords": ["devops", "api", "task-manager"],
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": ["/node_modules/"],
+    "testMatch": ["**/tests/**/*.test.js"]
+  },
+  "keywords": [
+    "devops",
+    "api",
+    "task-manager"
+  ],
   "author": "kavindu nadeeshan",
   "license": "MIT",
   "directories": {
@@ -28,7 +38,9 @@
   "devDependencies": {
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
+    "jest": "^30.4.2",
     "nodemon": "^3.1.14",
-    "prettier": "^3.9.6"
+    "prettier": "^3.9.6",
+    "supertest": "^7.2.2"
   }
 }

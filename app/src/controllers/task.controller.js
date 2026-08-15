@@ -5,17 +5,17 @@ exports.getTasks = (req, res) => {
   try {
     const tasks = dataStore.getAllTasks();
     logger.info(`Retrieved ${tasks.length} tasks`);
-    
+
     res.status(200).json({
       success: true,
       count: tasks.length,
-      data: tasks
+      data: tasks,
     });
   } catch (error) {
     logger.error('Error fetching tasks', { error: error.message });
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch tasks'
+      message: 'Failed to fetch tasks',
     });
   }
 };
@@ -28,7 +28,7 @@ exports.createTask = (req, res) => {
     if (!title || title.trim() === '') {
       return res.status(400).json({
         success: false,
-        message: 'Task title is required'
+        message: 'Task title is required',
       });
     }
 
@@ -38,7 +38,7 @@ exports.createTask = (req, res) => {
       priority: priority || 'medium',
       dueDate: dueDate || null,
       status: 'todo',
-      completed: false
+      completed: false,
     });
 
     logger.info('Task created', { taskId: task.id, title: task.title });
@@ -46,13 +46,13 @@ exports.createTask = (req, res) => {
     res.status(201).json({
       success: true,
       message: 'Task created successfully',
-      data: task
+      data: task,
     });
   } catch (error) {
     logger.error('Error creating task', { error: error.message });
     res.status(500).json({
       success: false,
-      message: 'Failed to create task'
+      message: 'Failed to create task',
     });
   }
 };

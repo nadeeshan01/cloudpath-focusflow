@@ -12,7 +12,7 @@ class DataStore {
     const newTask = {
       id: this.taskIdCounter++,
       ...task,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
     this.tasks.push(newTask);
     return newTask;
@@ -27,7 +27,7 @@ class DataStore {
     const newEntry = {
       id: this.journalIdCounter++,
       ...entry,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
     this.journalEntries.push(newEntry);
     return newEntry;

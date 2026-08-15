@@ -10,7 +10,7 @@ const server = app.listen(PORT, HOST, () => {
     port: PORT,
     host: HOST,
     environment: process.env.NODE_ENV,
-    version: process.env.APP_VERSION
+    version: process.env.APP_VERSION,
   });
 });
 

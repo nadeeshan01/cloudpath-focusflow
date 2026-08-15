@@ -11,14 +11,16 @@ const app = express();
 app.use(helmet());
 
 // CORS configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',') 
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',')
   : ['http://localhost:3000'];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 // Body parsing
 app.use(express.json({ limit: '2mb' }));
@@ -28,7 +30,7 @@ app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use((req, res, next) => {
   logger.info(`${req.method} ${req.path}`, {
     ip: req.ip,
-    userAgent: req.get('user-agent')
+    userAgent: req.get('user-agent'),
   });
   next();
 });
@@ -40,7 +42,7 @@ app.get('/health', (req, res) => {
     service: process.env.APP_NAME || 'focusflow-api',
     version: process.env.APP_VERSION || '0.1.0',
     environment: process.env.NODE_ENV || 'development',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -51,8 +53,8 @@ app.get('/api/v1/version', (req, res) => {
     data: {
       version: process.env.APP_VERSION || '0.1.0',
       apiVersion: 'v1',
-      node: process.version
-    }
+      node: process.version,
+    },
   });
 });
 
@@ -65,7 +67,7 @@ app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: 'Route not found',
-    path: req.path
+    path: req.path,
   });
 });
 
@@ -74,14 +76,15 @@ app.use((err, req, res, next) => {
   logger.error('Application error', {
     error: err.message,
     stack: err.stack,
-    path: req.path
+    path: req.path,
   });
 
   res.status(err.status || 500).json({
     success: false,
-    message: process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
-      : err.message
+    message:
+      process.env.NODE_ENV === 'production'
+        ? 'Internal server error'
+        : err.message,
   });
 });
 
