@@ -2,6 +2,8 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const logger = require('./utils/logger');
+const taskRoutes = require('./routes/task.routes');
+const journalRoutes = require('./routes/journal.routes');
 
 const app = express();
 
@@ -78,5 +80,9 @@ app.use((err, req, res, next) => {
       : err.message
   });
 });
+
+// routers
+app.use('/api/v1/tasks', taskRoutes);
+app.use('/api/v1/journal', journalRoutes);
 
 module.exports = app;
