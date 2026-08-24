@@ -9,6 +9,7 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write \"src/**/*.js\"",
+    "format:check": "prettier --check \"src/**/*.js\"",
     "test": "jest --verbose --coverage",
     "test:watch": "jest --watch"
   },
