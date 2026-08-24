@@ -1,0 +1,104 @@
+name: CI
+
+# When to run this workflow
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+  push:
+    branches:
+      - develop
+      - main
+
+# Security: minimum required permissions
+permissions:
+  contents: read
+
+jobs:
+  # Job 1: Quality and Testing
+  quality:
+    name: Quality and tests
+    runs-on: ubuntu-latest
+
+    # Set working directory for all steps
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      # Step 1: Get the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Node.js with caching
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 4: Check code formatting
+      - name: Check formatting
+        run: npm run format:check
+
+      # Step 5: Run linting
+      - name: Run ESLint
+        run: npm run lint
+
+      # Step 6: Run automated tests
+      - name: Run tests
+        run: npm test
+
+      # Step 7: Check for dependency vulnerabilities
+      - name: Check dependency vulnerabilities
+        run: npm audit --audit-level=high
+        continue-on-error: true  # Don't fail on advisory-only issues
+
+  # Job 2: Docker Build and Scan
+  docker:
+    name: Build and scan Docker image
+    runs-on: ubuntu-latest
+    needs: quality  # Only run if quality job passes
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Build Docker image tagged with commit SHA
+      - name: Build Docker image
+        run: |
+          docker build \
+            --pull \
+            --tag focusflow-api:${{ github.sha }} \
+            --tag focusflow-api:latest \
+            ./app
+
+      # Scan image for vulnerabilities
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: focusflow-api:${{ github.sha }}
+          format: table
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"  # Fail pipeline if vulnerabilities found
+
+      # Save image as artifact for later use
+      - name: Save Docker image
+        run: |
+          docker save focusflow-api:${{ github.sha }} \
+            | gzip > focusflow-api-${{ github.sha }}.tar.gz
+
+      # Upload to GitHub (accessible for 7 days)
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: focusflow-api-${{ github.sha }}
+          path: focusflow-api-${{ github.sha }}.tar.gz
+          retention-days: 7
