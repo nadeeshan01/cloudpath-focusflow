@@ -1,0 +1,18 @@
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install ALL dependencies (including dev dependencies)
+RUN npm ci
+
+# Copy entire application
+COPY . .
+
+# Expose development port
+EXPOSE 5000
+
+# Run with nodemon for auto-reload
+CMD ["npm", "run", "dev"]

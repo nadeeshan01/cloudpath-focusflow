@@ -1,0 +1,19 @@
+name: cloudpath-focusflow-dev
+
+services:
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.dev
+    container_name: focusflow-api-dev
+    env_file:
+      - ./app/.env
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "5000:5000"
+    volumes:
+      # Live code reload
+      - ./app/src:/app/src:ro
+      - ./app/tests:/app/tests:ro
+    command: npm run dev

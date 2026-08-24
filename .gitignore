@@ -3,7 +3,7 @@ cat > .gitignore << 'EOF'
 # Dependencies
 node_modules/
 npm-debug.log
-package-lock.json
+
 
 # Environment
 .env
