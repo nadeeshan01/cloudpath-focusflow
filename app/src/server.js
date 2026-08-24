@@ -14,7 +14,7 @@ const server = app.listen(PORT, HOST, () => {
     version: process.env.APP_VERSION || '0.1.0',
     nodeVersion: process.version,
     pid: process.pid,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
