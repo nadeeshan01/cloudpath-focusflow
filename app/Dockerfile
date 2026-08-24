@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install production dependencies only
-RUN npm ci --omit=dev \
+RUN (npm ci --omit=dev || npm install --omit=dev) \
     && npm cache clean --force
 
 
