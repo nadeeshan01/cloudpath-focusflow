@@ -1,30 +1,27 @@
+---
 version: 2
 
 updates:
-  # Update npm dependencies weekly
+  # Check npm packages (your Node.js dependencies)
   - package-ecosystem: npm
-    directory: /app
+    directory: /app  # Where package.json is
     schedule:
-      interval: weekly
-      day: monday
-      time: "04:00"
-    open-pull-requests-limit: 5
+      interval: weekly  # Check every week
+      day: monday  # On Mondays
+      time: "04:00"  # At 4 AM
+    open-pull-requests-limit: 5  # Max 5 PRs at once
     labels:
-      - dependencies
+      - dependencies  # Tag PRs with these labels
       - npm
-    commit-message:
-      prefix: "build(deps)"
 
-  # Update GitHub Actions weekly
+  # Check GitHub Actions (your workflow files)
   - package-ecosystem: github-actions
-    directory: /
+    directory: /  # Root directory
     schedule:
-      interval: weekly
+      interval: weekly  # Check once a week
       day: monday
       time: "04:00"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 5  # Max 5 PRs at once
     labels:
       - dependencies
       - github-actions
-    commit-message:
-      prefix: "ci(deps)"

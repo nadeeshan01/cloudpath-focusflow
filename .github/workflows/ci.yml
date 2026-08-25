@@ -1,7 +1,8 @@
+---
 name: CI
 
 # When to run this workflow
-on:
+'on':
   pull_request:
     branches:
       - develop

@@ -1,0 +1,67 @@
+---
+name: Security
+
+# EXPLANATION: "on" means "when should this run?"
+'on':
+  pull_request:  # When someone creates a PR
+  push:
+    branches:
+      - develop
+      - main
+  schedule:
+    - cron: "30 2 * * 1"  # Every Monday at 2:30 AM
+
+# EXPLANATION: What permissions does this workflow need?
+permissions:
+  contents: read           # Can read your code
+  security-events: write   # Can write security findings
+
+jobs:
+  # JOB 1: Scan files for vulnerabilities
+  filesystem-scan:
+    name: Filesystem security scan
+    runs-on: ubuntu-latest  # Use Ubuntu Linux
+
+    steps:
+      # Get your code from GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Run Trivy to scan files
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs                    # "fs" = filesystem
+          scan-ref: .                      # "." = current directory
+          scanners: vuln,secret,misconfig  # What to look for
+          severity: CRITICAL,HIGH          # Only show serious issues
+          ignore-unfixed: true             # Skip issues with no fix yet
+          format: table                    # Show results as a table
+          exit-code: "1"                   # Fail if issues found
+
+  # JOB 2: Scan for leaked secrets (like passwords)
+  secret-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Get full history (needed for secret detection)
+
+      # Run Gitleaks to find secrets
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # JOB 3: Check if PR adds dangerous dependencies
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'  # Only on PRs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dependency review
+        uses: actions/dependency-review-action@v4
