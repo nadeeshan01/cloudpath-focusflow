@@ -7,7 +7,9 @@ describe('Health Endpoints', () => {
       const response = await request(app).get('/health');
       
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('status', 'ok');
+      // ⚠️ INTENTIONAL FAILURE FOR WEEK 3 EVIDENCE
+  // This test is designed to fail to demonstrate CI catching errors
+      expect(response.body).toHaveProperty('status', 'FAILING_ON_PURPOSE');// Wrong value on purpose
       expect(response.body).toHaveProperty('service');
       expect(response.body).toHaveProperty('version');
       expect(response.body).toHaveProperty('timestamp');
