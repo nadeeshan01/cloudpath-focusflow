@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: focusflow-api
+  namespace: cloudpath
+  labels:
+    app.kubernetes.io/name: focusflow-api
+    app.kubernetes.io/part-of: cloudpath-focusflow
+spec:
+  type: ClusterIP  # Only accessible inside cluster (secure)
+  
+  # Which pods does this service route to?
+  selector:
+    app.kubernetes.io/name: focusflow-api
+  
+  # Port mappings
+  ports:
+    - name: http
+      port: 80           # Service port (what others connect to)
+      targetPort: http   # Container port (5000, from deployment)
+      protocol: TCP

@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: focusflow-api
+  namespace: cloudpath
+  labels:
+    app.kubernetes.io/name: focusflow-api
+    app.kubernetes.io/part-of: cloudpath-focusflow
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/managed-by: kubectl
+spec:
+  # How many copies of your app to run
+  replicas: 2
+  
+  # How many old versions to keep (for rollback)
+  revisionHistoryLimit: 3
+  
+  # How to update (zero-downtime deployment)
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0   # Never take down all pods
+      maxSurge: 1         # Can create 1 extra pod during update
+  
+  # Which pods does this deployment manage?
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: focusflow-api
+  
+  # Template for creating pods
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: focusflow-api
+        app.kubernetes.io/part-of: cloudpath-focusflow
+        app.kubernetes.io/version: "0.1.0"
+    spec:
+      # Security: Don't auto-mount Kubernetes API token
+      automountServiceAccountToken: false
+      
+      # Pod-level security settings
+      securityContext:
+        runAsNonRoot: true      # Must not run as root
+        runAsUser: 1000         # Run as user ID 1000
+        runAsGroup: 1000        # Run as group ID 1000
+        fsGroup: 1000           # File system group
+        seccompProfile:
+          type: RuntimeDefault  # Use default seccomp profile
+      
+      # Container definition
+      containers:
+        - name: focusflow-api
+          image: focusflow-api:0.1.0
+          imagePullPolicy: IfNotPresent  # Use local image (from Kind load)
+          
+          # Container port
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          
+          # Inject ConfigMap and Secret as environment variables
+          envFrom:
+            - configMapRef:
+                name: focusflow-config
+            - secretRef:
+                name: focusflow-secret
+          
+          # Resource limits (VERY IMPORTANT)
+          resources:
+            requests:
+              cpu: 100m        # Minimum CPU (0.1 CPU cores)
+              memory: 128Mi    # Minimum RAM
+            limits:
+              cpu: 250m        # Maximum CPU (0.25 CPU cores)
+              memory: 256Mi    # Maximum RAM
+          
+          # Container-level security
+          securityContext:
+            allowPrivilegeEscalation: false  # Can't gain more privileges
+            readOnlyRootFilesystem: true     # Can't write to /
+            capabilities:
+              drop:
+                - ALL  # Drop all Linux capabilities
+          
+          # Mount writable /tmp (since root is read-only)
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          
+          # Startup probe (for slow-starting apps)
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            failureThreshold: 18    # Try 18 times
+            periodSeconds: 5        # Every 5 seconds (90 seconds total)
+          
+          # Readiness probe (is app ready for traffic?)
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          
+          # Liveness probe (is app still alive?)
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
+      
+      # Volumes
+      volumes:
+        - name: tmp
+          emptyDir: {}  # Temporary writable storage

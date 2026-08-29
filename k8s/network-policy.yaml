@@ -1,0 +1,48 @@
+# ⚠️ NetworkPolicy requires CNI with network policy support
+# Kind's default CNI (kindnet) does NOT enforce NetworkPolicy
+# This is included for production-readiness, but won't be enforced locally
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: focusflow-api-netpol
+  namespace: cloudpath
+  labels:
+    app.kubernetes.io/name: focusflow-api
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: focusflow-api
+  
+  policyTypes:
+    - Ingress
+    - Egress
+  
+  # Ingress rules (incoming traffic)
+  ingress:
+    # Allow from anywhere in cloudpath namespace
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: cloudpath
+      ports:
+        - protocol: TCP
+          port: 5000
+  
+  # Egress rules (outgoing traffic)
+  egress:
+    # Allow DNS
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+    
+    # Allow external HTTPS (for npm, etc.)
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: TCP
+          port: 443

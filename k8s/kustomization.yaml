@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Default namespace for all resources
+namespace: cloudpath
+
+# Common labels applied to all resources
+commonLabels:
+  app.kubernetes.io/managed-by: kustomize
+  project: cloudpath-focusflow
+
+# Resources to deploy
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  # Note: secret is applied separately (not in Git)
+  - deployment.yaml
+  - service.yaml
+  - pod-disruption-budget.yaml
+  - network-policy.yaml
+
+# Images (can be used to override image tags)
+images:
+  - name: focusflow-api
+    newTag: "0.1.0"
