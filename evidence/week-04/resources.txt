@@ -1,0 +1,14 @@
+nadeeshan@DESKTOP-7BECINT /m/c/U/U/D/C/d/cloudpath-focusflow (feature/kubernetes-local-deployment)> kubectl -n cloudpath get all -o wide
+
+NAME                                READY   STATUS    RESTARTS   AGE   IP           NODE                            NOMINATED NODE   READINESS GATES
+pod/focusflow-api-c876f9779-2nfks   1/1     Running   0          46m   10.244.0.5   cloudpath-local-control-plane   <none>           <none>
+pod/focusflow-api-c876f9779-xczhx   1/1     Running   0          46m   10.244.0.6   cloudpath-local-control-plane   <none>           <none>
+
+NAME                    TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/focusflow-api   ClusterIP   10.96.43.119   <none>        80/TCP    46m   app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,project=cloudpath-focusflow
+
+NAME                            READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS      IMAGES                SELECTOR
+deployment.apps/focusflow-api   2/2     2            2           46m   focusflow-api   focusflow-api:0.1.0   app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,project=cloudpath-focusflow
+
+NAME                                      DESIRED   CURRENT   READY   AGE   CONTAINERS      IMAGES                SELECTOR
+replicaset.apps/focusflow-api-c876f9779   2         2         2       46m   focusflow-api   focusflow-api:0.1.0   app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,pod-template-hash=c876f9779,project=cloudpath-focusflow
