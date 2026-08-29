@@ -1,0 +1,22 @@
+# See what will be created (dry-run)
+kubectl apply -k k8s/ --dry-run=client
+
+# Should show:
+# Warning: 'commonLabels' is deprecated. Please use 'labels' instead. Run 'kustomize edit fix' to update your Kustomization automatically.        
+namespace/cloudpath configured (dry run)
+configmap/focusflow-config unchanged (dry run)
+service/focusflow-api unchanged (dry run)
+deployment.apps/focusflow-api unchanged (dry run)
+poddisruptionbudget.policy/focusflow-api-pdb configured (dry run)
+networkpolicy.networking.k8s.io/focusflow-api-netpol unchanged (dry run) 
+
+# Actually apply everything
+kubectl apply -k k8s/ 2>&1 | tee evidence/week-04/04-kubectl-apply.txt
+
+# Warning: 'commonLabels' is deprecated. Please use 'labels' instead. Run 'kustomize edit fix' to update your Kustomization automatically.        
+namespace/cloudpath configured
+configmap/focusflow-config unchanged
+service/focusflow-api unchanged
+deployment.apps/focusflow-api unchanged
+poddisruptionbudget.policy/focusflow-api-pdb configured
+networkpolicy.networking.k8s.io/focusflow-api-netpol unchanged
