@@ -1,0 +1,389 @@
+# ============================================================
+# CloudPath FocusFlow
+# Root .gitignore
+# ============================================================
+
+
+# ============================================================
+# 1. Node.js / npm
+# ============================================================
+
+node_modules/
+**/node_modules/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.npm/
+.yarn/cache/
+.pnpm-store/
+
+# IMPORTANT:
+# package-lock.json is intentionally NOT ignored.
+# It must be committed for reproducible npm ci builds.
+
+
+# ============================================================
+# 2. Application build output
+# ============================================================
+
+dist/
+build/
+out/
+
+**/dist/
+**/build/
+**/out/
+
+
+# ============================================================
+# 3. Test / coverage output
+# ============================================================
+
+coverage/
+**/coverage/
+
+.nyc_output/
+junit.xml
+test-results/
+
+
+# ============================================================
+# 4. Application logs
+# ============================================================
+
+*.log
+logs/
+**/logs/
+
+*.log.*
+
+
+# ============================================================
+# 5. Environment files
+#
+# Real environment files must never be committed.
+# .env.example is intentionally allowed.
+# ============================================================
+
+.env
+.env.*
+**/.env
+**/.env.*
+
+!.env.example
+!**/.env.example
+
+
+# ============================================================
+# 6. Local secrets / credentials
+# ============================================================
+
+secrets/
+**/secrets/
+
+credentials
+credentials.*
+
+*.secret
+*.secrets
+
+secret.local.*
+*.secret.local.*
+
+
+# ============================================================
+# 7. Private keys / certificates containing private material
+# ============================================================
+
+*.pem
+*.key
+*.pfx
+*.p12
+*.keystore
+*.jks
+
+# Public .pub and .crt files are intentionally NOT globally
+# ignored because public keys/certificates are not necessarily
+# secrets.
+
+
+# ============================================================
+# 8. AWS local configuration
+#
+# Never commit local AWS credentials.
+# ============================================================
+
+.aws/
+**/.aws/
+
+.aws-sam/
+
+# Common AWS credential exports/backups
+aws-credentials*
+aws_credentials*
+
+
+# ============================================================
+# 9. Terraform working directories
+# ============================================================
+
+.terraform/
+**/.terraform/
+
+.terragrunt-cache/
+**/.terragrunt-cache/
+
+.tflint.d/
+**/.tflint.d/
+
+
+# ============================================================
+# 10. Terraform state
+#
+# State files may contain sensitive values.
+# NEVER commit these.
+# ============================================================
+
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+*.tfstate.lock.info
+
+
+# ============================================================
+# 11. Terraform variable files
+#
+# Real tfvars may contain private configuration.
+# ============================================================
+
+terraform.tfvars
+terraform.tfvars.json
+
+*.auto.tfvars
+*.auto.tfvars.json
+
+*.secret.tfvars
+*.local.tfvars
+secret.local.tfvars
+
+secrets.tfvars
+secrets.hcl
+secrets.json
+secrets.yaml
+secrets.yml
+
+# IMPORTANT:
+# terraform.tfvars.example is intentionally NOT ignored.
+
+
+# ============================================================
+# 12. Terraform plan files
+# ============================================================
+
+*.tfplan
+*.plan
+
+
+# ============================================================
+# 13. Terraform crash files
+# ============================================================
+
+crash.log
+crash.*.log
+
+
+# ============================================================
+# 14. Terraform override files
+# ============================================================
+
+override.tf
+override.tf.json
+
+*_override.tf
+*_override.tf.json
+
+
+# ============================================================
+# 15. Terraform local CLI configuration
+# ============================================================
+
+.terraformrc
+terraform.rc
+
+
+# ============================================================
+# IMPORTANT TERRAFORM FILE
+#
+# .terraform.lock.hcl must NOT be ignored.
+# Commit it to Git for reproducible provider versions.
+# ============================================================
+
+
+# ============================================================
+# 16. Kubernetes local secrets
+# ============================================================
+
+k8s/secret.local.yaml
+k8s/secret.local.yml
+
+k8s/*.local.yaml
+k8s/*.local.yml
+
+k8s/*secret*.local.yaml
+k8s/*secret*.local.yml
+
+
+# ============================================================
+# 17. Kubernetes generated/local configuration
+# ============================================================
+
+kubeconfig
+kubeconfig.*
+*.kubeconfig
+
+.kube/
+
+
+# ============================================================
+# 18. Docker local overrides
+# ============================================================
+
+compose.override.yaml
+compose.override.yml
+
+docker-compose.override.yml
+docker-compose.override.yaml
+
+
+# ============================================================
+# 19. VS Code
+# ============================================================
+
+.vscode/
+**/.vscode/
+
+*.code-workspace
+
+
+# ============================================================
+# 20. JetBrains IDEs
+# ============================================================
+
+.idea/
+**/.idea/
+
+*.iml
+
+
+# ============================================================
+# 21. Vim / editors
+# ============================================================
+
+*.swp
+*.swo
+*~
+
+.history/
+**/.history/
+
+
+# ============================================================
+# 22. macOS
+# ============================================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+
+# ============================================================
+# 23. Windows
+# ============================================================
+
+Thumbs.db
+Thumbs.db:encryptable
+Desktop.ini
+$RECYCLE.BIN/
+
+*.lnk
+
+
+# ============================================================
+# 24. Linux temporary files
+# ============================================================
+
+.directory
+.Trash-*
+.nfs*
+
+
+# ============================================================
+# 25. Temporary / cache files
+# ============================================================
+
+tmp/
+temp/
+
+**/tmp/
+**/temp/
+
+.cache/
+**/.cache/
+
+*.tmp
+*.temp
+*.bak
+*.backup
+
+
+# ============================================================
+# 26. Archive files containing local backups
+#
+# Keep project release archives out of Git unless explicitly
+# required as project evidence.
+# ============================================================
+
+*.tar
+*.tar.gz
+*.tgz
+
+
+# ============================================================
+# 27. Local database files
+# ============================================================
+
+*.sqlite
+*.sqlite3
+*.db
+
+
+# ============================================================
+# 28. Local process files
+# ============================================================
+
+*.pid
+*.pid.lock
+
+
+# ============================================================
+# Files intentionally committed
+# ============================================================
+
+# Node dependency lock
+!package-lock.json
+!**/package-lock.json
+
+# Safe environment templates
+!.env.example
+!**/.env.example
+
+# Safe Terraform variable templates
+!terraform.tfvars.example
+!**/terraform.tfvars.example
+
+# Safe Kubernetes secret TEMPLATE
+!k8s/secret.example.yaml
+!k8s/secret.example.yml
