@@ -1,0 +1,16 @@
+# CloudPath FocusFlow
+# Terraform variable example.
+#
+# Copy this file to terraform.tfvars and replace placeholders.
+# Never place AWS access keys or passwords in this file.
+
+aws_region   = "ap-south-1"
+project_name = "cloudpath-focusflow"
+environment  = "dev"
+
+owner = "YOUR_NAME"
+
+github_repository = "YOUR_GITHUB_USERNAME/cloudpath-focusflow"
+github_branch     = "main"
+
+enable_github_oidc = true
