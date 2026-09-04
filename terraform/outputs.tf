@@ -17,3 +17,9 @@ output "cloudwatch_log_group_name" {
   description = "CloudWatch log group used by FocusFlow"
   value       = aws_cloudwatch_log_group.focusflow.name
 }
+
+output "github_actions_role_arn" {
+  description = "IAM role assumed by GitHub Actions through OIDC"
+
+  value = var.enable_github_oidc ? aws_iam_role.github_actions_ecr[0].arn : null
+}
