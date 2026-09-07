@@ -1,0 +1,36 @@
+{
+    "imageDetails": [
+        {
+            "registryId": "797989098577",
+            "repositoryName": "cloudpath-focusflow-dev",
+            "imageDigest": "sha256:1139c90ed41fe1aa244fe594df38d8d9949095f9acc37aa48173b9326de8a103",
+            "imageSizeInBytes": 60132117,
+            "imagePushedAt": "2026-09-07T15:09:22.681000+05:30",
+            "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+            "artifactMediaType": "application/vnd.oci.image.config.v1+json",
+            "imageStatus": "ACTIVE"
+        },
+        {
+            "registryId": "797989098577",
+            "repositoryName": "cloudpath-focusflow-dev",
+            "imageDigest": "sha256:9806a52f7e2dd6bf1c7414db4f029aa2a68f350ff0e465bcd89d505a8fb1d7eb",
+            "imageSizeInBytes": 1540,
+            "imagePushedAt": "2026-09-07T15:09:22.680000+05:30",
+            "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+            "artifactMediaType": "application/vnd.oci.image.config.v1+json",
+            "imageStatus": "ACTIVE"
+        },
+        {
+            "registryId": "797989098577",
+            "repositoryName": "cloudpath-focusflow-dev",
+            "imageDigest": "sha256:c007de42f835fddfeaeadcdc53a2cdb4538e10bc2eacb1352b45d4f9ab5f470c",
+            "imageTags": [
+                "1.0.0"
+            ],
+            "imageSizeInBytes": 60132117,
+            "imagePushedAt": "2026-09-07T15:09:23.099000+05:30",
+            "imageManifestMediaType": "application/vnd.oci.image.index.v1+json",
+            "imageStatus": "ACTIVE"
+        }
+    ]
+}
