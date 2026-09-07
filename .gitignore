@@ -33,6 +33,8 @@ build/
 *.tfstate
 *.tfstate.*
 .terraform/
+*.dot
+dependency-graph.dot
 
 # Secrets
 *.pem

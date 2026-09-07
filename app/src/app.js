@@ -4,6 +4,7 @@ const cors = require('cors');
 const logger = require('./utils/logger');
 const taskRoutes = require('./routes/task.routes');
 const journalRoutes = require('./routes/journal.routes');
+const env = require('./config/env');
 
 const app = express();
 
@@ -48,13 +49,11 @@ app.get('/health', (req, res) => {
 
 // Version endpoint
 app.get('/api/v1/version', (req, res) => {
-  res.status(200).json({
-    success: true,
-    data: {
-      version: process.env.APP_VERSION || '0.1.0',
-      apiVersion: 'v1',
-      node: process.version,
-    },
+  res.json({
+    service: env.appName,
+    version: env.appVersion,
+    environment: env.nodeEnv,
+    releaseMessage: env.releaseMessage,
   });
 });
 
