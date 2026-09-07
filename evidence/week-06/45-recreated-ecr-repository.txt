@@ -1,0 +1,18 @@
+{
+    "repositories": [
+        {
+            "repositoryArn": "arn:aws:ecr:ap-south-1:797989098577:repository/cloudpath-focusflow-dev",
+            "registryId": "797989098577",
+            "repositoryName": "cloudpath-focusflow-dev",
+            "repositoryUri": "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-dev",
+            "createdAt": "2026-09-07T14:58:02.059000+05:30",
+            "imageTagMutability": "IMMUTABLE",
+            "imageScanningConfiguration": {
+                "scanOnPush": true
+            },
+            "encryptionConfiguration": {
+                "encryptionType": "AES256"
+            }
+        }
+    ]
+}
