@@ -43,3 +43,5 @@ dependency-graph.dot
 # Kubernetes local secrets
 k8s/secret.local.yaml
 k8s/*.local.yaml
+k8s/deployment-broken-probe.yaml
+k8s/patches/
