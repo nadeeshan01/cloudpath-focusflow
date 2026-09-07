@@ -33,6 +33,8 @@ build/
 *.tfstate
 *.tfstate.*
 .terraform/
+*.dot
+dependency-graph.dot
 
 # Secrets
 *.pem
@@ -41,3 +43,5 @@ build/
 # Kubernetes local secrets
 k8s/secret.local.yaml
 k8s/*.local.yaml
+k8s/deployment-broken-probe.yaml
+k8s/patches/
