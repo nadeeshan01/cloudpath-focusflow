@@ -50,10 +50,14 @@ app.get('/health', (req, res) => {
 // Version endpoint
 app.get('/api/v1/version', (req, res) => {
   res.json({
-    service: env.appName,
-    version: env.appVersion,
-    environment: env.nodeEnv,
-    releaseMessage: env.releaseMessage,
+    success: true,
+    data: {
+      service: env.appName,
+      version: env.appVersion,
+      environment: env.nodeEnv,
+      releaseMessage: env.releaseMessage,
+      apiVersion: 'v1',
+    },
   });
 });
 
