@@ -1,100 +1,138 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import api, { getApiErrorMessage } from "../api/client";
 import AppLayout from "../components/AppLayout";
-
-const STATUS_OPTIONS = ["todo", "in_progress", "done"];
-const PRIORITY_OPTIONS = ["low", "medium", "high"];
-
-const statusLabels = { todo: "To Do", in_progress: "In Progress", done: "Done" };
-
-const EMPTY_FORM = {
-  title: "",
-  description: "",
-  status: "todo",
-  priority: "medium",
-  dueDate: "",
-};
+import TaskForm from "../components/TaskForm";
+import TaskList from "../components/TaskList";
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [form, setForm] = useState(EMPTY_FORM);
-  const [editingId, setEditingId] = useState(null);
-  const [submitting, setSubmitting] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
-  async function fetchTasks() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [isUpdatingId, setIsUpdatingId] = useState(null);
+  const [isDeletingId, setIsDeletingId] = useState(null);
+
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  async function loadTasks() {
     try {
-      setLoading(true);
+      setError("");
+
       const response = await api.get("/tasks");
-      setTasks(response.data.data.tasks);
-    } catch (err) {
-      setError(getApiErrorMessage(err));
+      const taskData = response.data?.data;
+      const taskList = Array.isArray(taskData)
+        ? taskData
+        : Array.isArray(taskData?.tasks)
+        ? taskData.tasks
+        : [];
+
+      setTasks(taskList);
+    } catch (requestError) {
+      setError(getApiErrorMessage(requestError));
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    fetchTasks();
+    loadTasks();
   }, []);
 
-  function handleChange(event) {
-    setForm((prev) => ({ ...prev, [event.target.name]: event.target.value }));
-  }
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) => {
+      const matchesStatus =
+        statusFilter === "all" ||
+        task.status === statusFilter;
 
-  function handleEdit(task) {
-    setEditingId(task._id);
-    setForm({
-      title: task.title,
-      description: task.description || "",
-      status: task.status,
-      priority: task.priority,
-      dueDate: task.dueDate ? task.dueDate.slice(0, 10) : "",
+      const matchesPriority =
+        priorityFilter === "all" ||
+        task.priority === priorityFilter;
+
+      return matchesStatus && matchesPriority;
     });
-  }
+  }, [tasks, statusFilter, priorityFilter]);
 
-  function handleCancel() {
-    setEditingId(null);
-    setForm(EMPTY_FORM);
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setError("");
-    setSubmitting(true);
-
-    const payload = {
-      title: form.title,
-      description: form.description || undefined,
-      status: form.status,
-      priority: form.priority,
-      dueDate: form.dueDate ? new Date(form.dueDate).toISOString() : null,
-    };
-
+  async function createTask(taskPayload) {
     try {
-      if (editingId) {
-        await api.patch(`/tasks/${editingId}`, payload);
-      } else {
-        await api.post("/tasks", payload);
+      setError("");
+      setMessage("");
+      setIsCreating(true);
+
+      const response = await api.post("/tasks", taskPayload);
+      const newTask = response.data?.data?.task || response.data?.data;
+
+      if (newTask) {
+        setTasks((currentTasks) => [newTask, ...currentTasks]);
       }
-      setEditingId(null);
-      setForm(EMPTY_FORM);
-      fetchTasks();
-    } catch (err) {
-      setError(getApiErrorMessage(err));
+
+      setMessage("Task created successfully.");
+
+      return true;
+    } catch (requestError) {
+      setError(getApiErrorMessage(requestError));
+
+      return false;
     } finally {
-      setSubmitting(false);
+      setIsCreating(false);
     }
   }
 
-  async function handleDelete(taskId) {
-    if (!window.confirm("Delete this task?")) return;
+  async function updateTask(taskId, taskPayload) {
     try {
+      setError("");
+      setMessage("");
+      setIsUpdatingId(taskId);
+
+      const response = await api.patch(
+        `/tasks/${taskId}`,
+        taskPayload,
+      );
+
+      const updatedTask = response.data?.data?.task || response.data?.data;
+
+      setTasks((currentTasks) =>
+        currentTasks.map((task) =>
+          (task._id === taskId || task.id === taskId) ? updatedTask : task,
+        ),
+      );
+
+      setMessage("Task updated successfully.");
+
+      return true;
+    } catch (requestError) {
+      setError(getApiErrorMessage(requestError));
+
+      return false;
+    } finally {
+      setIsUpdatingId(null);
+    }
+  }
+
+  async function deleteTask(taskId) {
+    try {
+      setError("");
+      setMessage("");
+      setIsDeletingId(taskId);
+
       await api.delete(`/tasks/${taskId}`);
-      fetchTasks();
-    } catch (err) {
-      setError(getApiErrorMessage(err));
+
+      setTasks((currentTasks) =>
+        currentTasks.filter((task) => task._id !== taskId && task.id !== taskId),
+      );
+
+      setMessage("Task deleted successfully.");
+
+      return true;
+    } catch (requestError) {
+      setError(getApiErrorMessage(requestError));
+
+      return false;
+    } finally {
+      setIsDeletingId(null);
     }
   }
 
@@ -104,98 +142,94 @@ export default function TasksPage() {
         <div>
           <p className="eyebrow">Productivity</p>
           <h1>Tasks</h1>
+          <p className="muted">
+            Create, organise, update, and complete your tasks.
+          </p>
         </div>
       </section>
 
-      {error && <div className="alert alert-error">{error}</div>}
+      {error && (
+        <div className="alert alert-error">
+          {error}
+        </div>
+      )}
 
-      <div className="two-column-grid">
-        <div className="panel">
-          <h2>{editingId ? "Edit Task" : "New Task"}</h2>
-          <form onSubmit={handleSubmit} style={{ display: "grid", gap: 12, marginTop: 12 }}>
-            <label>
-              Title
-              <input name="title" value={form.title} onChange={handleChange} required maxLength={160} />
-            </label>
+      {message && (
+        <div className="alert alert-success">
+          {message}
+        </div>
+      )}
 
-            <label>
-              Description
-              <textarea name="description" value={form.description} onChange={handleChange} rows={3} maxLength={2000} />
-            </label>
+      <TaskForm
+        onCreate={createTask}
+        isSubmitting={isCreating}
+      />
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              <label>
-                Status
-                <select name="status" value={form.status} onChange={handleChange}>
-                  {STATUS_OPTIONS.map((s) => (
-                    <option key={s} value={s}>{statusLabels[s]}</option>
-                  ))}
-                </select>
-              </label>
+      <section className="panel filter-panel">
+        <div className="panel-heading">
+          <div>
+            <p className="eyebrow">Filter</p>
+            <h2>View tasks</h2>
+          </div>
 
-              <label>
-                Priority
-                <select name="priority" value={form.priority} onChange={handleChange}>
-                  {PRIORITY_OPTIONS.map((p) => (
-                    <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
-
-            <label>
-              Due Date
-              <input name="dueDate" type="date" value={form.dueDate} onChange={handleChange} />
-            </label>
-
-            <div style={{ display: "flex", gap: 8 }}>
-              <button className="button button-primary" type="submit" disabled={submitting}>
-                {submitting ? "Saving..." : editingId ? "Update Task" : "Create Task"}
-              </button>
-              {editingId && (
-                <button className="button button-secondary" type="button" onClick={handleCancel}>
-                  Cancel
-                </button>
-              )}
-            </div>
-          </form>
+          <button
+            className="button button-secondary"
+            type="button"
+            onClick={() => {
+              setStatusFilter("all");
+              setPriorityFilter("all");
+            }}
+          >
+            Clear filters
+          </button>
         </div>
 
-        <div className="panel">
-          <h2>Task List ({tasks.length})</h2>
+        <div className="form-grid">
+          <label>
+            Status
+            <select
+              value={statusFilter}
+              onChange={(event) =>
+                setStatusFilter(event.target.value)
+              }
+            >
+              <option value="all">All statuses</option>
+              <option value="todo">To do</option>
+              <option value="in_progress">In progress</option>
+              <option value="done">Done</option>
+            </select>
+          </label>
 
-          {loading ? (
-            <p className="muted">Loading tasks...</p>
-          ) : tasks.length === 0 ? (
-            <p className="muted">No tasks yet. Create one!</p>
-          ) : (
-            <ul className="simple-list">
-              {tasks.map((task) => (
-                <li key={task._id}>
-                  <div>
-                    <strong>{task.title}</strong>
-                    <span>
-                      {statusLabels[task.status]} &middot; {task.priority}
-                      {task.dueDate && <> &middot; Due {new Date(task.dueDate).toLocaleDateString()}</>}
-                    </span>
-                    {task.description && (
-                      <span style={{ fontSize: "0.85rem" }}>{task.description}</span>
-                    )}
-                  </div>
-                  <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
-                    <button className="button button-secondary" type="button" style={{ padding: "4px 10px", minHeight: 0, fontSize: "0.8rem" }} onClick={() => handleEdit(task)}>
-                      Edit
-                    </button>
-                    <button className="button button-secondary" type="button" style={{ padding: "4px 10px", minHeight: 0, fontSize: "0.8rem", color: "#8f1d30" }} onClick={() => handleDelete(task._id)}>
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+          <label>
+            Priority
+            <select
+              value={priorityFilter}
+              onChange={(event) =>
+                setPriorityFilter(event.target.value)
+              }
+            >
+              <option value="all">All priorities</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </label>
         </div>
-      </div>
+      </section>
+
+      {isLoading ? (
+        <div className="page-center-small">
+          Loading tasks...
+        </div>
+      ) : (
+        <TaskList
+          tasks={filteredTasks}
+          onUpdate={updateTask}
+          onDelete={deleteTask}
+          isUpdatingId={isUpdatingId}
+          isDeletingId={isDeletingId}
+        />
+      )}
     </AppLayout>
   );
 }

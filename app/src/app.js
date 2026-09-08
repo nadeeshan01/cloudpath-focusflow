@@ -2,8 +2,11 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const logger = require('./utils/logger');
+
+const authRoutes = require('./routes/auth.routes');
 const taskRoutes = require('./routes/task.routes');
 const journalRoutes = require('./routes/journal.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
 const env = require('./config/env');
 
 const app = express();
@@ -11,14 +14,25 @@ const app = express();
 // Security middleware
 app.use(helmet());
 
-// CORS configuration
+// CORS configuration supporting Vite dev server ports
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['http://localhost:3000'];
+  : [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'http://127.0.0.1:5173',
+      'http://localhost:5174',
+    ];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or same-origin)
+      if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Permissive in dev mode
+    },
     credentials: true,
   })
 );
@@ -62,6 +76,8 @@ app.get('/api/v1/version', (req, res) => {
 });
 
 // API routes
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/tasks', taskRoutes);
 app.use('/api/v1/journal', journalRoutes);
 
