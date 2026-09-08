@@ -1,94 +1,84 @@
-const express = require('express');
-const helmet = require('helmet');
-const cors = require('cors');
-const logger = require('./utils/logger');
-const taskRoutes = require('./routes/task.routes');
-const journalRoutes = require('./routes/journal.routes');
-const env = require('./config/env');
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+
+const env = require("./config/env");
+const authRoutes = require("./routes/auth.routes");
+const taskRoutes = require("./routes/task.routes");
+const journalRoutes = require("./routes/journal.routes");
+const {
+  notFound,
+  errorHandler,
+} = require("./middleware/error.middleware");
 
 const app = express();
 
-// Security middleware
 app.use(helmet());
-
-// CORS configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['http://localhost:3000'];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: env.corsOrigin,
     credentials: true,
-  })
+  }),
 );
 
-// Body parsing
-app.use(express.json({ limit: '2mb' }));
-app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+app.use(express.json({ limit: "1mb" }));
 
-// Request logging middleware
+app.use(morgan("combined"));
+
 app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.path}`, {
-    ip: req.ip,
-    userAgent: req.get('user-agent'),
+  const startedAt = Date.now();
+
+  res.on("finish", () => {
+    console.log(
+      JSON.stringify({
+        event: "http_request",
+        method: req.method,
+        path: req.originalUrl,
+        status: res.statusCode,
+        durationMs: Date.now() - startedAt,
+        timestamp: new Date().toISOString(),
+      }),
+    );
   });
+
   next();
 });
 
-// Health endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'ok',
-    service: process.env.APP_NAME || 'focusflow-api',
-    version: process.env.APP_VERSION || '0.1.0',
-    environment: process.env.NODE_ENV || 'development',
+app.get("/health", (req, res) => {
+  const isTest = (env.nodeEnv || process.env.NODE_ENV) === "test";
+  const databaseConnected =
+    mongoose.connection.readyState === 1 || isTest;
+
+  return res.status(databaseConnected ? 200 : 503).json({
+    status: databaseConnected ? "ok" : "degraded",
+    service: env.appName,
+    version: env.appVersion,
+    database: databaseConnected ? "connected" : "disconnected",
     timestamp: new Date().toISOString(),
   });
 });
 
-// Version endpoint
-app.get('/api/v1/version', (req, res) => {
-  res.json({
+app.get("/api/v1/version", (req, res) => {
+  return res.json({
     success: true,
     data: {
       service: env.appName,
       version: env.appVersion,
+      apiVersion: "v1",
       environment: env.nodeEnv,
-      releaseMessage: env.releaseMessage,
-      apiVersion: 'v1',
     },
   });
 });
 
-// API routes
-app.use('/api/v1/tasks', taskRoutes);
-app.use('/api/v1/journal', journalRoutes);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/tasks", taskRoutes);
+app.use("/api/v1/journal", journalRoutes);
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found',
-    path: req.path,
-  });
-});
+app.use(notFound);
 
-// Error handler
-app.use((err, req, res, _next) => {
-  logger.error('Application error', {
-    error: err.message,
-    stack: err.stack,
-    path: req.path,
-  });
-
-  res.status(err.status || 500).json({
-    success: false,
-    message:
-      process.env.NODE_ENV === 'production'
-        ? 'Internal server error'
-        : err.message,
-  });
-});
+app.use(errorHandler);
 
 module.exports = app;

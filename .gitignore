@@ -46,5 +46,5 @@ k8s/*.local.yaml
 k8s/deployment-broken-probe.yaml
 k8s/patches/
 
-scripts/aws-local.env.env
+scripts/aws-local.env
 terraform.tfvars
