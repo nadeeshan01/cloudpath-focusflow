@@ -1,0 +1,15 @@
+NAME                                READY   STATUS    RESTARTS       AGE   IP           NODE                            NOMINATED NODE   READINESS GATES
+pod/focusflow-api-cdb9f6587-8drfs   1/1     Running   1 (108s ago)   19h   10.244.0.6   cloudpath-local-control-plane   <none>           <none>
+pod/focusflow-api-cdb9f6587-wcpvz   1/1     Running   1 (108s ago)   19h   10.244.0.5   cloudpath-local-control-plane   <none>           <none>
+
+NAME                    TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/focusflow-api   ClusterIP   10.96.43.119   <none>        80/TCP    9d    app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,project=cloudpath-focusflow
+
+NAME                            READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS      IMAGES                SELECTOR
+deployment.apps/focusflow-api   2/2     2            2           9d    focusflow-api   focusflow-api:0.1.0   app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,project=cloudpath-focusflow
+
+NAME                                       DESIRED   CURRENT   READY   AGE   CONTAINERS      IMAGES                SELECTOR
+replicaset.apps/focusflow-api-59887588b7   0         0         0       19h   focusflow-api   focusflow-api:1.0.0   app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,pod-template-hash=59887588b7,project=cloudpath-focusflow
+replicaset.apps/focusflow-api-5c99c5f649   0         0         0       19h   focusflow-api   focusflow-api:1.0.0   app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,pod-template-hash=5c99c5f649,project=cloudpath-focusflow
+replicaset.apps/focusflow-api-77bd5684bf   0         0         0       19h   focusflow-api   focusflow-api:1.0.0   app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,pod-template-hash=77bd5684bf,project=cloudpath-focusflow
+replicaset.apps/focusflow-api-cdb9f6587    2         2         2       19h   focusflow-api   focusflow-api:0.1.0   app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,pod-template-hash=cdb9f6587,project=cloudpath-focusflow
