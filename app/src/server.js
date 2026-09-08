@@ -1,8 +1,8 @@
 require('dotenv').config();
 const app = require('./app');
 const logger = require('./utils/logger');
-const env = require("./config/env");
-const { connectDatabase } = require("./config/db");
+const env = require('./config/env');
+const { connectDatabase } = require('./config/db');
 
 let server;
 
@@ -15,8 +15,8 @@ async function startServer() {
         event: 'server_started',
         port: env.port,
         environment: env.nodeEnv,
-        timestamp: new Date().toISOString(), 
-      }),
+        timestamp: new Date().toISOString(),
+      })
     );
   });
 }

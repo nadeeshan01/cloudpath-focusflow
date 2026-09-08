@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const journalEntrySchema = new mongoose.Schema(
   {
@@ -15,18 +15,18 @@ const journalEntrySchema = new mongoose.Schema(
     },
     mood: {
       type: String,
-      enum: ["great", "good", "neutral", "bad"],
-      default: "neutral",
+      enum: ['great', 'good', 'neutral', 'bad'],
+      default: 'neutral',
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-module.exports = mongoose.model("JournalEntry", journalEntrySchema);
+module.exports = mongoose.model('JournalEntry', journalEntrySchema);

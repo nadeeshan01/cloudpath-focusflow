@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, 'Name is required'],
       trim: true,
       minlength: 2,
       maxlength: 80,
@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
 
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: [true, 'Email is required'],
       unique: true,
       lowercase: true,
       trim: true,
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
 
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
       minlength: 8,
       maxlength: 72,
       select: false,
@@ -30,11 +30,11 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-userSchema.pre("save", async function hashPassword() {
-  if (!this.isModified("password")) {
+userSchema.pre('save', async function hashPassword() {
+  if (!this.isModified('password')) {
     return;
   }
 
@@ -54,4 +54,4 @@ userSchema.methods.toSafeObject = function toSafeObject() {
   };
 };
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);

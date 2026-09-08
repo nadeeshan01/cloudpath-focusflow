@@ -1,4 +1,4 @@
-const { z } = require("zod");
+const { z } = require('zod');
 
 const registerSchema = z.object({
   name: z.string().trim().min(2).max(80),

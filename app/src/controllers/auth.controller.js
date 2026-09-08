@@ -1,5 +1,5 @@
-const User = require("../models/User");
-const { signAccessToken } = require("../utils/jwt");
+const User = require('../models/User');
+const { signAccessToken } = require('../utils/jwt');
 
 async function register(req, res, next) {
   try {
@@ -10,7 +10,7 @@ async function register(req, res, next) {
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: "An account already exists with this email",
+        message: 'An account already exists with this email',
       });
     }
 
@@ -24,7 +24,7 @@ async function register(req, res, next) {
 
     return res.status(201).json({
       success: true,
-      message: "User registered successfully",
+      message: 'User registered successfully',
       data: {
         user: user.toSafeObject(),
         token,
@@ -39,12 +39,12 @@ async function login(req, res, next) {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message: 'Invalid email or password',
       });
     }
 
@@ -53,7 +53,7 @@ async function login(req, res, next) {
     if (!passwordMatches) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message: 'Invalid email or password',
       });
     }
 
@@ -61,7 +61,7 @@ async function login(req, res, next) {
 
     return res.status(200).json({
       success: true,
-      message: "Login successful",
+      message: 'Login successful',
       data: {
         user: user.toSafeObject(),
         token,
