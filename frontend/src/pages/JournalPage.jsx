@@ -1,40 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import api, { getApiErrorMessage } from "../api/client";
 import AppLayout from "../components/AppLayout";
-
-const moods = [
-  { value: "great", label: "😄 Great" },
-  { value: "good", label: "🙂 Good" },
-  { value: "neutral", label: "😐 Neutral" },
-  { value: "bad", label: "😞 Bad" },
-];
+import JournalForm from "../components/JournalForm";
+import JournalList from "../components/JournalList";
 
 export default function JournalPage() {
   const [entries, setEntries] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [moodFilter, setMoodFilter] = useState("all");
+  const [tagFilter, setTagFilter] = useState("");
 
-  const [form, setForm] = useState({
-    title: "",
-    content: "",
-    mood: "neutral",
-    tagsInput: "",
-  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [isUpdatingId, setIsUpdatingId] = useState(null);
+  const [isDeletingId, setIsDeletingId] = useState(null);
 
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function loadEntries() {
+  async function loadJournalEntries() {
     try {
       setError("");
+
       const response = await api.get("/journal");
-      const data = response.data?.data;
-      const list = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.entries)
-        ? data.entries
-        : [];
-      setEntries(list);
+
+      setEntries(response.data.data.entries);
     } catch (requestError) {
       setError(getApiErrorMessage(requestError));
     } finally {
@@ -43,68 +33,103 @@ export default function JournalPage() {
   }
 
   useEffect(() => {
-    loadEntries();
+    loadJournalEntries();
   }, []);
 
-  function handleChange(e) {
-    setForm((current) => ({
-      ...current,
-      [e.target.name]: e.target.value,
-    }));
-  }
+  const filteredEntries = useMemo(() => {
+    const normalizedTag = tagFilter.trim().toLowerCase();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    if (!form.title.trim() || !form.content.trim()) return;
+    return entries.filter((entry) => {
+      const matchesMood =
+        moodFilter === "all" || entry.mood === moodFilter;
 
-    setError("");
-    setMessage("");
-    setIsSubmitting(true);
+      const matchesTag =
+        !normalizedTag ||
+        entry.tags?.some((tag) =>
+          tag.toLowerCase().includes(normalizedTag),
+        );
 
+      return matchesMood && matchesTag;
+    });
+  }, [entries, moodFilter, tagFilter]);
+
+  async function createJournalEntry(entryPayload) {
     try {
-      const tags = form.tagsInput
-        .split(",")
-        .map((t) => t.trim().toLowerCase())
-        .filter(Boolean);
+      setError("");
+      setMessage("");
+      setIsCreating(true);
 
-      const response = await api.post("/journal", {
-        title: form.title.trim(),
-        content: form.content.trim(),
-        mood: form.mood,
-        tags,
-      });
+      const response = await api.post("/journal", entryPayload);
 
-      const newEntry = response.data?.data?.entry || response.data?.data;
-      if (newEntry) {
-        setEntries((current) => [newEntry, ...current]);
-      }
+      setEntries((currentEntries) => [
+        response.data.data.entry,
+        ...currentEntries,
+      ]);
 
-      setForm({
-        title: "",
-        content: "",
-        mood: "neutral",
-        tagsInput: "",
-      });
-      setMessage("Journal entry added successfully.");
+      setMessage("Journal entry created successfully.");
+
+      return true;
     } catch (requestError) {
       setError(getApiErrorMessage(requestError));
+
+      return false;
     } finally {
-      setIsSubmitting(false);
+      setIsCreating(false);
     }
   }
 
-  async function handleDelete(entryId, title) {
-    if (!window.confirm(`Delete journal entry "${title}"?`)) return;
-
+  async function updateJournalEntry(entryId, entryPayload) {
     try {
       setError("");
-      await api.delete(`/journal/${entryId}`);
-      setEntries((current) =>
-        current.filter((e) => e._id !== entryId && e.id !== entryId)
+      setMessage("");
+      setIsUpdatingId(entryId);
+
+      const response = await api.patch(
+        `/journal/${entryId}`,
+        entryPayload,
       );
-      setMessage("Journal entry deleted.");
+
+      const updatedEntry = response.data.data.entry;
+
+      setEntries((currentEntries) =>
+        currentEntries.map((entry) =>
+          entry._id === entryId ? updatedEntry : entry,
+        ),
+      );
+
+      setMessage("Journal entry updated successfully.");
+
+      return true;
     } catch (requestError) {
       setError(getApiErrorMessage(requestError));
+
+      return false;
+    } finally {
+      setIsUpdatingId(null);
+    }
+  }
+
+  async function deleteJournalEntry(entryId) {
+    try {
+      setError("");
+      setMessage("");
+      setIsDeletingId(entryId);
+
+      await api.delete(`/journal/${entryId}`);
+
+      setEntries((currentEntries) =>
+        currentEntries.filter((entry) => entry._id !== entryId),
+      );
+
+      setMessage("Journal entry deleted successfully.");
+
+      return true;
+    } catch (requestError) {
+      setError(getApiErrorMessage(requestError));
+
+      return false;
+    } finally {
+      setIsDeletingId(null);
     }
   }
 
@@ -115,145 +140,89 @@ export default function JournalPage() {
           <p className="eyebrow">Reflection</p>
           <h1>Journal</h1>
           <p className="muted">
-            Capture your daily thoughts, mood, and reflections.
+            Record your progress, thoughts, and learning journey.
           </p>
         </div>
       </section>
 
-      {error && <div className="alert alert-error">{error}</div>}
-      {message && <div className="alert alert-success">{message}</div>}
+      {error && (
+        <div className="alert alert-error">
+          {error}
+        </div>
+      )}
 
-      <form className="panel task-form" onSubmit={handleSubmit}>
+      {message && (
+        <div className="alert alert-success">
+          {message}
+        </div>
+      )}
+
+      <JournalForm
+        onCreate={createJournalEntry}
+        isSubmitting={isCreating}
+      />
+
+      <section className="panel filter-panel">
         <div className="panel-heading">
           <div>
-            <p className="eyebrow">New Reflection</p>
-            <h2>Write a journal entry</h2>
+            <p className="eyebrow">Filter</p>
+            <h2>View journal entries</h2>
           </div>
+
+          <button
+            className="button button-secondary"
+            type="button"
+            onClick={() => {
+              setMoodFilter("all");
+              setTagFilter("");
+            }}
+          >
+            Clear filters
+          </button>
         </div>
-
-        <label>
-          Title
-          <input
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            placeholder="What's on your mind today?"
-            maxLength="160"
-            required
-          />
-        </label>
-
-        <label>
-          Content
-          <textarea
-            name="content"
-            value={form.content}
-            onChange={handleChange}
-            placeholder="Write your entry details here..."
-            rows="5"
-            maxLength="10000"
-            required
-          />
-        </label>
 
         <div className="form-grid">
           <label>
             Mood
-            <select name="mood" value={form.mood} onChange={handleChange}>
-              {moods.map((m) => (
-                <option key={m.value} value={m.value}>
-                  {m.label}
-                </option>
-              ))}
+            <select
+              value={moodFilter}
+              onChange={(event) =>
+                setMoodFilter(event.target.value)
+              }
+            >
+              <option value="all">All moods</option>
+              <option value="great">Great</option>
+              <option value="good">Good</option>
+              <option value="neutral">Neutral</option>
+              <option value="bad">Bad</option>
             </select>
           </label>
 
           <label>
-            Tags (comma separated)
+            Search tag
             <input
-              name="tagsInput"
-              value={form.tagsInput}
-              onChange={handleChange}
-              placeholder="e.g. devops, learning, goal"
+              value={tagFilter}
+              onChange={(event) =>
+                setTagFilter(event.target.value)
+              }
+              placeholder="Example: devops"
             />
           </label>
         </div>
-
-        <button
-          className="button button-primary"
-          type="submit"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Saving entry..." : "Save entry"}
-        </button>
-      </form>
+      </section>
 
       {isLoading ? (
-        <div className="page-center-small">Loading journal entries...</div>
+        <div className="page-center-small">
+          Loading journal entries...
+        </div>
       ) : (
-        <section className="panel">
-          <div className="panel-heading">
-            <div>
-              <p className="eyebrow">History</p>
-              <h2>Your Journal Entries</h2>
-            </div>
-            <span className="count-badge">{entries.length}</span>
-          </div>
-
-          {entries.length === 0 ? (
-            <div className="empty-state">
-              <h3>No journal entries yet</h3>
-              <p>Write your first reflection using the form above.</p>
-            </div>
-          ) : (
-            <div className="task-list">
-              {entries.map((entry) => {
-                const entryId = entry._id || entry.id;
-                const moodObj = moods.find((m) => m.value === entry.mood);
-
-                return (
-                  <article className="task-card" key={entryId}>
-                    <div className="task-card-header">
-                      <div>
-                        <h3>
-                          {moodObj?.label.slice(0, 2)} {entry.title}
-                        </h3>
-                        <p className="muted" style={{ whiteSpace: "pre-wrap" }}>
-                          {entry.content}
-                        </p>
-                      </div>
-                      <span className="priority-badge priority-medium">
-                        {entry.mood}
-                      </span>
-                    </div>
-
-                    <div className="task-meta">
-                      <span>
-                        Date:{" "}
-                        {new Date(
-                          entry.entryDate || entry.createdAt
-                        ).toLocaleDateString()}
-                      </span>
-                      {entry.tags && entry.tags.length > 0 && (
-                        <span>Tags: {entry.tags.join(", ")}</span>
-                      )}
-                    </div>
-
-                    <div className="action-row">
-                      <button
-                        className="button button-danger"
-                        type="button"
-                        onClick={() => handleDelete(entryId, entry.title)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          )}
-        </section>
+        <JournalList
+          entries={filteredEntries}
+          onUpdate={updateJournalEntry}
+          onDelete={deleteJournalEntry}
+          isUpdatingId={isUpdatingId}
+          isDeletingId={isDeletingId}
+        />
       )}
     </AppLayout>
   );
