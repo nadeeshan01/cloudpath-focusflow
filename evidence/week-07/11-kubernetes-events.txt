@@ -1,0 +1,9 @@
+LAST SEEN   TYPE     REASON           OBJECT                              MESSAGE
+11m         Normal   SandboxChanged   pod/focusflow-api-cdb9f6587-8drfs   Pod sandbox changed, it will be killed and re-created.
+11m         Normal   Pulled           pod/focusflow-api-cdb9f6587-8drfs   Container image "focusflow-api:0.1.0" already present on machine
+11m         Normal   Created          pod/focusflow-api-cdb9f6587-8drfs   Created container focusflow-api
+11m         Normal   SandboxChanged   pod/focusflow-api-cdb9f6587-wcpvz   Pod sandbox changed, it will be killed and re-created.
+11m         Normal   Pulled           pod/focusflow-api-cdb9f6587-wcpvz   Container image "focusflow-api:0.1.0" already present on machine
+11m         Normal   Created          pod/focusflow-api-cdb9f6587-wcpvz   Created container focusflow-api
+11m         Normal   Started          pod/focusflow-api-cdb9f6587-wcpvz   Started container focusflow-api
+11m         Normal   Started          pod/focusflow-api-cdb9f6587-8drfs   Started container focusflow-api
