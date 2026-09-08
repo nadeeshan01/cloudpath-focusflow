@@ -8,6 +8,7 @@ const env = require('./config/env');
 const authRoutes = require('./routes/auth.routes');
 const taskRoutes = require('./routes/task.routes');
 const journalRoutes = require('./routes/journal.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
 const { notFound, errorHandler } = require('./middleware/error.middleware');
 
 const app = express();
@@ -72,6 +73,7 @@ app.get('/api/v1/version', (req, res) => {
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/tasks', taskRoutes);
 app.use('/api/v1/journal', journalRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
 
 app.use(notFound);
 
