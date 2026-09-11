@@ -13,12 +13,12 @@ async function listJournalEntries(req, res, next) {
       owner: req.user._id,
     };
 
-    if (mood) {
-      filter.mood = mood;
+    if (typeof mood === 'string') {
+      filter.mood = { $eq: mood };
     }
 
-    if (tag) {
-      filter.tags = tag.toLowerCase();
+    if (typeof tag === 'string') {
+      filter.tags = { $eq: tag.toLowerCase() };
     }
 
     const entries = await JournalEntry.find(filter).sort({
@@ -69,7 +69,7 @@ async function getJournalEntry(req, res, next) {
     }
 
     const entry = await JournalEntry.findOne({
-      _id: entryId,
+      _id: { $eq: entryId },
       owner: req.user._id,
     });
 
@@ -104,7 +104,7 @@ async function updateJournalEntry(req, res, next) {
 
     const entry = await JournalEntry.findOneAndUpdate(
       {
-        _id: entryId,
+        _id: { $eq: entryId },
         owner: req.user._id,
       },
       req.body,
@@ -145,7 +145,7 @@ async function deleteJournalEntry(req, res, next) {
     }
 
     const entry = await JournalEntry.findOneAndDelete({
-      _id: entryId,
+      _id: { $eq: entryId },
       owner: req.user._id,
     });
 

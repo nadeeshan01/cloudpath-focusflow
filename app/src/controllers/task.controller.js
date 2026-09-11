@@ -13,12 +13,12 @@ async function listTasks(req, res, next) {
       owner: req.user._id,
     };
 
-    if (status) {
-      filter.status = status;
+    if (typeof status === 'string') {
+      filter.status = { $eq: status };
     }
 
-    if (priority) {
-      filter.priority = priority;
+    if (typeof priority === 'string') {
+      filter.priority = { $eq: priority };
     }
 
     const tasks = await Task.find(filter).sort({
@@ -68,7 +68,7 @@ async function getTask(req, res, next) {
     }
 
     const task = await Task.findOne({
-      _id: taskId,
+      _id: { $eq: taskId },
       owner: req.user._id,
     });
 
@@ -103,7 +103,7 @@ async function updateTask(req, res, next) {
 
     const task = await Task.findOneAndUpdate(
       {
-        _id: taskId,
+        _id: { $eq: taskId },
         owner: req.user._id,
       },
       req.body,
@@ -144,7 +144,7 @@ async function deleteTask(req, res, next) {
     }
 
     const task = await Task.findOneAndDelete({
-      _id: taskId,
+      _id: { $eq: taskId },
       owner: req.user._id,
     });
 
