@@ -1,58 +1,187 @@
-const dataStore = require('../utils/dataStore');
-const logger = require('../utils/logger');
+const mongoose = require('mongoose');
+const Task = require('../models/Task');
 
-exports.getTasks = (req, res) => {
+function isValidTaskId(taskId) {
+  return mongoose.Types.ObjectId.isValid(taskId);
+}
+
+async function listTasks(req, res, next) {
   try {
-    const tasks = dataStore.getAllTasks();
-    logger.info(`Retrieved ${tasks.length} tasks`);
+    const { status, priority } = req.query;
 
-    res.status(200).json({
+    const filter = {
+      owner: req.user._id,
+    };
+
+    if (typeof status === 'string') {
+      filter.status = { $eq: status };
+    }
+
+    if (typeof priority === 'string') {
+      filter.priority = { $eq: priority };
+    }
+
+    const tasks = await Task.find(filter).sort({
+      createdAt: -1,
+    });
+
+    return res.status(200).json({
       success: true,
-      count: tasks.length,
-      data: tasks,
+      data: {
+        tasks,
+        total: tasks.length,
+      },
     });
   } catch (error) {
-    logger.error('Error fetching tasks', { error: error.message });
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch tasks',
-    });
+    return next(error);
   }
-};
+}
 
-exports.createTask = (req, res) => {
+async function createTask(req, res, next) {
   try {
-    const { title, description, priority, dueDate } = req.body;
+    const { title, description, status, priority, dueDate } = req.body;
 
-    // Basic validation
-    if (!title || title.trim() === '') {
+    const task = await Task.create({
+      title,
+      description,
+      status,
+      priority,
+      dueDate,
+      owner: req.user._id,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: 'Task created successfully',
+      data: {
+        task,
+      },
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function getTask(req, res, next) {
+  try {
+    const { taskId } = req.params;
+
+    if (!isValidTaskId(taskId)) {
       return res.status(400).json({
         success: false,
-        message: 'Task title is required',
+        message: 'Invalid task ID',
       });
     }
 
-    const task = dataStore.addTask({
-      title: title.trim(),
-      description: description || '',
-      priority: priority || 'medium',
-      dueDate: dueDate || null,
-      status: 'todo',
-      completed: false,
+    const task = await Task.findOne({
+      _id: { $eq: taskId },
+      owner: req.user._id,
     });
 
-    logger.info('Task created', { taskId: task.id, title: task.title });
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: 'Task not found',
+      });
+    }
 
-    res.status(201).json({
+    return res.status(200).json({
       success: true,
-      message: 'Task created successfully',
-      data: task,
+      data: {
+        task,
+      },
     });
   } catch (error) {
-    logger.error('Error creating task', { error: error.message });
-    res.status(500).json({
-      success: false,
-      message: 'Failed to create task',
-    });
+    return next(error);
   }
+}
+
+async function updateTask(req, res, next) {
+  try {
+    const { taskId } = req.params;
+
+    if (!isValidTaskId(taskId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid task ID',
+      });
+    }
+
+    const { title, description, status, priority, dueDate } = req.body;
+    const updateData = {};
+    if (title !== undefined) updateData.title = title;
+    if (description !== undefined) updateData.description = description;
+    if (status !== undefined) updateData.status = status;
+    if (priority !== undefined) updateData.priority = priority;
+    if (dueDate !== undefined) updateData.dueDate = dueDate;
+
+    const task = await Task.findOneAndUpdate(
+      {
+        _id: { $eq: taskId },
+        owner: req.user._id,
+      },
+      { $set: updateData },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: 'Task not found',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Task updated successfully',
+      data: {
+        task,
+      },
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function deleteTask(req, res, next) {
+  try {
+    const { taskId } = req.params;
+
+    if (!isValidTaskId(taskId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid task ID',
+      });
+    }
+
+    const task = await Task.findOneAndDelete({
+      _id: { $eq: taskId },
+      owner: req.user._id,
+    });
+
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: 'Task not found',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Task deleted successfully',
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+module.exports = {
+  listTasks,
+  createTask,
+  getTask,
+  updateTask,
+  deleteTask,
 };
