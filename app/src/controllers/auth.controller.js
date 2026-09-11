@@ -5,7 +5,14 @@ async function register(req, res, next) {
   try {
     const { name, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    if (typeof email !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email',
+      });
+    }
+
+    const existingUser = await User.findOne({ email: { $eq: email } });
 
     if (existingUser) {
       return res.status(409).json({
@@ -39,7 +46,14 @@ async function login(req, res, next) {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email }).select('+password');
+    if (typeof email !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email',
+      });
+    }
+
+    const user = await User.findOne({ email: { $eq: email } }).select('+password');
 
     if (!user) {
       return res.status(401).json({
