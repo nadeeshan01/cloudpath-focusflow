@@ -47,3 +47,4 @@ k8s/deployment-broken-probe.yaml
 k8s/patches/
 
 scripts/aws-local.env
+terraform.tfvars

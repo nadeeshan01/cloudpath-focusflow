@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const crypto = require('crypto');
 const env = require('../config/env');
 
@@ -63,9 +64,27 @@ function verifyAccessToken(token) {
   } catch {
     return null;
   }
+=======
+const jwt = require('jsonwebtoken');
+const env = require('../config/env');
+
+function signAccessToken(userId) {
+  return jwt.sign(
+    {
+      sub: userId,
+    },
+    env.jwtSecret,
+    {
+      expiresIn: env.jwtExpiresIn,
+    }
+  );
+>>>>>>> develop
 }
 
 module.exports = {
   signAccessToken,
+<<<<<<< HEAD
   verifyAccessToken,
+=======
+>>>>>>> develop
 };
