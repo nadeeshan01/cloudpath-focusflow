@@ -53,7 +53,9 @@ async function login(req, res, next) {
       });
     }
 
-    const user = await User.findOne({ email: { $eq: email } }).select('+password');
+    const user = await User.findOne({ email: { $eq: email } }).select(
+      '+password'
+    );
 
     if (!user) {
       return res.status(401).json({
