@@ -6,21 +6,24 @@ const User = require('../src/models/User');
 const Task = require('../src/models/Task');
 const env = require('../src/config/env');
 
-// Database calls mock කිරීම (CI/CD වල database නැතුව tests run වීමට)
+// Database calls mock (runs without live MongoDB in tests)
 jest.mock('../src/models/User');
 jest.mock('../src/models/Task');
 
 describe('Task Endpoints', () => {
   const mockUserId = new mongoose.Types.ObjectId().toString();
   const token = jwt.sign({ sub: mockUserId }, env.jwtSecret || 'test-secret');
-  const mockUser = { _id: mockUserId, name: 'Test User', email: 'test@example.com' };
+  const mockUser = {
+    _id: mockUserId,
+    name: 'Test User',
+    email: 'test@example.com',
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
     User.findById.mockResolvedValue(mockUser);
   });
 
-  // 1. ඔයා හදපු Unauthorized Tests
   describe('Authentication & Protection', () => {
     it('rejects task list request without token', async () => {
       const response = await request(app).get('/api/v1/tasks');
@@ -30,11 +33,9 @@ describe('Task Endpoints', () => {
     });
 
     it('rejects task creation request without token', async () => {
-      const response = await request(app)
-        .post('/api/v1/tasks')
-        .send({
-          title: 'Unauthorized task',
-        });
+      const response = await request(app).post('/api/v1/tasks').send({
+        title: 'Unauthorized task',
+      });
 
       expect(response.statusCode).toBe(401);
       expect(response.body.success).toBe(false);
@@ -49,7 +50,6 @@ describe('Task Endpoints', () => {
     });
   });
 
-  // 2. Task Fetching Tests
   describe('GET /api/v1/tasks', () => {
     it('should return empty task list initially', async () => {
       Task.find.mockReturnValue({
@@ -66,7 +66,6 @@ describe('Task Endpoints', () => {
     });
   });
 
-  // 3. Task Creation Tests
   describe('POST /api/v1/tasks', () => {
     it('should create a new task successfully with valid token', async () => {
       const taskData = {

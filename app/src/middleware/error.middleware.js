@@ -1,3 +1,5 @@
+const logger = require('../utils/logger');
+
 function notFound(req, res) {
   return res.status(404).json({
     success: false,
@@ -6,14 +8,10 @@ function notFound(req, res) {
 }
 
 function errorHandler(error, req, res, _next) {
-  console.error(
-    JSON.stringify({
-      event: 'application_error',
-      message: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
-    })
-  );
+  logger.error(error.message, {
+    event: 'application_error',
+    stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+  });
 
   if (error.name === 'ValidationError') {
     return res.status(400).json({
