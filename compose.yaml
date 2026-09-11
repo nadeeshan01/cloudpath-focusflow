@@ -5,22 +5,21 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile
-    image: focusflow-api:0.1.0
+    image: focusflow-api:1.0.0
     container_name: focusflow-api
     env_file:
       - ./app/.env
+    environment:
+      NODE_ENV: production
+      CORS_ORIGIN: http://localhost:3000
     ports:
       - "5000:5000"
     restart: unless-stopped
-    
-    # Security hardening
     read_only: true
     tmpfs:
       - /tmp
     security_opt:
       - no-new-privileges:true
-    
-    # Health check
     healthcheck:
       test:
         [
@@ -31,5 +30,63 @@ services:
         ]
       interval: 30s
       timeout: 5s
+      start_period: 20s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+        reservations:
+          cpus: "0.10"
+          memory: 128M
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: /api/v1
+    image: focusflow-web:1.0.0
+    container_name: focusflow-web
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "3000:8080"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:mode=0777
+      - /var/run:mode=0777
+      - /tmp:mode=1777
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget --spider --quiet http://127.0.0.1:8080/ || exit 1"
+        ]
+      interval: 30s
+      timeout: 5s
       start_period: 10s
       retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+        reservations:
+          cpus: "0.10"
+          memory: 64M

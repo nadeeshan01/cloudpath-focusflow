@@ -26,15 +26,17 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, or same-origin)
-      if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+    origin(origin, callback) {
+      if (!origin || env.corsOrigins.includes(origin)) {
         return callback(null, true);
       }
-      return callback(null, true); // Permissive in dev mode
+
+      return callback(
+        new Error(`CORS blocked for origin: ${origin}`),
+      );
     },
     credentials: true,
-  })
+  }),
 );
 
 // Body parsing
