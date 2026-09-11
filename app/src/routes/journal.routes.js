@@ -1,18 +1,4 @@
 const express = require('express');
-<<<<<<< HEAD
-const journalController = require('../controllers/journal.controller');
-const { requireAuth } = require('../middleware/auth.middleware');
-
-const router = express.Router();
-
-router.use(requireAuth);
-
-router.get('/', journalController.getJournalEntries);
-router.post('/', journalController.createJournalEntry);
-router.get('/:entryId', journalController.getJournalEntry);
-router.patch('/:entryId', journalController.updateJournalEntry);
-router.delete('/:entryId', journalController.deleteJournalEntry);
-=======
 
 const {
   listJournalEntries,
@@ -43,6 +29,5 @@ router.get('/:entryId', getJournalEntry);
 router.patch('/:entryId', validate(updateJournalSchema), updateJournalEntry);
 
 router.delete('/:entryId', deleteJournalEntry);
->>>>>>> develop
 
 module.exports = router;

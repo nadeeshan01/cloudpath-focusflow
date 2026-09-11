@@ -31,16 +31,21 @@ const fallbackOrigins = [
   'http://localhost:5174',
 ];
 
-const allowedOrigins = Array.isArray(env.corsOrigins) && env.corsOrigins.length > 0
-  ? env.corsOrigins
-  : fallbackOrigins;
+const allowedOrigins =
+  Array.isArray(env.corsOrigins) && env.corsOrigins.length > 0
+    ? env.corsOrigins
+    : fallbackOrigins;
 
 app.use(helmet());
 
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        allowedOrigins.includes('*')
+      ) {
         return callback(null, true);
       }
       return callback(new Error(`CORS blocked for origin: ${origin}`));
@@ -57,16 +62,12 @@ app.use((req, res, next) => {
   const startedAt = Date.now();
 
   res.on('finish', () => {
-    console.log(
-      JSON.stringify({
-        event: 'http_request',
-        method: req.method,
-        path: req.originalUrl,
-        status: res.statusCode,
-        durationMs: Date.now() - startedAt,
-        timestamp: new Date().toISOString(),
-      })
-    );
+    logger.info('http_request', {
+      method: req.method,
+      path: req.originalUrl,
+      status: res.statusCode,
+      durationMs: Date.now() - startedAt,
+    });
   });
 
   next();

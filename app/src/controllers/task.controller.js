@@ -10,7 +10,9 @@ async function listTasks(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { status, priority } = req.query;
@@ -50,13 +52,17 @@ async function createTask(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { title, description, status, priority, dueDate } = req.body;
 
     if (!title || title.trim() === '') {
-      return res.status(400).json({ success: false, message: 'Task title is required' });
+      return res
+        .status(400)
+        .json({ success: false, message: 'Task title is required' });
     }
 
     const task = await Task.create({
@@ -88,7 +94,9 @@ async function getTask(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { taskId } = req.params;
@@ -127,7 +135,9 @@ async function updateTask(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { taskId } = req.params;
@@ -182,7 +192,9 @@ async function deleteTask(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { taskId } = req.params;

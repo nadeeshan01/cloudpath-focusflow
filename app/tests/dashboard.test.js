@@ -14,7 +14,11 @@ jest.mock('../src/models/JournalEntry');
 describe('Dashboard Endpoints', () => {
   const mockUserId = new mongoose.Types.ObjectId().toString();
   const token = jwt.sign({ sub: mockUserId }, env.jwtSecret || 'test-secret');
-  const mockUser = { _id: mockUserId, name: 'Test User', email: 'test@example.com' };
+  const mockUser = {
+    _id: mockUserId,
+    name: 'Test User',
+    email: 'test@example.com',
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -70,9 +74,7 @@ describe('Dashboard Endpoints', () => {
       ];
 
       Task.aggregate.mockResolvedValue(mockAggregateResult);
-      Task.countDocuments
-        .mockResolvedValueOnce(2)
-        .mockResolvedValueOnce(1);
+      Task.countDocuments.mockResolvedValueOnce(2).mockResolvedValueOnce(1);
       JournalEntry.countDocuments.mockResolvedValue(4);
 
       Task.find.mockReturnValue({
@@ -98,7 +100,8 @@ describe('Dashboard Endpoints', () => {
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
 
-      const { taskCounts, journalCount, recentTasks, recentJournalEntries } = response.body.data;
+      const { taskCounts, journalCount, recentTasks, recentJournalEntries } =
+        response.body.data;
 
       expect(taskCounts).toEqual({
         total: 10,
@@ -158,7 +161,9 @@ describe('Dashboard Endpoints', () => {
     });
 
     it('handles server errors during dashboard summary aggregation', async () => {
-      Task.aggregate.mockRejectedValue(new Error('Database aggregation failed'));
+      Task.aggregate.mockRejectedValue(
+        new Error('Database aggregation failed')
+      );
 
       const response = await request(app)
         .get('/api/v1/dashboard/summary')

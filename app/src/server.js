@@ -1,7 +1,6 @@
 require('dotenv').config();
 const app = require('./app');
 const logger = require('./utils/logger');
-<<<<<<< HEAD
 const { connectDB } = require('./config/db');
 const env = require('./config/env');
 
@@ -24,48 +23,17 @@ async function start() {
         timestamp: new Date().toISOString(),
       });
     });
-=======
-const env = require('./config/env');
-const { connectDatabase } = require('./config/db');
-
-let server;
-
-async function startServer() {
-  await connectDatabase(env.mongodbUri);
-
-  server = app.listen(env.port, '0.0.0.0', () => {
-    console.log(
-      JSON.stringify({
-        event: 'server_started',
-        port: env.port,
-        environment: env.nodeEnv,
-        timestamp: new Date().toISOString(),
-      })
-    );
-  });
-}
-
-startServer();
-
-// Graceful shutdown
-const shutdown = (signal) => {
-  logger.info(`${signal} received, shutting down gracefully`);
-  if (server) {
-    server.close(() => {
-      logger.info('Server closed');
-      process.exit(0);
-    });
-  } else {
-    process.exit(0);
-  }
->>>>>>> develop
 
     const shutdown = (signal) => {
       logger.info(`${signal} received, shutting down gracefully`);
-      server.close(() => {
-        logger.info('Server closed');
+      if (server) {
+        server.close(() => {
+          logger.info('Server closed');
+          process.exit(0);
+        });
+      } else {
         process.exit(0);
-      });
+      }
 
       setTimeout(() => {
         logger.error('Forced shutdown after timeout');

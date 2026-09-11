@@ -10,7 +10,9 @@ async function listJournalEntries(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { mood, tag } = req.query;
@@ -51,17 +53,23 @@ async function createJournalEntry(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { title, content, mood, tags, entryDate } = req.body;
 
     if (!title || title.trim() === '') {
-      return res.status(400).json({ success: false, message: 'Journal title is required' });
+      return res
+        .status(400)
+        .json({ success: false, message: 'Journal title is required' });
     }
 
     if (!content || content.trim() === '') {
-      return res.status(400).json({ success: false, message: 'Journal content is required' });
+      return res
+        .status(400)
+        .json({ success: false, message: 'Journal content is required' });
     }
 
     const entry = await JournalEntry.create({
@@ -74,7 +82,10 @@ async function createJournalEntry(req, res, next) {
     });
 
     if (logger?.info) {
-      logger.info('Journal entry created', { entryId: entry._id, title: entry.title });
+      logger.info('Journal entry created', {
+        entryId: entry._id,
+        title: entry.title,
+      });
     }
 
     return res.status(201).json({
@@ -93,7 +104,9 @@ async function getJournalEntry(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { entryId } = req.params;
@@ -132,7 +145,9 @@ async function updateJournalEntry(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { entryId } = req.params;
@@ -187,7 +202,9 @@ async function deleteJournalEntry(req, res, next) {
   try {
     const userId = req.user?.id || req.user?._id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
     }
 
     const { entryId } = req.params;

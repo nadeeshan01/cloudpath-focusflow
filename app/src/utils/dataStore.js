@@ -1,7 +1,9 @@
 const crypto = require('crypto');
 
 function hashPassword(password) {
-  return crypto.pbkdf2Sync(password, 'focusflow-salt', 1000, 64, 'sha512').toString('hex');
+  return crypto
+    .pbkdf2Sync(password, 'focusflow-salt', 1000, 64, 'sha512')
+    .toString('hex');
 }
 
 class DataStore {
@@ -109,13 +111,15 @@ class DataStore {
 
   getTaskById(taskId, userId = 'user-1') {
     return this.tasks.find(
-      (t) => (t.id == taskId || t._id == taskId) && (t.owner === userId || !t.owner)
+      (t) =>
+        (t.id == taskId || t._id == taskId) && (t.owner === userId || !t.owner)
     );
   }
 
   updateTask(taskId, updates, userId = 'user-1') {
     const index = this.tasks.findIndex(
-      (t) => (t.id == taskId || t._id == taskId) && (t.owner === userId || !t.owner)
+      (t) =>
+        (t.id == taskId || t._id == taskId) && (t.owner === userId || !t.owner)
     );
     if (index === -1) return null;
 
@@ -129,7 +133,8 @@ class DataStore {
 
   deleteTask(taskId, userId = 'user-1') {
     const index = this.tasks.findIndex(
-      (t) => (t.id == taskId || t._id == taskId) && (t.owner === userId || !t.owner)
+      (t) =>
+        (t.id == taskId || t._id == taskId) && (t.owner === userId || !t.owner)
     );
     if (index === -1) return false;
 
@@ -160,13 +165,17 @@ class DataStore {
 
   getJournalEntryById(entryId, userId = 'user-1') {
     return this.journalEntries.find(
-      (j) => (j.id == entryId || j._id == entryId) && (j.owner === userId || !j.owner)
+      (j) =>
+        (j.id == entryId || j._id == entryId) &&
+        (j.owner === userId || !j.owner)
     );
   }
 
   updateJournalEntry(entryId, updates, userId = 'user-1') {
     const index = this.journalEntries.findIndex(
-      (j) => (j.id == entryId || j._id == entryId) && (j.owner === userId || !j.owner)
+      (j) =>
+        (j.id == entryId || j._id == entryId) &&
+        (j.owner === userId || !j.owner)
     );
     if (index === -1) return null;
 
@@ -180,7 +189,9 @@ class DataStore {
 
   deleteJournalEntry(entryId, userId = 'user-1') {
     const index = this.journalEntries.findIndex(
-      (j) => (j.id == entryId || j._id == entryId) && (j.owner === userId || !j.owner)
+      (j) =>
+        (j.id == entryId || j._id == entryId) &&
+        (j.owner === userId || !j.owner)
     );
     if (index === -1) return false;
 

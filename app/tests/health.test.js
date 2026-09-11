@@ -3,13 +3,21 @@ const mongoose = require('mongoose');
 const app = require('../src/app');
 
 beforeAll(async () => {
-  if (mongoose.connection.readyState === 0) {
-    await mongoose.connect(process.env.MONGODB_URI);
+  if (process.env.MONGODB_URI && mongoose.connection.readyState === 0) {
+    try {
+      await mongoose.connect(process.env.MONGODB_URI, {
+        serverSelectionTimeoutMS: 1000,
+      });
+    } catch {
+      // Ignore DB connection errors in unit test mode
+    }
   }
 });
 
 afterAll(async () => {
-  await mongoose.disconnect();
+  if (mongoose.connection.readyState !== 0) {
+    await mongoose.disconnect();
+  }
 });
 
 describe('Health Endpoints', () => {

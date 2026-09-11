@@ -12,7 +12,11 @@ jest.mock('../src/models/JournalEntry');
 describe('Journal Endpoints', () => {
   const mockUserId = new mongoose.Types.ObjectId().toString();
   const token = jwt.sign({ sub: mockUserId }, env.jwtSecret || 'test-secret');
-  const mockUser = { _id: mockUserId, name: 'Test User', email: 'test@example.com' };
+  const mockUser = {
+    _id: mockUserId,
+    name: 'Test User',
+    email: 'test@example.com',
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -28,12 +32,10 @@ describe('Journal Endpoints', () => {
     });
 
     it('rejects journal creation request without token', async () => {
-      const response = await request(app)
-        .post('/api/v1/journal')
-        .send({
-          title: 'Unauthorized journal',
-          content: 'Some content',
-        });
+      const response = await request(app).post('/api/v1/journal').send({
+        title: 'Unauthorized journal',
+        content: 'Some content',
+      });
 
       expect(response.statusCode).toBe(401);
       expect(response.body.success).toBe(false);
