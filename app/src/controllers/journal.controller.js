@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const JournalEntry = require('../models/JournalEntry');
+const logger = require('../utils/logger');
 
 function isValidJournalId(entryId) {
   return mongoose.Types.ObjectId.isValid(entryId);
@@ -7,10 +8,16 @@ function isValidJournalId(entryId) {
 
 async function listJournalEntries(req, res, next) {
   try {
-    const { mood, tag } = req.query;
+    const userId = req.user?.id || req.user?._id;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
+    }
 
+    const { mood, tag } = req.query;
     const filter = {
-      owner: req.user._id,
+      owner: userId,
     };
 
     if (typeof mood === 'string') {
@@ -26,6 +33,10 @@ async function listJournalEntries(req, res, next) {
       createdAt: -1,
     });
 
+    if (logger?.info) {
+      logger.info(`Retrieved ${entries.length} journal entries`);
+    }
+
     return res.status(200).json({
       success: true,
       data: {
@@ -40,16 +51,42 @@ async function listJournalEntries(req, res, next) {
 
 async function createJournalEntry(req, res, next) {
   try {
+    const userId = req.user?.id || req.user?._id;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
+    }
+
     const { title, content, mood, tags, entryDate } = req.body;
 
+    if (!title || title.trim() === '') {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Journal title is required' });
+    }
+
+    if (!content || content.trim() === '') {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Journal content is required' });
+    }
+
     const entry = await JournalEntry.create({
-      title,
-      content,
-      mood,
-      tags,
-      entryDate,
-      owner: req.user._id,
+      title: title.trim(),
+      content: content.trim(),
+      mood: mood || 'neutral',
+      tags: Array.isArray(tags) ? tags : [],
+      entryDate: entryDate || new Date(),
+      owner: userId,
     });
+
+    if (logger?.info) {
+      logger.info('Journal entry created', {
+        entryId: entry._id,
+        title: entry.title,
+      });
+    }
 
     return res.status(201).json({
       success: true,
@@ -65,6 +102,13 @@ async function createJournalEntry(req, res, next) {
 
 async function getJournalEntry(req, res, next) {
   try {
+    const userId = req.user?.id || req.user?._id;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
+    }
+
     const { entryId } = req.params;
 
     if (!isValidJournalId(entryId)) {
@@ -76,7 +120,7 @@ async function getJournalEntry(req, res, next) {
 
     const entry = await JournalEntry.findOne({
       _id: { $eq: entryId },
-      owner: req.user._id,
+      owner: userId,
     });
 
     if (!entry) {
@@ -99,6 +143,13 @@ async function getJournalEntry(req, res, next) {
 
 async function updateJournalEntry(req, res, next) {
   try {
+    const userId = req.user?.id || req.user?._id;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
+    }
+
     const { entryId } = req.params;
 
     if (!isValidJournalId(entryId)) {
@@ -110,8 +161,8 @@ async function updateJournalEntry(req, res, next) {
 
     const { title, content, mood, tags, entryDate } = req.body;
     const updateData = {};
-    if (title !== undefined) updateData.title = title;
-    if (content !== undefined) updateData.content = content;
+    if (title !== undefined) updateData.title = title.trim();
+    if (content !== undefined) updateData.content = content.trim();
     if (mood !== undefined) updateData.mood = mood;
     if (tags !== undefined) updateData.tags = tags;
     if (entryDate !== undefined) updateData.entryDate = entryDate;
@@ -119,7 +170,7 @@ async function updateJournalEntry(req, res, next) {
     const entry = await JournalEntry.findOneAndUpdate(
       {
         _id: { $eq: entryId },
-        owner: req.user._id,
+        owner: userId,
       },
       { $set: updateData },
       {
@@ -149,6 +200,13 @@ async function updateJournalEntry(req, res, next) {
 
 async function deleteJournalEntry(req, res, next) {
   try {
+    const userId = req.user?.id || req.user?._id;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Authentication required' });
+    }
+
     const { entryId } = req.params;
 
     if (!isValidJournalId(entryId)) {
@@ -160,7 +218,7 @@ async function deleteJournalEntry(req, res, next) {
 
     const entry = await JournalEntry.findOneAndDelete({
       _id: { $eq: entryId },
-      owner: req.user._id,
+      owner: userId,
     });
 
     if (!entry) {
@@ -181,6 +239,7 @@ async function deleteJournalEntry(req, res, next) {
 
 module.exports = {
   listJournalEntries,
+  getJournalEntries: listJournalEntries,
   createJournalEntry,
   getJournalEntry,
   updateJournalEntry,
