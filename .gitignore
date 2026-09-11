@@ -49,6 +49,6 @@ k8s/patches/
 scripts/aws-local.env
 terraform.tfvars
 
-# Evidence configuration with secrets
+# Ignored evidence with secrets
 evidence/fullstack/01-compose-config.txt
 
