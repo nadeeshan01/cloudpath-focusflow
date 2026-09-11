@@ -18,9 +18,15 @@ module.exports = {
   appVersion: process.env.APP_VERSION || '1.0.0',
   logLevel: process.env.LOG_LEVEL || 'info',
 
-  mongodbUri: getEnvOrDefault('MONGODB_URI', 'mongodb://127.0.0.1:27017/focusflow_test'),
+  mongodbUri: getEnvOrDefault(
+    'MONGODB_URI',
+    'mongodb://127.0.0.1:27017/focusflow_test'
+  ),
 
-  jwtSecret: getEnvOrDefault('JWT_SECRET', 'test_jwt_secret_key_focusflow_12345'),
+  jwtSecret: getEnvOrDefault(
+    'JWT_SECRET',
+    'test_jwt_secret_key_focusflow_12345'
+  ),
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '1d',
 
   corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:3000',
