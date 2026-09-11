@@ -1,0 +1,16 @@
+# Gitleaks configuration file for CloudPath FocusFlow
+# https://github.com/gitleaks/gitleaks
+
+[allowlist]
+description = "Allowlisted test placeholders and evidence files"
+paths = [
+  '''evidence/.*''',
+  '''k8s/secret\.example\.yaml''',
+  '''app/\.env\.example'''
+]
+regexes = [
+  '''test_jwt_secret_key_focusflow_12345''',
+  '''replace-with-a-long-random-secret''',
+  '''replace-with-real-value-outside-git''',
+  '''<REDACTED_.*>'''
+]
