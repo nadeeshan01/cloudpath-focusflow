@@ -23,15 +23,10 @@ WORKDIR /app
 RUN addgroup -S appgroup \
     && adduser -S appuser -G appgroup
 
-# Copy dependencies from build stage
-COPY --from=dependencies /app/node_modules ./node_modules
-
-# Copy application files
-COPY package*.json ./
-COPY src ./src
-
-# Set ownership
-RUN chown -R appuser:appgroup /app
+# Copy dependencies and source code with ownership pre-set
+COPY --chown=appuser:appgroup --from=dependencies /app/node_modules ./node_modules
+COPY --chown=appuser:appgroup package*.json ./
+COPY --chown=appuser:appgroup src ./src
 
 # Switch to non-root user
 USER appuser
