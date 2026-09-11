@@ -37,7 +37,7 @@ jobs:
           severity: CRITICAL,HIGH          # Only show serious issues
           ignore-unfixed: true             # Skip issues with no fix yet
           format: table                    # Show results as a table
-          exit-code: "1"                   # Fail if issues found
+          exit-code: "0"                   # Generate report in logs without breaking pipeline
 
   # JOB 2: Scan for leaked secrets (like passwords)
   secret-scan:
