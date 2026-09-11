@@ -39,8 +39,14 @@ async function listTasks(req, res, next) {
 
 async function createTask(req, res, next) {
   try {
+    const { title, description, status, priority, dueDate } = req.body;
+
     const task = await Task.create({
-      ...req.body,
+      title,
+      description,
+      status,
+      priority,
+      dueDate,
       owner: req.user._id,
     });
 
@@ -101,12 +107,20 @@ async function updateTask(req, res, next) {
       });
     }
 
+    const { title, description, status, priority, dueDate } = req.body;
+    const updateData = {};
+    if (title !== undefined) updateData.title = title;
+    if (description !== undefined) updateData.description = description;
+    if (status !== undefined) updateData.status = status;
+    if (priority !== undefined) updateData.priority = priority;
+    if (dueDate !== undefined) updateData.dueDate = dueDate;
+
     const task = await Task.findOneAndUpdate(
       {
         _id: { $eq: taskId },
         owner: req.user._id,
       },
-      req.body,
+      { $set: updateData },
       {
         new: true,
         runValidators: true,

@@ -4,6 +4,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 
+const rateLimit = require('express-rate-limit');
+
 const env = require('./config/env');
 const authRoutes = require('./routes/auth.routes');
 const taskRoutes = require('./routes/task.routes');
@@ -12,6 +14,14 @@ const dashboardRoutes = require('./routes/dashboard.routes');
 const { notFound, errorHandler } = require('./middleware/error.middleware');
 
 const app = express();
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: () => (env.nodeEnv || process.env.NODE_ENV) === 'test',
+});
 
 app.use(helmet());
 
@@ -25,6 +35,7 @@ app.use(
 app.use(express.json({ limit: '1mb' }));
 
 app.use(morgan('combined'));
+app.use('/api/', apiLimiter);
 
 app.use((req, res, next) => {
   const startedAt = Date.now();

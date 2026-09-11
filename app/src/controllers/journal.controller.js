@@ -40,8 +40,14 @@ async function listJournalEntries(req, res, next) {
 
 async function createJournalEntry(req, res, next) {
   try {
+    const { title, content, mood, tags, entryDate } = req.body;
+
     const entry = await JournalEntry.create({
-      ...req.body,
+      title,
+      content,
+      mood,
+      tags,
+      entryDate,
       owner: req.user._id,
     });
 
@@ -102,12 +108,20 @@ async function updateJournalEntry(req, res, next) {
       });
     }
 
+    const { title, content, mood, tags, entryDate } = req.body;
+    const updateData = {};
+    if (title !== undefined) updateData.title = title;
+    if (content !== undefined) updateData.content = content;
+    if (mood !== undefined) updateData.mood = mood;
+    if (tags !== undefined) updateData.tags = tags;
+    if (entryDate !== undefined) updateData.entryDate = entryDate;
+
     const entry = await JournalEntry.findOneAndUpdate(
       {
         _id: { $eq: entryId },
         owner: req.user._id,
       },
-      req.body,
+      { $set: updateData },
       {
         new: true,
         runValidators: true,
