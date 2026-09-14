@@ -95,6 +95,7 @@ jobs:
         run: |
           docker build \
             --pull \
+            --no-cache \
             --tag focusflow-api:${{ github.sha }} \
             ./app
 
@@ -102,6 +103,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: focusflow-api:${{ github.sha }}
+          format: 'table'
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: "1"
@@ -110,6 +112,7 @@ jobs:
         run: |
           docker build \
             --pull \
+            --no-cache \
             --build-arg VITE_API_BASE_URL=/api/v1 \
             --tag focusflow-web:${{ github.sha }} \
             ./frontend
@@ -118,6 +121,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: focusflow-web:${{ github.sha }}
+          format: 'table'
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: "1"
