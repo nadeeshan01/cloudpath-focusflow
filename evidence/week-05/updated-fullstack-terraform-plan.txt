@@ -1,0 +1,262 @@
+[0m[1mdata.tls_certificate.github_actions: Reading...[0m[0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.this: Refreshing state... [id=cloudpath-focusflow-dev][0m
+[0m[1maws_cloudwatch_log_group.focusflow: Refreshing state... [id=/cloudpath/cloudpath-focusflow/dev][0m
+[0m[1mdata.tls_certificate.github_actions: Read complete after 1s [id=6bcf7b7f2005c947073a003ff3b596f7fcc8066f][0m
+[0m[1maws_iam_openid_connect_provider.github_actions[0]: Refreshing state... [id=arn:aws:iam::797989098577:oidc-provider/token.actions.githubusercontent.com][0m
+[0m[1mmodule.ecr.aws_ecr_repository.this: Refreshing state... [id=cloudpath-focusflow-dev][0m
+[0m[1mdata.aws_iam_policy_document.github_actions_assume_role[0]: Reading...[0m[0m
+[0m[1mdata.aws_iam_policy_document.github_actions_assume_role[0]: Read complete after 0s [id=504467780][0m
+[0m[1maws_iam_role.github_actions_ecr[0]: Refreshing state... [id=cloudpath-focusflow-dev-github-ecr][0m
+[0m[1maws_iam_role_policy.github_actions_ecr[0]: Refreshing state... [id=cloudpath-focusflow-dev-github-ecr:cloudpath-focusflow-dev-ecr-policy][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+  [33m~[0m update in-place[0m
+  [31m-[0m destroy[0m
+ [36m<=[0m read (data resources)[0m
+
+Terraform will perform the following actions:
+
+[1m  # data.aws_iam_policy_document.github_actions_ecr[0][0m will be read during apply
+  # (config refers to values not yet known)
+[0m [36m<=[0m[0m data "aws_iam_policy_document" "github_actions_ecr" {
+      [32m+[0m[0m id            = (known after apply)
+      [32m+[0m[0m json          = (known after apply)
+      [32m+[0m[0m minified_json = (known after apply)
+
+      [32m+[0m[0m statement {
+          [32m+[0m[0m actions   = [
+              [32m+[0m[0m "ecr:GetAuthorizationToken",
+            ]
+          [32m+[0m[0m effect    = "Allow"
+          [32m+[0m[0m resources = [
+              [32m+[0m[0m "*",
+            ]
+          [32m+[0m[0m sid       = "EcrAuthorization"
+        }
+      [32m+[0m[0m statement {
+          [32m+[0m[0m actions   = [
+              [32m+[0m[0m "ecr:BatchCheckLayerAvailability",
+              [32m+[0m[0m "ecr:BatchGetImage",
+              [32m+[0m[0m "ecr:CompleteLayerUpload",
+              [32m+[0m[0m "ecr:GetDownloadUrlForLayer",
+              [32m+[0m[0m "ecr:InitiateLayerUpload",
+              [32m+[0m[0m "ecr:PutImage",
+              [32m+[0m[0m "ecr:UploadLayerPart",
+            ]
+          [32m+[0m[0m effect    = "Allow"
+          [32m+[0m[0m resources = [
+              [32m+[0m[0m (known after apply),
+              [32m+[0m[0m (known after apply),
+            ]
+          [32m+[0m[0m sid       = "EcrRepositoryAccess"
+        }
+    }
+
+[1m  # aws_iam_role_policy.github_actions_ecr[0][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_iam_role_policy" "github_actions_ecr" {
+        id          = "cloudpath-focusflow-dev-github-ecr:cloudpath-focusflow-dev-ecr-policy"
+        name        = "cloudpath-focusflow-dev-ecr-policy"
+      [33m~[0m[0m policy      = jsonencode(
+            {
+              [31m-[0m[0m Statement = [
+                  [31m-[0m[0m {
+                      [31m-[0m[0m Action   = "ecr:GetAuthorizationToken"
+                      [31m-[0m[0m Effect   = "Allow"
+                      [31m-[0m[0m Resource = "*"
+                      [31m-[0m[0m Sid      = "EcrAuthorization"
+                    },
+                  [31m-[0m[0m {
+                      [31m-[0m[0m Action   = [
+                          [31m-[0m[0m "ecr:UploadLayerPart",
+                          [31m-[0m[0m "ecr:PutImage",
+                          [31m-[0m[0m "ecr:InitiateLayerUpload",
+                          [31m-[0m[0m "ecr:GetDownloadUrlForLayer",
+                          [31m-[0m[0m "ecr:CompleteLayerUpload",
+                          [31m-[0m[0m "ecr:BatchGetImage",
+                          [31m-[0m[0m "ecr:BatchCheckLayerAvailability",
+                        ]
+                      [31m-[0m[0m Effect   = "Allow"
+                      [31m-[0m[0m Resource = "arn:aws:ecr:ap-south-1:797989098577:repository/cloudpath-focusflow-dev"
+                      [31m-[0m[0m Sid      = "EcrRepositoryAccess"
+                    },
+                ]
+              [31m-[0m[0m Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+        [90m# (2 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.api_ecr.aws_ecr_lifecycle_policy.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_ecr_lifecycle_policy" "this" {
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m policy      = jsonencode(
+            {
+              [32m+[0m[0m rules = [
+                  [32m+[0m[0m {
+                      [32m+[0m[0m action       = {
+                          [32m+[0m[0m type = "expire"
+                        }
+                      [32m+[0m[0m description  = "Remove excess untagged images"
+                      [32m+[0m[0m rulePriority = 1
+                      [32m+[0m[0m selection    = {
+                          [32m+[0m[0m countNumber = 10
+                          [32m+[0m[0m countType   = "imageCountMoreThan"
+                          [32m+[0m[0m tagStatus   = "untagged"
+                        }
+                    },
+                ]
+            }
+        )
+      [32m+[0m[0m registry_id = (known after apply)
+      [32m+[0m[0m repository  = "cloudpath-focusflow-api-dev"
+    }
+
+[1m  # module.api_ecr.aws_ecr_repository.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_ecr_repository" "this" {
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m force_delete         = false
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m image_tag_mutability = "IMMUTABLE"
+      [32m+[0m[0m name                 = "cloudpath-focusflow-api-dev"
+      [32m+[0m[0m registry_id          = (known after apply)
+      [32m+[0m[0m repository_url       = (known after apply)
+      [32m+[0m[0m tags_all             = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Owner"       = "kavindu nadeeshan"
+          [32m+[0m[0m "Project"     = "cloudpath-focusflow"
+        }
+
+      [32m+[0m[0m encryption_configuration {
+          [32m+[0m[0m encryption_type = "AES256"
+          [32m+[0m[0m kms_key         = (known after apply)
+        }
+
+      [32m+[0m[0m image_scanning_configuration {
+          [32m+[0m[0m scan_on_push = true
+        }
+    }
+
+[1m  # module.ecr.aws_ecr_lifecycle_policy.this[0m will be [1m[31mdestroyed[0m
+  # (because aws_ecr_lifecycle_policy.this is not in configuration)
+[0m  [31m-[0m[0m resource "aws_ecr_lifecycle_policy" "this" {
+      [31m-[0m[0m id          = "cloudpath-focusflow-dev" [90m-> null[0m[0m
+      [31m-[0m[0m policy      = jsonencode(
+            {
+              [31m-[0m[0m rules = [
+                  [31m-[0m[0m {
+                      [31m-[0m[0m action       = {
+                          [31m-[0m[0m type = "expire"
+                        }
+                      [31m-[0m[0m description  = "Remove excess untagged images"
+                      [31m-[0m[0m rulePriority = 1
+                      [31m-[0m[0m selection    = {
+                          [31m-[0m[0m countNumber = 10
+                          [31m-[0m[0m countType   = "imageCountMoreThan"
+                          [31m-[0m[0m tagStatus   = "untagged"
+                        }
+                    },
+                ]
+            }
+        ) [90m-> null[0m[0m
+      [31m-[0m[0m registry_id = "797989098577" [90m-> null[0m[0m
+      [31m-[0m[0m repository  = "cloudpath-focusflow-dev" [90m-> null[0m[0m
+    }
+
+[1m  # module.ecr.aws_ecr_repository.this[0m will be [1m[31mdestroyed[0m
+  # (because aws_ecr_repository.this is not in configuration)
+[0m  [31m-[0m[0m resource "aws_ecr_repository" "this" {
+      [31m-[0m[0m arn                  = "arn:aws:ecr:ap-south-1:797989098577:repository/cloudpath-focusflow-dev" [90m-> null[0m[0m
+      [31m-[0m[0m force_delete         = false [90m-> null[0m[0m
+      [31m-[0m[0m id                   = "cloudpath-focusflow-dev" [90m-> null[0m[0m
+      [31m-[0m[0m image_tag_mutability = "IMMUTABLE" [90m-> null[0m[0m
+      [31m-[0m[0m name                 = "cloudpath-focusflow-dev" [90m-> null[0m[0m
+      [31m-[0m[0m registry_id          = "797989098577" [90m-> null[0m[0m
+      [31m-[0m[0m repository_url       = "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-dev" [90m-> null[0m[0m
+      [31m-[0m[0m tags                 = {} [90m-> null[0m[0m
+      [31m-[0m[0m tags_all             = {
+          [31m-[0m[0m "Environment" = "dev"
+          [31m-[0m[0m "ManagedBy"   = "terraform"
+          [31m-[0m[0m "Owner"       = "kavindu nadeeshan"
+          [31m-[0m[0m "Project"     = "cloudpath-focusflow"
+        } [90m-> null[0m[0m
+
+      [31m-[0m[0m encryption_configuration {
+          [31m-[0m[0m encryption_type = "AES256" [90m-> null[0m[0m
+            [90m# (1 unchanged attribute hidden)[0m[0m
+        }
+
+      [31m-[0m[0m image_scanning_configuration {
+          [31m-[0m[0m scan_on_push = true [90m-> null[0m[0m
+        }
+    }
+
+[1m  # module.web_ecr.aws_ecr_lifecycle_policy.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_ecr_lifecycle_policy" "this" {
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m policy      = jsonencode(
+            {
+              [32m+[0m[0m rules = [
+                  [32m+[0m[0m {
+                      [32m+[0m[0m action       = {
+                          [32m+[0m[0m type = "expire"
+                        }
+                      [32m+[0m[0m description  = "Remove excess untagged images"
+                      [32m+[0m[0m rulePriority = 1
+                      [32m+[0m[0m selection    = {
+                          [32m+[0m[0m countNumber = 10
+                          [32m+[0m[0m countType   = "imageCountMoreThan"
+                          [32m+[0m[0m tagStatus   = "untagged"
+                        }
+                    },
+                ]
+            }
+        )
+      [32m+[0m[0m registry_id = (known after apply)
+      [32m+[0m[0m repository  = "cloudpath-focusflow-web-dev"
+    }
+
+[1m  # module.web_ecr.aws_ecr_repository.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_ecr_repository" "this" {
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m force_delete         = false
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m image_tag_mutability = "IMMUTABLE"
+      [32m+[0m[0m name                 = "cloudpath-focusflow-web-dev"
+      [32m+[0m[0m registry_id          = (known after apply)
+      [32m+[0m[0m repository_url       = (known after apply)
+      [32m+[0m[0m tags_all             = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Owner"       = "kavindu nadeeshan"
+          [32m+[0m[0m "Project"     = "cloudpath-focusflow"
+        }
+
+      [32m+[0m[0m encryption_configuration {
+          [32m+[0m[0m encryption_type = "AES256"
+          [32m+[0m[0m kms_key         = (known after apply)
+        }
+
+      [32m+[0m[0m image_scanning_configuration {
+          [32m+[0m[0m scan_on_push = true
+        }
+    }
+
+[1mPlan:[0m [0m4 to add, 1 to change, 2 to destroy.
+
+Changes to Outputs:
+  [32m+[0m[0m api_ecr_repository_arn    = (known after apply)
+  [32m+[0m[0m api_ecr_repository_name   = "cloudpath-focusflow-api-dev"
+  [32m+[0m[0m api_ecr_repository_url    = (known after apply)
+  [31m-[0m[0m ecr_repository_name       = "cloudpath-focusflow-dev" [90m-> null[0m[0m
+  [31m-[0m[0m ecr_repository_url        = "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-dev" [90m-> null[0m[0m
+  [32m+[0m[0m web_ecr_repository_arn    = (known after apply)
+  [32m+[0m[0m web_ecr_repository_name   = "cloudpath-focusflow-web-dev"
+  [32m+[0m[0m web_ecr_repository_url    = (known after apply)
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.

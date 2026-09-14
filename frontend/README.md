@@ -14,3 +14,31 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Full-stack ECR repositories
+
+The project uses two immutable ECR repositories:
+
+- `cloudpath-focusflow-api-dev`
+- `cloudpath-focusflow-web-dev`
+
+The API repository stores the Node.js/Express image.
+The web repository stores the React/Nginx image.
+
+Images are tagged with commit SHA values for release traceability and rollback.
+
+## Expected low-cost resources
+
+- Two ECR repositories.
+- ECR lifecycle policies.
+- CloudWatch log group with 7-day retention.
+- GitHub OIDC provider.
+- Least-privilege GitHub Actions role.
+
+## Excluded resources
+
+- EKS
+- EC2
+- NAT Gateway
+- RDS
+- Application Load Balancer

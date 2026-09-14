@@ -100,7 +100,8 @@ data "aws_iam_policy_document" "github_actions_ecr" {
     ]
 
     resources = [
-      module.ecr.repository_arn
+      module.api_ecr.repository_arn,
+      module.web_ecr.repository_arn
     ]
   }
 }
