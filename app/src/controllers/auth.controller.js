@@ -23,7 +23,8 @@ async function register(req, res, next) {
       });
       return res.status(503).json({
         success: false,
-        message: 'Database connection unavailable. Please ensure MongoDB is running.',
+        message:
+          'Database connection unavailable. Please ensure MongoDB is running.',
       });
     }
 
@@ -95,7 +96,8 @@ async function login(req, res, next) {
       });
       return res.status(503).json({
         success: false,
-        message: 'Database connection unavailable. Please ensure MongoDB is running.',
+        message:
+          'Database connection unavailable. Please ensure MongoDB is running.',
       });
     }
 

@@ -25,7 +25,10 @@ async function connectDB(uri) {
   });
 
   mongoose.connection.on('error', (err) => {
-    logger.error('MongoDB connection error', { error: err.message, stack: err.stack });
+    logger.error('MongoDB connection error', {
+      error: err.message,
+      stack: err.stack,
+    });
   });
 
   mongoose.connection.on('disconnected', () => {
@@ -45,4 +48,3 @@ module.exports = {
   connectDatabase: connectDB,
   disconnectDB,
 };
-

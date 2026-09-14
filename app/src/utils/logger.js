@@ -42,13 +42,9 @@ const logger = winston.createLogger({
   },
   transports: [
     new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        consoleFormat
-      ),
+      format: winston.format.combine(winston.format.colorize(), consoleFormat),
     }),
   ],
 });
 
 module.exports = logger;
-

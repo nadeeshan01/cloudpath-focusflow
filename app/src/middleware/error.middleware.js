@@ -10,15 +10,18 @@ function notFound(req, res) {
 function errorHandler(error, req, res, _next) {
   const statusCode = error.statusCode || error.status || 500;
   const method = req ? req.method : 'UNKNOWN';
-  const url = req ? (req.originalUrl || req.url || '') : '';
+  const url = req ? req.originalUrl || req.url || '' : '';
 
-  logger.error(`[${method}] ${url} - Status ${statusCode} - ${error.message || 'Application error'}`, {
-    event: 'application_error',
-    method,
-    url,
-    statusCode,
-    stack: error.stack,
-  });
+  logger.error(
+    `[${method}] ${url} - Status ${statusCode} - ${error.message || 'Application error'}`,
+    {
+      event: 'application_error',
+      method,
+      url,
+      statusCode,
+      stack: error.stack,
+    }
+  );
 
   if (error.name === 'ValidationError') {
     const messages = error.errors
@@ -40,7 +43,10 @@ function errorHandler(error, req, res, _next) {
   const isDev = (process.env.NODE_ENV || 'development') !== 'production';
   return res.status(statusCode).json({
     success: false,
-    message: statusCode < 500 || isDev ? (error.message || 'Internal server error') : 'Internal server error',
+    message:
+      statusCode < 500 || isDev
+        ? error.message || 'Internal server error'
+        : 'Internal server error',
   });
 }
 
@@ -48,4 +54,3 @@ module.exports = {
   notFound,
   errorHandler,
 };
-
