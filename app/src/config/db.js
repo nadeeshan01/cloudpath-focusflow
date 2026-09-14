@@ -10,14 +10,8 @@ async function connectDB(uri) {
   if (process.env.DNS_SERVERS) {
     try {
       dns.setServers(process.env.DNS_SERVERS.split(','));
-    } catch {
-      // Ignore if setServers fails
-    }
-  } else {
-    try {
-      dns.setServers(['8.8.8.8', '1.1.1.1']);
-    } catch {
-      // Ignore if setServers is not allowed
+    } catch (err) {
+      logger.warn('Failed to set custom DNS servers', { error: err.message });
     }
   }
 
@@ -31,7 +25,10 @@ async function connectDB(uri) {
   });
 
   mongoose.connection.on('error', (err) => {
-    logger.error('MongoDB connection error', { error: err.message });
+    logger.error('MongoDB connection error', {
+      error: err.message,
+      stack: err.stack,
+    });
   });
 
   mongoose.connection.on('disconnected', () => {

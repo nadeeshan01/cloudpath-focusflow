@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const { signAccessToken } = require('../utils/jwt');
 const logger = require('../utils/logger');
@@ -14,6 +15,19 @@ async function register(req, res, next) {
     }
 
     const cleanEmail = email.toLowerCase().trim();
+
+    const isTest = (process.env.NODE_ENV || '').trim() === 'test';
+    if (!isTest && mongoose.connection.readyState !== 1) {
+      logger.error('Registration failed: Database connection is not ready', {
+        readyState: mongoose.connection.readyState,
+      });
+      return res.status(503).json({
+        success: false,
+        message:
+          'Database connection unavailable. Please ensure MongoDB is running.',
+      });
+    }
+
     const existingUser = await User.findOne({ email: { $eq: cleanEmail } });
     if (existingUser) {
       return res.status(400).json({
@@ -36,13 +50,23 @@ async function register(req, res, next) {
       },
     });
   } catch (error) {
-    logger.error('Registration failed', { error: error.message });
+    logger.error(`Registration failed: ${error.message}`, {
+      stack: error.stack,
+      error,
+    });
 
     if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map((e) => e.message);
+      const messages = Object.values(error.errors || {}).map((e) => e.message);
       return res.status(400).json({
         success: false,
-        message: messages[0],
+        message: messages[0] || 'Validation failed',
+      });
+    }
+
+    if (error.code === 11000 || error.code === 11001) {
+      return res.status(400).json({
+        success: false,
+        message: 'User already exists with this email',
       });
     }
 
@@ -62,6 +86,18 @@ async function login(req, res, next) {
       return res.status(400).json({
         success: false,
         message: 'Invalid email format',
+      });
+    }
+
+    const isTest = (process.env.NODE_ENV || '').trim() === 'test';
+    if (!isTest && mongoose.connection.readyState !== 1) {
+      logger.error('Login failed: Database connection is not ready', {
+        readyState: mongoose.connection.readyState,
+      });
+      return res.status(503).json({
+        success: false,
+        message:
+          'Database connection unavailable. Please ensure MongoDB is running.',
       });
     }
 

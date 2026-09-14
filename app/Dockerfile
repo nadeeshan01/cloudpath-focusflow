@@ -22,8 +22,17 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-# Create non-root user
-RUN addgroup -S appgroup \
+# 1. Update OS packages (libcrypto3, libssl3 patches)
+# 2. Remove bundled npm, yarn & corepack CLI binaries to eliminate node-pkg vulnerabilities
+# 3. Create non-root user
+RUN apk update && apk upgrade --no-cache \
+    && rm -rf /usr/local/lib/node_modules/npm \
+              /usr/local/bin/npm \
+              /usr/local/bin/npx \
+              /opt/yarn* \
+              /usr/local/bin/yarn* \
+              /usr/local/bin/corepack \
+    && addgroup -S appgroup \
     && adduser -S appuser -G appgroup
 
 # Copy dependencies and source code with ownership pre-set

@@ -43,8 +43,26 @@ async function start() {
 
     process.on('SIGTERM', () => shutdown('SIGTERM'));
     process.on('SIGINT', () => shutdown('SIGINT'));
+
+    process.on('unhandledRejection', (reason) => {
+      logger.error('Unhandled Promise Rejection', {
+        error: reason instanceof Error ? reason.message : String(reason),
+        stack: reason instanceof Error ? reason.stack : undefined,
+      });
+    });
+
+    process.on('uncaughtException', (error) => {
+      logger.error('Uncaught Exception', {
+        error: error.message,
+        stack: error.stack,
+      });
+      process.exit(1);
+    });
   } catch (error) {
-    logger.error('Failed to start server', { error: error.message });
+    logger.error('Failed to start server', {
+      error: error.message,
+      stack: error.stack,
+    });
     process.exit(1);
   }
 }
