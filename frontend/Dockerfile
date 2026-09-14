@@ -13,7 +13,6 @@ RUN npm config set fetch-retries 5 \
 COPY . .
 
 ARG VITE_API_BASE_URL=/api/v1
-
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 RUN npm run build
@@ -21,7 +20,9 @@ RUN npm run build
 
 FROM nginx:1.27-alpine AS runtime
 
-RUN addgroup -S webgroup \
+# Upgrade all Alpine packages to fix vulnerabilities (libcrypto3, libssl3, libxml2, musl, zlib, etc.)
+RUN apk update && apk upgrade --no-cache \
+    && addgroup -S webgroup \
     && adduser -S webuser -G webgroup
 
 COPY --chown=webuser:webgroup --from=build /app/dist /usr/share/nginx/html
