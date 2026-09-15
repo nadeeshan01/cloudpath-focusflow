@@ -24,4 +24,4 @@ resources:
 # Images (can be used to override image tags)
 images:
   - name: focusflow-api
-    newTag: "0.1.0"
+    newTag: "1.0.0"

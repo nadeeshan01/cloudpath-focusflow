@@ -1,7 +1,3 @@
-# ⚠️ NetworkPolicy requires CNI with network policy support
-# Kind's default CNI (kindnet) does NOT enforce NetworkPolicy
-# This is included for production-readiness, but won't be enforced locally
-
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -20,7 +16,7 @@ spec:
   
   # Ingress rules (incoming traffic)
   ingress:
-    # Allow from anywhere in cloudpath namespace
+    # Allow traffic from cloudpath namespace on port 5000
     - from:
         - namespaceSelector:
             matchLabels:
@@ -31,7 +27,7 @@ spec:
   
   # Egress rules (outgoing traffic)
   egress:
-    # Allow DNS
+    # 1. Allow DNS (UDP & TCP 53)
     - to:
         - namespaceSelector:
             matchLabels:
@@ -39,10 +35,15 @@ spec:
       ports:
         - protocol: UDP
           port: 53
+        - protocol: TCP
+          port: 53
     
-    # Allow external HTTPS (for npm, etc.)
-    - to:
-        - namespaceSelector: {}
-      ports:
+    # 2. Allow HTTPS (Port 443)
+    - ports:
         - protocol: TCP
           port: 443
+
+    # 3. Allow MongoDB Atlas (Port 27017)
+    - ports:
+        - protocol: TCP
+          port: 27017

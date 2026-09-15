@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: focusflow-api
     app.kubernetes.io/part-of: cloudpath-focusflow
-    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/component: backend
     app.kubernetes.io/managed-by: kubectl
 spec:
@@ -34,7 +34,7 @@ spec:
       labels:
         app.kubernetes.io/name: focusflow-api
         app.kubernetes.io/part-of: cloudpath-focusflow
-        app.kubernetes.io/version: "0.1.0"
+        app.kubernetes.io/version: "1.0.0"
     spec:
       # Security: Don't auto-mount Kubernetes API token
       automountServiceAccountToken: false
@@ -51,8 +51,8 @@ spec:
       # Container definition
       containers:
         - name: focusflow-api
-          image: focusflow-api:0.1.0
-          imagePullPolicy: IfNotPresent  # Use local image (from Kind load)
+          image: focusflow-api:1.0.0
+          imagePullPolicy: IfNotPresent  # Use local image loaded into Kind
           
           # Container port
           ports:
@@ -70,11 +70,11 @@ spec:
           # Resource limits (VERY IMPORTANT)
           resources:
             requests:
-              cpu: 100m        # Minimum CPU (0.1 CPU cores)
-              memory: 128Mi    # Minimum RAM
+              cpu: 100m         # Minimum CPU (0.1 CPU cores)
+              memory: 128Mi     # Minimum RAM
             limits:
-              cpu: 250m        # Maximum CPU (0.25 CPU cores)
-              memory: 256Mi    # Maximum RAM
+              cpu: 250m         # Maximum CPU (0.25 CPU cores)
+              memory: 256Mi     # Maximum RAM
           
           # Container-level security
           securityContext:
