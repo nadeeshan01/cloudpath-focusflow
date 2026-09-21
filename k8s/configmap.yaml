@@ -12,9 +12,12 @@ data:
   NODE_ENV: production
   APP_NAME: focusflow-api
   APP_VERSION: "1.0.0"
-  RELEASE_MESSAGE: "FocusFlow release version 1"
+  RELEASE_MESSAGE: "FocusFlow full-stack release v1"
   LOG_LEVEL: info
   
   # Server settings
   PORT: "5000"
   HOST: "0.0.0.0"
+
+  # CORS settings (Meka aluthen add karanna)
+  CORS_ORIGIN: "http://localhost:8080"

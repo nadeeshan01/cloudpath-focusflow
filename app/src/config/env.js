@@ -47,4 +47,6 @@ module.exports = {
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean),
+
+  releaseMessage: process.env.RELEASE_MESSAGE || 'FocusFlow initial release',
 };
