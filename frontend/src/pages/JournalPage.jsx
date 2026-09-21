@@ -33,7 +33,9 @@ export default function JournalPage() {
   }
 
   useEffect(() => {
-    loadJournalEntries();
+    (async () => {
+      await loadJournalEntries();
+    })();
   }, []);
 
   const filteredEntries = useMemo(() => {

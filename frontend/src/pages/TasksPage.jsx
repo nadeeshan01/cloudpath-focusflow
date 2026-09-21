@@ -39,7 +39,9 @@ export default function TasksPage() {
   }
 
   useEffect(() => {
-    loadTasks();
+    (async () => {
+      await loadTasks();
+    })();
   }, []);
 
   const filteredTasks = useMemo(() => {
