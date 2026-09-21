@@ -29,6 +29,7 @@ docker build \
 echo "Scanning API image"
 
 trivy image \
+  --timeout 30m \
   --severity HIGH,CRITICAL \
   --ignore-unfixed \
   "focusflow-api:${API_TAG}"
@@ -36,6 +37,7 @@ trivy image \
 echo "Scanning frontend image"
 
 trivy image \
+  --timeout 30m \
   --severity HIGH,CRITICAL \
   --ignore-unfixed \
   "focusflow-web:${WEB_TAG}"
