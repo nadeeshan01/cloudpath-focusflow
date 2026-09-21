@@ -92,7 +92,7 @@ app.get('/api/v1/version', (req, res) => {
     data: {
       service: env.appName,
       version: env.appVersion,
-      apiVersion: '1.1.0',
+      apiVersion: '1.0.0',
       environment: env.nodeEnv,
     },
   });
