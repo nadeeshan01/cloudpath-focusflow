@@ -29,6 +29,9 @@ coverage/
 dist/
 build/
 
+# Kustomize rendered output (generated artifact – never commit)
+rendered-*.yaml
+
 # Terraform
 *.tfstate
 *.tfstate.*
