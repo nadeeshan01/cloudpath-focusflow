@@ -1,0 +1,8 @@
+namespace/cloudpath configured (server dry run)
+configmap/focusflow-config created (server dry run)
+service/focusflow-api created (server dry run)
+service/focusflow-web created (server dry run)
+deployment.apps/focusflow-api created (server dry run)
+deployment.apps/focusflow-web created (server dry run)
+poddisruptionbudget.policy/focusflow-api-pdb created (server dry run)
+networkpolicy.networking.k8s.io/focusflow-api-netpol created (server dry run)

@@ -1,0 +1,6 @@
+﻿aws_region         = "ap-south-1"
+owner              = "Nadeeshan"
+cluster_name       = "cloudpath-focusflow-final"
+delete_after       = "2026-09-25"
+node_instance_type = "t3.small"
+kubernetes_version = "REPLACE_WITH_SUPPORTED_EKS_VERSION"

@@ -1,0 +1,5 @@
+REPOSITORY                                                                  TAG       IMAGE ID       SIZE
+797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev   18cbf70   f642db51e586   98MB
+797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev   18cbf70   99bb87db3781   290MB
+797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev   1.0.0     a1020b689326   293MB
+797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev   1.0.0     df56a5cf3cfd   98.1MB

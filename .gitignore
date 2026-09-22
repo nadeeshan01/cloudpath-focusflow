@@ -36,6 +36,12 @@ build/
 *.dot
 dependency-graph.dot
 
+# Terraform ignored files
+terraform/eks-demo/.terraform/
+terraform/eks-demo/terraform.tfstate
+terraform/eks-demo/terraform.tfstate.*
+terraform/eks-demo/terraform.tfvars
+
 # Secrets
 *.pem
 *.key

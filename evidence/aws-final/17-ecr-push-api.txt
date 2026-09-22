@@ -1,0 +1,60 @@
+The push refers to repository [797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev]
+b659fd64b03b: Waiting
+e2de96513ba9: Waiting
+b6039710153a: Waiting
+1ee978666937: Waiting
+208b5340eff2: Waiting
+ec179e2ee072: Waiting
+74863224b120: Waiting
+534138267b95: Waiting
+65213f1a3de8: Waiting
+1a3a899a8294: Waiting
+1ee978666937: Waiting
+208b5340eff2: Waiting
+ec179e2ee072: Waiting
+74863224b120: Waiting
+534138267b95: Waiting
+65213f1a3de8: Waiting
+1a3a899a8294: Waiting
+b659fd64b03b: Waiting
+e2de96513ba9: Waiting
+b6039710153a: Waiting
+534138267b95: Waiting
+65213f1a3de8: Waiting
+1a3a899a8294: Waiting
+b659fd64b03b: Waiting
+e2de96513ba9: Waiting
+b6039710153a: Waiting
+1ee978666937: Waiting
+208b5340eff2: Waiting
+ec179e2ee072: Waiting
+74863224b120: Waiting
+1ee978666937: Waiting
+208b5340eff2: Waiting
+ec179e2ee072: Waiting
+74863224b120: Waiting
+534138267b95: Waiting
+65213f1a3de8: Waiting
+1a3a899a8294: Waiting
+b659fd64b03b: Waiting
+e2de96513ba9: Waiting
+b6039710153a: Waiting
+65213f1a3de8: Waiting
+1a3a899a8294: Waiting
+b659fd64b03b: Waiting
+e2de96513ba9: Waiting
+b6039710153a: Layer already exists
+1ee978666937: Layer already exists
+208b5340eff2: Waiting
+ec179e2ee072: Waiting
+74863224b120: Waiting
+534138267b95: Waiting
+208b5340eff2: Layer already exists
+ec179e2ee072: Layer already exists
+74863224b120: Layer already exists
+534138267b95: Waiting
+65213f1a3de8: Layer already exists
+1a3a899a8294: Layer already exists
+b659fd64b03b: Layer already exists
+e2de96513ba9: Layer already exists
+534138267b95: Pushed
