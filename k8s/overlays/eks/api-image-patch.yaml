@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: focusflow-api
-          image: 797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:18cbf70
+          image: 797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:f252371
           imagePullPolicy: IfNotPresent
           resources:
             requests:

@@ -1,0 +1,24 @@
+LAST SEEN   TYPE      REASON              OBJECT                                MESSAGE
+13m         Warning   Unhealthy           pod/focusflow-web-5f49fc9668-sz9wq    Readiness probe failed: Get "http://10.30.1.128:80/": dial tcp 10.30.1.128:80: connect: connection refused
+13m         Normal    Killing             pod/focusflow-web-5f49fc9668-sz9wq    Container focusflow-web failed liveness probe, will be restarted
+7m58s       Warning   BackOff             pod/focusflow-web-5f49fc9668-sz9wq    Back-off restarting failed container focusflow-web in pod focusflow-web-5f49fc9668-sz9wq_cloudpath(43e049b9-63b8-44eb-9c68-8f5639f35a78)
+7m39s       Normal    Pulled              pod/focusflow-web-5f49fc9668-sz9wq    Container image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70" already present on machine and can be accessed by the pod
+4m7s        Normal    Scheduled           pod/focusflow-web-6f5d5d575c-kwvvz    Successfully assigned cloudpath/focusflow-web-6f5d5d575c-kwvvz to ip-10-30-1-165.ap-south-1.compute.internal
+4m7s        Normal    SuccessfulCreate    replicaset/focusflow-web-6f5d5d575c   Created pod: focusflow-web-6f5d5d575c-kwvvz
+4m7s        Normal    ScalingReplicaSet   deployment/focusflow-web              Scaled up replica set focusflow-web-6f5d5d575c from 0 to 1
+4m7s        Normal    SuccessfulCreate    replicaset/focusflow-api-86b4ddcd5    Created pod: focusflow-api-86b4ddcd5-849tl
+4m7s        Normal    ScalingReplicaSet   deployment/focusflow-api              Scaled up replica set focusflow-api-86b4ddcd5 from 0 to 1
+4m7s        Normal    Scheduled           pod/focusflow-api-86b4ddcd5-849tl     Successfully assigned cloudpath/focusflow-api-86b4ddcd5-849tl to ip-10-30-1-165.ap-south-1.compute.internal
+4m6s        Normal    Pulled              pod/focusflow-api-86b4ddcd5-849tl     Successfully pulled image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:f252371" in 199ms (199ms including waiting). Image size: 69809689 bytes.
+4m6s        Normal    Pulling             pod/focusflow-api-86b4ddcd5-849tl     Pulling image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:f252371"
+4m6s        Normal    Created             pod/focusflow-api-86b4ddcd5-849tl     Container created
+4m6s        Normal    Started             pod/focusflow-api-86b4ddcd5-849tl     Container started
+4m6s        Normal    Created             pod/focusflow-web-6f5d5d575c-kwvvz    Container created
+4m6s        Normal    Pulling             pod/focusflow-web-6f5d5d575c-kwvvz    Pulling image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:f252371"
+4m6s        Normal    Pulled              pod/focusflow-web-6f5d5d575c-kwvvz    Successfully pulled image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:f252371" in 828ms (828ms including waiting). Image size: 29027359 bytes.
+4m5s        Normal    Started             pod/focusflow-web-6f5d5d575c-kwvvz    Container started
+4m1s        Normal    ScalingReplicaSet   deployment/focusflow-api              Scaled down replica set focusflow-api-69657b9b96 from 1 to 0
+4m1s        Normal    Killing             pod/focusflow-api-69657b9b96-kgrmb    Stopping container focusflow-api
+4m1s        Normal    SuccessfulDelete    replicaset/focusflow-api-69657b9b96   Deleted pod: focusflow-api-69657b9b96-kgrmb
+3m55s       Normal    SuccessfulDelete    replicaset/focusflow-web-5f49fc9668   Deleted pod: focusflow-web-5f49fc9668-sz9wq
+3m55s       Normal    ScalingReplicaSet   deployment/focusflow-web              Scaled down replica set focusflow-web-5f49fc9668 from 1 to 0

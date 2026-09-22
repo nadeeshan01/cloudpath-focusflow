@@ -1,8 +1,8 @@
 namespace/cloudpath configured
-configmap/focusflow-config created
-service/focusflow-api created
-service/focusflow-web created
-deployment.apps/focusflow-api created
-deployment.apps/focusflow-web created
-poddisruptionbudget.policy/focusflow-api-pdb created
-networkpolicy.networking.k8s.io/focusflow-api-netpol created
+configmap/focusflow-config unchanged
+service/focusflow-api unchanged
+service/focusflow-web unchanged
+deployment.apps/focusflow-api configured
+deployment.apps/focusflow-web configured
+poddisruptionbudget.policy/focusflow-api-pdb configured
+networkpolicy.networking.k8s.io/focusflow-api-netpol unchanged

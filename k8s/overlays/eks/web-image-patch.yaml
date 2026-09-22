@@ -1,4 +1,4 @@
-﻿apiVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: focusflow-web
@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: focusflow-web
-          image: 797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70
+          image: 797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:f252371-fix
           imagePullPolicy: IfNotPresent
           resources:
             requests:

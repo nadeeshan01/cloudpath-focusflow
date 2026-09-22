@@ -1,2 +1,2 @@
-118:        image: 797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:18cbf70
-214:        image: 797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70
+118:        image: 797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:f252371
+214:        image: 797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:f252371
