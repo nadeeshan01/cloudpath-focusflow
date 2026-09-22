@@ -1,0 +1,19 @@
+LAST SEEN   TYPE      REASON              OBJECT                                MESSAGE
+4m59s       Normal    ScalingReplicaSet   deployment/focusflow-web              Scaled up replica set focusflow-web-5f49fc9668 from 0 to 1
+4m59s       Normal    SuccessfulCreate    replicaset/focusflow-web-5f49fc9668   Created pod: focusflow-web-5f49fc9668-sz9wq
+4m59s       Normal    Scheduled           pod/focusflow-api-69657b9b96-kgrmb    Successfully assigned cloudpath/focusflow-api-69657b9b96-kgrmb to ip-10-30-1-165.ap-south-1.compute.internal
+4m59s       Normal    SuccessfulCreate    replicaset/focusflow-api-69657b9b96   Created pod: focusflow-api-69657b9b96-kgrmb
+4m59s       Normal    ScalingReplicaSet   deployment/focusflow-api              Scaled up replica set focusflow-api-69657b9b96 from 0 to 1
+4m59s       Normal    Scheduled           pod/focusflow-web-5f49fc9668-sz9wq    Successfully assigned cloudpath/focusflow-web-5f49fc9668-sz9wq to ip-10-30-1-165.ap-south-1.compute.internal
+4m58s       Normal    Pulling             pod/focusflow-api-69657b9b96-kgrmb    Pulling image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:18cbf70"
+4m58s       Normal    Pulling             pod/focusflow-web-5f49fc9668-sz9wq    Pulling image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70"
+4m56s       Normal    Pulled              pod/focusflow-web-5f49fc9668-sz9wq    Successfully pulled image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70" in 2.724s (2.724s including waiting). Image size: 29066580 bytes.
+4m53s       Normal    Started             pod/focusflow-api-69657b9b96-kgrmb    Container started
+4m53s       Normal    Created             pod/focusflow-api-69657b9b96-kgrmb    Container created
+4m53s       Normal    Pulled              pod/focusflow-api-69657b9b96-kgrmb    Successfully pulled image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:18cbf70" in 5.095s (5.095s including waiting). Image size: 69809689 bytes.
+3m19s       Warning   Unhealthy           pod/focusflow-web-5f49fc9668-sz9wq    Liveness probe failed: Get "http://10.30.1.128:80/": dial tcp 10.30.1.128:80: connect: connection refused
+3m13s       Warning   Unhealthy           pod/focusflow-web-5f49fc9668-sz9wq    Readiness probe failed: Get "http://10.30.1.128:80/": dial tcp 10.30.1.128:80: connect: connection refused
+99s         Normal    Created             pod/focusflow-web-5f49fc9668-sz9wq    Container created
+99s         Normal    Started             pod/focusflow-web-5f49fc9668-sz9wq    Container started
+99s         Normal    Pulled              pod/focusflow-web-5f49fc9668-sz9wq    Container image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70" already present on machine and can be accessed by the pod
+59s         Normal    Killing             pod/focusflow-web-5f49fc9668-sz9wq    Container focusflow-web failed liveness probe, will be restarted

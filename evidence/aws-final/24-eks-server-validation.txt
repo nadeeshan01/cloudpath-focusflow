@@ -1,0 +1,8 @@
+namespace/cloudpath configured (server dry run)
+configmap/focusflow-config unchanged (server dry run)
+service/focusflow-api unchanged (server dry run)
+service/focusflow-web unchanged (server dry run)
+deployment.apps/focusflow-api configured (server dry run)
+deployment.apps/focusflow-web configured (server dry run)
+poddisruptionbudget.policy/focusflow-api-pdb configured (server dry run)
+networkpolicy.networking.k8s.io/focusflow-api-netpol unchanged (server dry run)

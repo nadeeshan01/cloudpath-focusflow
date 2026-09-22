@@ -1,0 +1,99 @@
+The push refers to repository [797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev]
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+db4154124672: Waiting
+b464cfdf2a63: Waiting
+81bd8ed7ec67: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+9ed4faf6f88c: Waiting
+3a4a33c178f6: Waiting
+197eb75867ef: Waiting
+39c2ddfd6010: Waiting
+82c1076b6dd2: Waiting
+3c0ce42561cf: Waiting
+9ed4faf6f88c: Waiting
+3a4a33c178f6: Waiting
+197eb75867ef: Waiting
+39c2ddfd6010: Waiting
+82c1076b6dd2: Waiting
+3c0ce42561cf: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+db4154124672: Waiting
+b464cfdf2a63: Waiting
+81bd8ed7ec67: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+197eb75867ef: Waiting
+39c2ddfd6010: Waiting
+82c1076b6dd2: Waiting
+3c0ce42561cf: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+db4154124672: Waiting
+b464cfdf2a63: Waiting
+81bd8ed7ec67: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+9ed4faf6f88c: Waiting
+3a4a33c178f6: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+db4154124672: Waiting
+b464cfdf2a63: Waiting
+81bd8ed7ec67: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+9ed4faf6f88c: Waiting
+3a4a33c178f6: Waiting
+197eb75867ef: Waiting
+39c2ddfd6010: Waiting
+82c1076b6dd2: Waiting
+3c0ce42561cf: Waiting
+81bd8ed7ec67: Waiting
+f18232174bc9: Waiting
+34a64644b756: Waiting
+9ed4faf6f88c: Waiting
+3a4a33c178f6: Waiting
+197eb75867ef: Waiting
+39c2ddfd6010: Waiting
+82c1076b6dd2: Waiting
+3c0ce42561cf: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Waiting
+db4154124672: Waiting
+b464cfdf2a63: Waiting
+3c0ce42561cf: Waiting
+d7e507024086: Waiting
+61ca4f733c80: Layer already exists
+db4154124672: Waiting
+b464cfdf2a63: Waiting
+81bd8ed7ec67: Layer already exists
+f18232174bc9: Waiting
+34a64644b756: Layer already exists
+9ed4faf6f88c: Waiting
+3a4a33c178f6: Waiting
+197eb75867ef: Layer already exists
+39c2ddfd6010: Layer already exists
+82c1076b6dd2: Waiting
+f18232174bc9: Layer already exists
+9ed4faf6f88c: Waiting
+3a4a33c178f6: Waiting
+82c1076b6dd2: Waiting
+3c0ce42561cf: Waiting
+d7e507024086: Layer already exists
+db4154124672: Waiting
+b464cfdf2a63: Layer already exists
+db4154124672: Waiting
+9ed4faf6f88c: Waiting
+3a4a33c178f6: Waiting
+82c1076b6dd2: Waiting
+db4154124672: Waiting
+3a4a33c178f6: Waiting
+3c0ce42561cf: Pushed
+82c1076b6dd2: Pushed
+db4154124672: Pushed
+3a4a33c178f6: Pushed
+9ed4faf6f88c: Pushed
+18cbf70: digest: sha256:6b0e579d28a04f08bbcde24e0039a5817ce45625db9f346b2f7f4821f1c6305d size: 856

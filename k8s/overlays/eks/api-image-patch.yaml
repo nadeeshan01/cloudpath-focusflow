@@ -1,0 +1,19 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: focusflow-api
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: focusflow-api
+          image: 797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:f252371
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi

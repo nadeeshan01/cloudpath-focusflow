@@ -1,0 +1,5 @@
+AWS_REGION=ap-south-1
+AWS_ACCOUNT_ID=797989098577
+IMAGE_TAG=f252371
+API_IMAGE=797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev:f252371
+WEB_IMAGE=797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:f252371

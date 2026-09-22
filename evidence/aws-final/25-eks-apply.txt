@@ -1,0 +1,8 @@
+namespace/cloudpath configured
+configmap/focusflow-config unchanged
+service/focusflow-api unchanged
+service/focusflow-web unchanged
+deployment.apps/focusflow-api configured
+deployment.apps/focusflow-web configured
+poddisruptionbudget.policy/focusflow-api-pdb configured
+networkpolicy.networking.k8s.io/focusflow-api-netpol unchanged
