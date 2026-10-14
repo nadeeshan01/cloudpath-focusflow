@@ -1,0 +1,43 @@
+---
+name: CodeQL
+
+'on':
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+  schedule:
+    - cron: "15 3 * * 1"  # Every Monday at 3:15 AM
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: Analyze JavaScript
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Get your code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up CodeQL
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript  # Tell CodeQL we're using JavaScript
+
+      # Step 3: Let CodeQL analyze your code automatically
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      # Step 4: Run the analysis
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3

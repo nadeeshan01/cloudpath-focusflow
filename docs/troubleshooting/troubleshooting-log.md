@@ -1,0 +1,9 @@
+# Troubleshooting Log
+
+| ID     | Date       | Issue                               | Detection                                 | Root Cause                                      | Resolution                                                 | Evidence                         |
+| ------ | ---------- | ----------------------------------- | ----------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------- | -------------------------------- |
+| TS-001 | 2026-09-07 | Deployment selector immutable error | `kubectl apply` error                     | Full YAML changed Kustomize-managed selector    | Used strategic merge patch instead of full apply           | Week 6 terminal output           |
+| TS-002 | 2026-09-07 | Health probe failure                | Pods `0/1`, events show HTTP 404          | Probe path was `/wrong-health-path`             | Applied `fix-probe.yaml` with `/health`                    | Week 6 failure/recovery evidence |
+| TS-003 | 2026-09-07 | Rollout rollback remained pending   | `kubectl rollout status`                  | Apply/Kustomize state and patch history differed | Restored approved probe configuration using targeted patch | Week 6 recovery output           |
+| TS-004 | 2026-09-07 | ECR repository not found            | AWS CLI `RepositoryNotFoundException`     | AWS resources were previously destroyed         | Recreated resources with Terraform                         | Week 6 AWS evidence              |
+| TS-005 | 2026-09-07 | Empty AWS region variable           | ECR endpoint showed `ecr..amazonaws.com` | `AWS_REGION` was not exported                   | Exported correct region and verified variables             | Terminal command output          |

@@ -1,0 +1,105 @@
+LAST SEEN   TYPE      REASON                   OBJECT                                MESSAGE
+21h         Normal    Scheduled                pod/focusflow-api-84855665b7-4gnxd    Successfully assigned cloudpath/focusflow-api-84855665b7-4gnxd to cloudpath-local-control-plane
+21h         Normal    Scheduled                pod/focusflow-api-84855665b7-6zq7v    Successfully assigned cloudpath/focusflow-api-84855665b7-6zq7v to cloudpath-local-control-plane
+102s        Normal    Scheduled                pod/focusflow-api-59887588b7-bdcvf    Successfully assigned cloudpath/focusflow-api-59887588b7-bdcvf to cloudpath-local-control-plane
+21h         Normal    Scheduled                pod/focusflow-api-84855665b7-gm9jx    Successfully assigned cloudpath/focusflow-api-84855665b7-gm9jx to cloudpath-local-control-plane
+21h         Normal    Scheduled                pod/focusflow-api-68cd46f66c-jzpps    Successfully assigned cloudpath/focusflow-api-68cd46f66c-jzpps to cloudpath-local-control-plane
+21h         Normal    Scheduled                pod/focusflow-api-84855665b7-ss8rb    Successfully assigned cloudpath/focusflow-api-84855665b7-ss8rb to cloudpath-local-control-plane
+21h         Normal    Scheduled                pod/focusflow-api-68cd46f66c-2cnhc    Successfully assigned cloudpath/focusflow-api-68cd46f66c-2cnhc to cloudpath-local-control-plane
+3m14s       Normal    Scheduled                pod/focusflow-api-5c99c5f649-55w8j    Successfully assigned cloudpath/focusflow-api-5c99c5f649-55w8j to cloudpath-local-control-plane
+21h         Normal    Scheduled                pod/focusflow-api-68cd46f66c-dxl44    Successfully assigned cloudpath/focusflow-api-68cd46f66c-dxl44 to cloudpath-local-control-plane
+21h         Normal    Scheduled                pod/focusflow-api-68cd46f66c-55ppw    Successfully assigned cloudpath/focusflow-api-68cd46f66c-55ppw to cloudpath-local-control-plane
+21h         Normal    SandboxChanged           pod/focusflow-api-c876f9779-2nfks     Pod sandbox changed, it will be killed and re-created.
+21h         Normal    Pulled                   pod/focusflow-api-c876f9779-xczhx     Container image "focusflow-api:0.1.0" already present on machine
+21h         Normal    SandboxChanged           pod/focusflow-api-c876f9779-xczhx     Pod sandbox changed, it will be killed and re-created.
+21h         Normal    Pulled                   pod/focusflow-api-c876f9779-2nfks     Container image "focusflow-api:0.1.0" already present on machine
+21h         Normal    Created                  pod/focusflow-api-c876f9779-2nfks     Created container focusflow-api
+21h         Normal    Created                  pod/focusflow-api-c876f9779-xczhx     Created container focusflow-api
+21h         Normal    Started                  pod/focusflow-api-c876f9779-2nfks     Started container focusflow-api
+21h         Normal    Started                  pod/focusflow-api-c876f9779-xczhx     Started container focusflow-api
+21h         Normal    Pulled                   pod/focusflow-api-68cd46f66c-2cnhc    Container image "focusflow-api:1.0.0" already present on machine
+21h         Normal    Created                  pod/focusflow-api-68cd46f66c-2cnhc    Created container focusflow-api
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled up replica set focusflow-api-68cd46f66c to 1
+21h         Normal    SuccessfulCreate         replicaset/focusflow-api-68cd46f66c   Created pod: focusflow-api-68cd46f66c-2cnhc
+21h         Normal    Started                  pod/focusflow-api-68cd46f66c-2cnhc    Started container focusflow-api
+21h         Normal    SuccessfulDelete         replicaset/focusflow-api-c876f9779    Deleted pod: focusflow-api-c876f9779-2nfks
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled down replica set focusflow-api-c876f9779 to 1 from 2
+21h         Normal    Killing                  pod/focusflow-api-c876f9779-2nfks     Stopping container focusflow-api
+21h         Normal    SuccessfulCreate         replicaset/focusflow-api-68cd46f66c   Created pod: focusflow-api-68cd46f66c-55ppw
+21h         Normal    Started                  pod/focusflow-api-68cd46f66c-55ppw    Started container focusflow-api
+21h         Normal    Created                  pod/focusflow-api-68cd46f66c-55ppw    Created container focusflow-api
+21h         Normal    Pulled                   pod/focusflow-api-68cd46f66c-55ppw    Container image "focusflow-api:1.0.0" already present on machine
+21h         Normal    Killing                  pod/focusflow-api-c876f9779-xczhx     Stopping container focusflow-api
+21h         Normal    SuccessfulDelete         replicaset/focusflow-api-c876f9779    Deleted pod: focusflow-api-c876f9779-xczhx
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled down replica set focusflow-api-c876f9779 to 0 from 1
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled up replica set focusflow-api-84855665b7 to 1
+21h         Normal    SuccessfulCreate         replicaset/focusflow-api-84855665b7   Created pod: focusflow-api-84855665b7-4gnxd
+21h         Normal    Started                  pod/focusflow-api-84855665b7-4gnxd    Started container focusflow-api
+21h         Normal    Created                  pod/focusflow-api-84855665b7-4gnxd    Created container focusflow-api
+21h         Normal    Pulled                   pod/focusflow-api-84855665b7-4gnxd    Container image "focusflow-api:1.0.0" already present on machine
+21h         Normal    SuccessfulCreate         replicaset/focusflow-api-84855665b7   Created pod: focusflow-api-84855665b7-6zq7v
+21h         Normal    Killing                  pod/focusflow-api-68cd46f66c-2cnhc    Stopping container focusflow-api
+21h         Normal    SuccessfulDelete         replicaset/focusflow-api-68cd46f66c   Deleted pod: focusflow-api-68cd46f66c-2cnhc
+21h         Normal    Started                  pod/focusflow-api-84855665b7-6zq7v    Started container focusflow-api
+21h         Normal    Created                  pod/focusflow-api-84855665b7-6zq7v    Created container focusflow-api
+21h         Normal    Pulled                   pod/focusflow-api-84855665b7-6zq7v    Container image "focusflow-api:1.0.0" already present on machine
+21h         Normal    SuccessfulDelete         replicaset/focusflow-api-68cd46f66c   Deleted pod: focusflow-api-68cd46f66c-55ppw
+21h         Normal    Killing                  pod/focusflow-api-68cd46f66c-55ppw    Stopping container focusflow-api
+21h         Normal    SuccessfulCreate         replicaset/focusflow-api-68cd46f66c   Created pod: focusflow-api-68cd46f66c-dxl44
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled up replica set focusflow-api-68cd46f66c to 1 from 0
+21h         Normal    Created                  pod/focusflow-api-68cd46f66c-dxl44    Created container focusflow-api
+21h         Normal    Pulled                   pod/focusflow-api-68cd46f66c-dxl44    Container image "focusflow-api:1.0.0" already present on machine
+21h         Normal    Started                  pod/focusflow-api-68cd46f66c-dxl44    Started container focusflow-api
+21h         Normal    Pulled                   pod/focusflow-api-68cd46f66c-jzpps    Container image "focusflow-api:1.0.0" already present on machine
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled up replica set focusflow-api-68cd46f66c to 2 from 1
+21h         Normal    Killing                  pod/focusflow-api-84855665b7-6zq7v    Stopping container focusflow-api
+21h         Normal    Started                  pod/focusflow-api-68cd46f66c-jzpps    Started container focusflow-api
+21h         Normal    SuccessfulDelete         replicaset/focusflow-api-84855665b7   Deleted pod: focusflow-api-84855665b7-6zq7v
+21h         Normal    SuccessfulCreate         replicaset/focusflow-api-68cd46f66c   Created pod: focusflow-api-68cd46f66c-jzpps
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled down replica set focusflow-api-84855665b7 to 1 from 2
+21h         Normal    Created                  pod/focusflow-api-68cd46f66c-jzpps    Created container focusflow-api
+21h         Normal    Killing                  pod/focusflow-api-84855665b7-4gnxd    Stopping container focusflow-api
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled down replica set focusflow-api-84855665b7 to 0 from 1
+21h         Normal    SuccessfulDelete         replicaset/focusflow-api-84855665b7   Deleted pod: focusflow-api-84855665b7-4gnxd
+21h         Normal    Created                  pod/focusflow-api-84855665b7-gm9jx    Created container focusflow-api
+21h         Normal    SuccessfulCreate         replicaset/focusflow-api-84855665b7   Created pod: focusflow-api-84855665b7-gm9jx
+21h         Normal    Pulled                   pod/focusflow-api-84855665b7-gm9jx    Container image "focusflow-api:1.0.0" already present on machine
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled up replica set focusflow-api-84855665b7 to 1 from 0
+21h         Normal    Started                  pod/focusflow-api-84855665b7-gm9jx    Started container focusflow-api
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled down replica set focusflow-api-68cd46f66c to 1 from 2
+21h         Normal    SuccessfulDelete         replicaset/focusflow-api-68cd46f66c   Deleted pod: focusflow-api-68cd46f66c-dxl44
+21h         Normal    Killing                  pod/focusflow-api-68cd46f66c-dxl44    Stopping container focusflow-api
+21h         Normal    SuccessfulCreate         replicaset/focusflow-api-84855665b7   Created pod: focusflow-api-84855665b7-ss8rb
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled up replica set focusflow-api-84855665b7 to 2 from 1
+21h         Normal    Started                  pod/focusflow-api-84855665b7-ss8rb    Started container focusflow-api
+21h         Normal    Created                  pod/focusflow-api-84855665b7-ss8rb    Created container focusflow-api
+21h         Normal    Pulled                   pod/focusflow-api-84855665b7-ss8rb    Container image "focusflow-api:1.0.0" already present on machine
+21h         Normal    SuccessfulDelete         replicaset/focusflow-api-68cd46f66c   Deleted pod: focusflow-api-68cd46f66c-jzpps
+21h         Normal    Killing                  pod/focusflow-api-68cd46f66c-jzpps    Stopping container focusflow-api
+21h         Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled down replica set focusflow-api-68cd46f66c to 0 from 1
+33m         Normal    Started                  pod/focusflow-api-84855665b7-gm9jx    Started container focusflow-api
+33m         Normal    Pulled                   pod/focusflow-api-84855665b7-gm9jx    Container image "focusflow-api:1.0.0" already present on machine
+33m         Normal    Created                  pod/focusflow-api-84855665b7-ss8rb    Created container focusflow-api
+33m         Normal    Started                  pod/focusflow-api-84855665b7-ss8rb    Started container focusflow-api
+33m         Normal    SandboxChanged           pod/focusflow-api-84855665b7-ss8rb    Pod sandbox changed, it will be killed and re-created.
+33m         Normal    SandboxChanged           pod/focusflow-api-84855665b7-gm9jx    Pod sandbox changed, it will be killed and re-created.
+33m         Normal    Pulled                   pod/focusflow-api-84855665b7-ss8rb    Container image "focusflow-api:1.0.0" already present on machine
+33m         Normal    Created                  pod/focusflow-api-84855665b7-gm9jx    Created container focusflow-api
+32m         Warning   FailedToUpdateEndpoint   endpoints/focusflow-api               Failed to update endpoint cloudpath/focusflow-api: Operation cannot be fulfilled on endpoints "focusflow-api": the object has been modified; please apply your changes to the latest version and try again
+3m15s       Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled up replica set focusflow-api-5c99c5f649 to 1
+3m15s       Normal    SuccessfulCreate         replicaset/focusflow-api-5c99c5f649   Created pod: focusflow-api-5c99c5f649-55w8j
+3m13s       Normal    Pulled                   pod/focusflow-api-5c99c5f649-55w8j    Container image "focusflow-api:1.0.0" already present on machine
+3m13s       Normal    Created                  pod/focusflow-api-5c99c5f649-55w8j    Created container focusflow-api
+3m13s       Normal    Started                  pod/focusflow-api-5c99c5f649-55w8j    Started container focusflow-api
+3m9s        Warning   Unhealthy                pod/focusflow-api-5c99c5f649-55w8j    Startup probe failed: Get "http://10.244.0.7:5000/wrong-health-path": dial tcp 10.244.0.7:5000: connect: connection refused
+104s        Warning   Unhealthy                pod/focusflow-api-5c99c5f649-55w8j    Startup probe failed: HTTP probe failed with statuscode: 404
+103s        Normal    SuccessfulDelete         replicaset/focusflow-api-5c99c5f649   Deleted pod: focusflow-api-5c99c5f649-55w8j
+103s        Normal    SuccessfulCreate         replicaset/focusflow-api-59887588b7   Created pod: focusflow-api-59887588b7-bdcvf
+103s        Normal    Killing                  pod/focusflow-api-5c99c5f649-55w8j    Stopping container focusflow-api
+103s        Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled down replica set focusflow-api-5c99c5f649 to 0 from 1
+103s        Normal    ScalingReplicaSet        deployment/focusflow-api              Scaled up replica set focusflow-api-59887588b7 to 1 from 0
+52s         Normal    Killing                  pod/focusflow-api-59887588b7-bdcvf    Container focusflow-api failed startup probe, will be restarted
+52s         Normal    Started                  pod/focusflow-api-59887588b7-bdcvf    Started container focusflow-api
+52s         Normal    Pulled                   pod/focusflow-api-59887588b7-bdcvf    Container image "focusflow-api:1.0.0" already present on machine
+52s         Normal    Created                  pod/focusflow-api-59887588b7-bdcvf    Created container focusflow-api
+47s         Warning   Unhealthy                pod/focusflow-api-59887588b7-bdcvf    Startup probe failed: HTTP probe failed with statuscode: 404

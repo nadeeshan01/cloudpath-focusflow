@@ -1,0 +1,27 @@
+---
+version: 2
+
+updates:
+  # Check npm packages (your Node.js dependencies)
+  - package-ecosystem: npm
+    directory: /app  # Where package.json is
+    schedule:
+      interval: weekly  # Check every week
+      day: monday  # On Mondays
+      time: "04:00"  # At 4 AM
+    open-pull-requests-limit: 5  # Max 5 PRs at once
+    labels:
+      - dependencies  # Tag PRs with these labels
+      - npm
+
+  # Check GitHub Actions (your workflow files)
+  - package-ecosystem: github-actions
+    directory: /  # Root directory
+    schedule:
+      interval: weekly  # Check once a week
+      day: monday
+      time: "04:00"
+    open-pull-requests-limit: 5  # Max 5 PRs at once
+    labels:
+      - dependencies
+      - github-actions

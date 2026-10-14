@@ -1,0 +1,14 @@
+Week 5 Terraform Foundation Verification
+========================================
+
+Terraform:
+Terraform v1.16.0
+
+Region:
+ap-south-1
+
+terraform.tfvars Git status:
+terraform/.gitignore:162:terraform.tfvars	terraform.tfvars
+
+Lock file:
+.terraform.lock.hcl exists

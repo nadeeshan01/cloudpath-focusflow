@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: focusflow-api-netpol
+  namespace: cloudpath
+  labels:
+    app.kubernetes.io/name: focusflow-api
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: focusflow-api
+  
+  policyTypes:
+    - Ingress
+    - Egress
+  
+  # Ingress rules (incoming traffic)
+  ingress:
+    # Allow traffic from cloudpath namespace on port 5000
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: cloudpath
+      ports:
+        - protocol: TCP
+          port: 5000
+  
+  # Egress rules (outgoing traffic)
+  egress:
+    # 1. Allow DNS (UDP & TCP 53)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    
+    # 2. Allow HTTPS (Port 443)
+    - ports:
+        - protocol: TCP
+          port: 443
+
+    # 3. Allow MongoDB Atlas (Port 27017)
+    - ports:
+        - protocol: TCP
+          port: 27017

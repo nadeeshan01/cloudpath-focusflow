@@ -1,0 +1,6 @@
+Startup probe:
+/health
+Readiness probe:
+/health
+Liveness probe:
+/health

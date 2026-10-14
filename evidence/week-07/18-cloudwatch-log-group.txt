@@ -1,0 +1,16 @@
+{
+    "logGroups": [
+        {
+            "logGroupName": "/cloudpath/cloudpath-focusflow/dev",
+            "creationTime": 1788773281975,
+            "retentionInDays": 7,
+            "metricFilterCount": 0,
+            "arn": "arn:aws:logs:ap-south-1:797989098577:log-group:/cloudpath/cloudpath-focusflow/dev:*",
+            "storedBytes": 0,
+            "logGroupClass": "STANDARD",
+            "logGroupArn": "arn:aws:logs:ap-south-1:797989098577:log-group:/cloudpath/cloudpath-focusflow/dev",
+            "deletionProtectionEnabled": false,
+            "bearerTokenAuthenticationEnabled": false
+        }
+    ]
+}

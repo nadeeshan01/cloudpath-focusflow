@@ -1,0 +1,72 @@
+Name:             focusflow-api-cdb9f6587-8drfs
+Namespace:        cloudpath
+Priority:         0
+Service Account:  default
+Node:             cloudpath-local-control-plane/172.19.0.2
+Start Time:       Mon, 07 Sep 2026 13:43:51 +0530
+Labels:           app.kubernetes.io/managed-by=kustomize
+                  app.kubernetes.io/name=focusflow-api
+                  app.kubernetes.io/part-of=cloudpath-focusflow
+                  app.kubernetes.io/version=0.1.0
+                  pod-template-hash=cdb9f6587
+                  project=cloudpath-focusflow
+Annotations:      kubectl.kubernetes.io/restartedAt: 2026-09-06T15:59:01+05:30
+Status:           Running
+SeccompProfile:   RuntimeDefault
+IP:               10.244.0.6
+IPs:
+  IP:           10.244.0.6
+Controlled By:  ReplicaSet/focusflow-api-cdb9f6587
+Containers:
+  focusflow-api:
+    Container ID:   containerd://75de5873385d563cea68bb8e2112ff0c5ec5aa9442f1d989794745aff71f1434
+    Image:          focusflow-api:0.1.0
+    Image ID:       docker.io/library/import-2026-08-29@sha256:c007de42f835fddfeaeadcdc53a2cdb4538e10bc2eacb1352b45d4f9ab5f470c
+    Port:           5000/TCP (http)
+    Host Port:      0/TCP (http)
+    State:          Running
+      Started:      Tue, 08 Sep 2026 09:11:21 +0530
+    Last State:     Terminated
+      Reason:       Unknown
+      Exit Code:    255
+      Started:      Mon, 07 Sep 2026 13:43:52 +0530
+      Finished:     Tue, 08 Sep 2026 09:11:13 +0530
+    Ready:          True
+    Restart Count:  1
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:      100m
+      memory:   128Mi
+    Liveness:   http-get http://:http/health delay=15s timeout=3s period=20s successThreshold=1 failureThreshold=3
+    Readiness:  http-get http://:http/health delay=5s timeout=3s period=10s successThreshold=1 failureThreshold=3
+    Startup:    http-get http://:http/health delay=0s timeout=1s period=5s successThreshold=1 failureThreshold=18
+    Environment Variables from:
+      focusflow-config  ConfigMap  Optional: false
+      focusflow-secret  Secret     Optional: false
+    Environment:        <none>
+    Mounts:
+      /tmp from tmp (rw)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  tmp:
+    Type:        EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:      
+    SizeLimit:   <unset>
+QoS Class:       Burstable
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason          Age   From     Message
+  ----    ------          ----  ----     -------
+  Normal  SandboxChanged  12m   kubelet  Pod sandbox changed, it will be killed and re-created.
+  Normal  Pulled          12m   kubelet  spec.containers{focusflow-api}: Container image "focusflow-api:0.1.0" already present on machine
+  Normal  Created         12m   kubelet  spec.containers{focusflow-api}: Created container focusflow-api
+  Normal  Started         12m   kubelet  spec.containers{focusflow-api}: Started container focusflow-api

@@ -1,0 +1,105 @@
+name: Publish Full-Stack Images to ECR
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  API_ECR_REPOSITORY: ${{ vars.API_ECR_REPOSITORY }}
+  WEB_ECR_REPOSITORY: ${{ vars.WEB_ECR_REPOSITORY }}
+
+jobs:
+  publish-images:
+    name: Build, scan, and publish images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build API image
+        run: |
+          docker build \
+            --pull \
+            --no-cache \
+            --tag focusflow-api:${{ github.sha }} \
+            ./app
+
+      - name: Scan API image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: focusflow-api:${{ github.sha }}
+          format: table
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - name: Tag API image for ECR
+        run: |
+          docker tag \
+            focusflow-api:${{ github.sha }} \
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.API_ECR_REPOSITORY }}:${{ github.sha }}
+
+      - name: Push API image to ECR
+        run: |
+          docker push \
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.API_ECR_REPOSITORY }}:${{ github.sha }}
+
+      - name: Build frontend image
+        run: |
+          docker build \
+            --pull \
+            --no-cache \
+            -f frontend/Dockerfile.k8s \
+            --build-arg VITE_API_BASE_URL=/api/v1 \
+            --tag focusflow-web:${{ github.sha }} \
+            ./frontend
+
+      - name: Scan frontend image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: focusflow-web:${{ github.sha }}
+          format: table
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - name: Tag frontend image for ECR
+        run: |
+          docker tag \
+            focusflow-web:${{ github.sha }} \
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.WEB_ECR_REPOSITORY }}:${{ github.sha }}
+
+      - name: Push frontend image to ECR
+        run: |
+          docker push \
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.WEB_ECR_REPOSITORY }}:${{ github.sha }}
+
+      - name: Publish image summary
+        run: |
+          {
+            echo "## Full-Stack ECR Images Published"
+            echo ""
+            echo "### API"
+            echo "\`${{ steps.login-ecr.outputs.registry }}/${{ env.API_ECR_REPOSITORY }}:${{ github.sha }}\`"
+            echo ""
+            echo "### Frontend"
+            echo "\`${{ steps.login-ecr.outputs.registry }}/${{ env.WEB_ECR_REPOSITORY }}:${{ github.sha }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

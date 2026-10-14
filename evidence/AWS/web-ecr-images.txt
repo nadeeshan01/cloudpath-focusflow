@@ -1,0 +1,30 @@
+aws ecr describe-images \
+  --repository-name "${WEB_ECR_REPOSITORY}" \
+  --region "${AWS_REGION}"
+{
+    "imageDetails": [
+        {
+            "registryId": "797989098577",
+            "repositoryName": "cloudpath-focusflow-web-dev",
+            "imageDigest": "sha256:6994dd203eeeb4410bc30e4c1ef8d59789ccdc77bed27b3158c404d7eb9b2d83",
+            "imageSizeInBytes": 1581,
+            "imagePushedAt": "2026-09-15T20:38:28.645000+05:30",
+            "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+            "artifactMediaType": "application/vnd.oci.image.config.v1+json",
+            "imageStatus": "ACTIVE"
+        },
+        {
+            "registryId": "797989098577",
+            "repositoryName": "cloudpath-focusflow-web-dev",
+            "imageDigest": "sha256:aebeb060bebb87c9c69283d7f43c7d96a54bbc02b43f6197e00dc819e5d6d860",
+            "imageSizeInBytes": 29062021,
+            "imagePushedAt": "2026-09-15T20:38:28.651000+05:30",
+            "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+            "artifactMediaType": "application/vnd.oci.image.config.v1+json",  
+            "imageStatus": "ACTIVE"
+        },
+        {
+:
+        }
+    ]
+}

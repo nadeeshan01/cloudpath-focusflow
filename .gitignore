@@ -1,9 +1,7 @@
-# Create .gitignore
-cat > .gitignore << 'EOF'
 # Dependencies
 node_modules/
 npm-debug.log
-package-lock.json
+
 
 # Environment
 .env
@@ -31,12 +29,35 @@ coverage/
 dist/
 build/
 
+# Kustomize rendered output (generated artifact – never commit)
+rendered-*.yaml
+
 # Terraform
 *.tfstate
 *.tfstate.*
 .terraform/
+*.dot
+dependency-graph.dot
+
+# Terraform ignored files
+terraform/eks-demo/.terraform/
+terraform/eks-demo/terraform.tfstate
+terraform/eks-demo/terraform.tfstate.*
+terraform/eks-demo/terraform.tfvars
 
 # Secrets
 *.pem
 *.key
-EOF
+
+# Kubernetes local secrets
+k8s/secret.local.yaml
+k8s/*.local.yaml
+k8s/deployment-broken-probe.yaml
+k8s/patches/
+
+scripts/aws-local.env
+terraform.tfvars
+
+# Ignored evidence with secrets
+evidence/fullstack/01-compose-config.txt
+

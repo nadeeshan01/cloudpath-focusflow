@@ -1,0 +1,45 @@
+# Apply namespace
+kubectl apply -f k8s/namespace.yaml
+
+# Expected output:
+namespace/cloudpath configured
+
+# Verify namespace exists
+kubectl get namespaces | grep cloudpath
+
+# Should show:
+NAME                 STATUS   AGE
+cloudpath            Active   16m
+default              Active   105m
+kube-node-lease      Active   105m
+kube-public          Active   105m
+kube-system          Active   105m
+local-path-storage   Active   105m
+
+# Verify namespace YAML
+```bash
+kubectl get namespace cloudpath -o yaml
+```
+output:
+
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Namespace","metadata":{"annotations":{},"labels":{"app.kubernetes.io/part-of":"cloudpath-focusflow","environment":"local","managed-by":"kubectl"},"name":"cloudpath"}}
+  creationTimestamp: "2026-08-29T08:59:29Z"
+  labels:
+    app.kubernetes.io/part-of: cloudpath-focusflow
+    environment: local
+    kubernetes.io/metadata.name: cloudpath
+    managed-by: kubectl
+  name: cloudpath
+  resourceVersion: "8760"
+  uid: 36117ffe-9d21-408a-adc2-c2678a53b723
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active

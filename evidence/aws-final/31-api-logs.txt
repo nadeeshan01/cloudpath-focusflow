@@ -1,0 +1,100 @@
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:27:04 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:27:04] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:27:14 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:27:14] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:27:18 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:27:18] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:27:24 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:27:24] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:27:34 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:27:34] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:27:38 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:27:38] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:27:44 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:27:44] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:27:54 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:27:54] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:27:58 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:27:58] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:28:04 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:28:04] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 0
+}
+10.30.1.165 - - [22/Sep/2026:11:28:14 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:28:14] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}
+10.30.1.165 - - [22/Sep/2026:11:28:18 +0000] "GET /health HTTP/1.1" 200 121 "-" "kube-probe/1.36"
+[2026-09-22 11:28:18] [32minfo[39m: http_request
+  Meta: {
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "durationMs": 1
+}

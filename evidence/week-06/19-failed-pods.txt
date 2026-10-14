@@ -1,0 +1,4 @@
+NAME                             READY   STATUS             RESTARTS      AGE
+focusflow-api-59887588b7-bdcvf   0/1     CrashLoopBackOff   3 (16s ago)   82s
+focusflow-api-84855665b7-gm9jx   1/1     Running            1 (33m ago)   21h
+focusflow-api-84855665b7-ss8rb   1/1     Running            1 (33m ago)   21h

@@ -1,0 +1,127 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+  push:
+    branches:
+      - develop
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  backend-quality:
+    name: Backend quality and tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Check backend formatting
+        run: npm run format:check
+
+      - name: Run backend lint
+        run: npm run lint
+
+      - name: Run backend tests
+        run: npm test
+
+      - name: Check backend dependencies
+        run: npm audit --audit-level=high --omit=dev
+
+  frontend-quality:
+    name: Frontend quality and build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Upload frontend build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: focusflow-frontend-dist
+          path: frontend/dist
+          retention-days: 7
+
+  docker-images:
+    name: Build and scan container images
+    runs-on: ubuntu-latest
+    needs:
+      - backend-quality
+      - frontend-quality
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build API image
+        run: |
+          docker build \
+            --pull \
+            --no-cache \
+            --tag focusflow-api:${{ github.sha }} \
+            ./app
+
+      - name: Scan API image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: focusflow-api:${{ github.sha }}
+          format: 'table'
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - name: Build frontend image
+        run: |
+          docker build \
+            --pull \
+            --no-cache \
+            --build-arg VITE_API_BASE_URL=/api/v1 \
+            --tag focusflow-web:${{ github.sha }} \
+            ./frontend
+
+      - name: Scan frontend image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: focusflow-web:${{ github.sha }}
+          format: 'table'
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"

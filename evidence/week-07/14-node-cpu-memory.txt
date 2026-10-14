@@ -1,0 +1,2 @@
+NAME                            CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+cloudpath-local-control-plane   130m         1%       888Mi           23%         

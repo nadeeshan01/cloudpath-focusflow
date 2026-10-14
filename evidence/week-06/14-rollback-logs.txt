@@ -1,0 +1,27 @@
+◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+[32minfo[39m: 🚀 focusflow-api started {"environment":"production","host":"0.0.0.0","nodeVersion":"v22.23.2","pid":1,"port":"5000","service":"focusflow-api","timestamp":"2026-09-06 10:43:47","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:43:50","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:43:51","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:43:55","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:44:05","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:44:05","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:44:17","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:44:27","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:44:27","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:44:37","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:44:49","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:44:49","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:44:59","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:45:09","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:45:09","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:45:22","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:45:32","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:45:32","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:45:42","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:45:54","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:45:54","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:46:04","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:46:14","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:46:14","userAgent":"kube-probe/1.27","version":"1.0.0"}
+[32minfo[39m: GET /health {"ip":"10.244.0.1","service":"focusflow-api","timestamp":"2026-09-06 10:46:26","userAgent":"kube-probe/1.27","version":"1.0.0"}

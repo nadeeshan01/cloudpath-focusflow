@@ -1,0 +1,8 @@
+apiVersion: v1           # K8s API version for this resource
+kind: Namespace          # Type of resource
+metadata:
+  name: cloudpath        # Namespace name (used in all commands)
+  labels:                # Metadata tags
+    app.kubernetes.io/part-of: cloudpath-focusflow  # Which app
+    environment: local                              # Which environment
+    managed-by: kubectl    # How it's managed

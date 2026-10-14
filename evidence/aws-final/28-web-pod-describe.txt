@@ -1,0 +1,72 @@
+Name:             focusflow-web-5f49fc9668-sz9wq
+Namespace:        cloudpath
+Priority:         0
+Service Account:  default
+Node:             ip-10-30-1-165.ap-south-1.compute.internal/10.30.1.165
+Start Time:       Tue, 22 Sep 2026 12:18:31 +0530
+Labels:           app.kubernetes.io/managed-by=kustomize
+                  app.kubernetes.io/name=focusflow-web
+                  app.kubernetes.io/part-of=cloudpath-focusflow
+                  app.kubernetes.io/version=1.0.0
+                  pod-template-hash=5f49fc9668
+                  project=cloudpath-focusflow
+                  topology.kubernetes.io/region=ap-south-1
+                  topology.kubernetes.io/zone=ap-south-1a
+Annotations:      <none>
+Status:           Running
+IP:               10.30.1.128
+IPs:
+  IP:           10.30.1.128
+Controlled By:  ReplicaSet/focusflow-web-5f49fc9668
+Containers:
+  focusflow-web:
+    Container ID:   containerd://6e18d6a8efcf218e95ee27719f35855263aa7376ed9493c1b034c2db525c3129
+    Image:          797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70
+    Image ID:       797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev@sha256:6b0e579d28a04f08bbcde24e0039a5817ce45625db9f346b2f7f4821f1c6305d
+    Port:           80/TCP (http)
+    Host Port:      0/TCP (http)
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Tue, 22 Sep 2026 12:21:51 +0530
+      Finished:     Tue, 22 Sep 2026 12:22:31 +0530
+    Ready:          False
+    Restart Count:  5
+    Limits:
+      cpu:     150m
+      memory:  128Mi
+    Requests:
+      cpu:      50m
+      memory:   64Mi
+    Liveness:   http-get http://:80/ delay=15s timeout=3s period=10s successThreshold=1 failureThreshold=3
+    Readiness:  http-get http://:80/ delay=10s timeout=3s period=5s successThreshold=1 failureThreshold=3
+    Environment Variables from:
+      focusflow-config  ConfigMap  Optional: true
+    Environment:        <none>
+    Mounts:             <none>
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:                      <none>
+QoS Class:                    Burstable
+Node-Selectors:               <none>
+Tolerations:                  node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                              node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                     From               Message
+  ----     ------     ----                    ----               -------
+  Normal   Scheduled  4m10s                   default-scheduler  Successfully assigned cloudpath/focusflow-web-5f49fc9668-sz9wq to ip-10-30-1-165.ap-south-1.compute.internal
+  Normal   Pulling    4m9s                    kubelet            spec.containers{focusflow-web}: Pulling image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70"
+  Normal   Pulled     4m7s                    kubelet            spec.containers{focusflow-web}: Successfully pulled image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70" in 2.724s (2.724s including waiting). Image size: 29066580 bytes.
+  Warning  Unhealthy  2m30s (x7 over 3m50s)   kubelet            spec.containers{focusflow-web}: Liveness probe failed: Get "http://10.30.1.128:80/": dial tcp 10.30.1.128:80: connect: connection refused
+  Warning  Unhealthy  2m24s (x18 over 3m56s)  kubelet            spec.containers{focusflow-web}: Readiness probe failed: Get "http://10.30.1.128:80/": dial tcp 10.30.1.128:80: connect: connection refused
+  Normal   Created    50s (x6 over 4m7s)      kubelet            spec.containers{focusflow-web}: Container created
+  Normal   Started    50s (x6 over 4m6s)      kubelet            spec.containers{focusflow-web}: Container started
+  Normal   Pulled     50s (x5 over 3m30s)     kubelet            spec.containers{focusflow-web}: Container image "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev:18cbf70" already present on machine and can be accessed by the pod
+  Normal   Killing    10s (x6 over 3m30s)     kubelet            spec.containers{focusflow-web}: Container focusflow-web failed liveness probe, will be restarted

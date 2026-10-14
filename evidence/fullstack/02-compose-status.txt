@@ -1,0 +1,3 @@
+NAME            IMAGE                 COMMAND                  SERVICE    CREATED         STATUS                   PORTS
+focusflow-api   focusflow-api:1.0.0   "docker-entrypoint.s…"   api        6 minutes ago   Up 6 minutes (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp
+focusflow-web   focusflow-web:1.0.0   "/docker-entrypoint.…"   frontend   6 minutes ago   Up 6 minutes (healthy)   0.0.0.0:3000->8080/tcp, [::]:3000->8080/tcp

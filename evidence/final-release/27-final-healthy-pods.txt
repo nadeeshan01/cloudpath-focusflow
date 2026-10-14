@@ -1,0 +1,5 @@
+NAME                             READY   STATUS    RESTARTS       AGE
+focusflow-api-76f44f6cb-bn2l2    1/1     Running   1 (111s ago)   2m7s
+focusflow-api-76f44f6cb-znwwx    1/1     Running   0              104s
+focusflow-web-7c65464d55-44gv4   1/1     Running   0              23m
+focusflow-web-7c65464d55-xlwds   1/1     Running   0              23m

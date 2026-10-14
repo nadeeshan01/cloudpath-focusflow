@@ -1,0 +1,44 @@
+focusflow-api  | ◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+focusflow-api  | ◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+focusflow-api  | [32minfo[39m: MongoDB connected {"db":"focusflow","host":"ac-f7bw5iy-shard-00-00.d99qhct.mongodb.net","service":"FocusFlow API","timestamp":"2026-09-11 09:58:18","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: 🚀 FocusFlow API started {"environment":"production","host":"0.0.0.0","nodeVersion":"v22.23.2","pid":1,"port":5000,"service":"FocusFlow API","timestamp":"2026-09-11 09:58:18","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 09:58:18","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 09:58:49","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 09:59:19","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 09:59:49","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/version {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:00:14","userAgent":"curl/8.21.0","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:00:19","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:00:50","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: POST /api/v1/auth/login {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:01:03","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: User logged in: nadeeshan@example.com {"service":"FocusFlow API","timestamp":"2026-09-11 10:01:03","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/dashboard/summary {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:01:03","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [33mwarn[39m: MongoDB disconnected {"service":"FocusFlow API","timestamp":"2026-09-11 10:01:03","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/tasks {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:01:08","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: MongoDB connected {"db":"focusflow","host":"ac-f7bw5iy-shard-00-00.d99qhct.mongodb.net","service":"FocusFlow API","timestamp":"2026-09-11 10:01:10","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: Retrieved 3 tasks {"service":"FocusFlow API","timestamp":"2026-09-11 10:01:12","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/dashboard/summary {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:01:13","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:01:20","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/tasks {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:01:22","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: Retrieved 3 tasks {"service":"FocusFlow API","timestamp":"2026-09-11 10:01:23","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/journal {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:01:25","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: Retrieved 1 journal entries {"service":"FocusFlow API","timestamp":"2026-09-11 10:01:26","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:01:50","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/auth/me {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:01:58","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/journal {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:01:58","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: Retrieved 1 journal entries {"service":"FocusFlow API","timestamp":"2026-09-11 10:01:58","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/tasks {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:02:04","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: Retrieved 3 tasks {"service":"FocusFlow API","timestamp":"2026-09-11 10:02:05","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/auth/me {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:02:07","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/tasks {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:02:07","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: Retrieved 3 tasks {"service":"FocusFlow API","timestamp":"2026-09-11 10:02:07","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/dashboard/summary {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:02:08","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36","version":"1.0.0"}
+focusflow-api  | [33mwarn[39m: MongoDB disconnected {"service":"FocusFlow API","timestamp":"2026-09-11 10:02:08","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: MongoDB connected {"db":"focusflow","host":"ac-f7bw5iy-shard-00-00.d99qhct.mongodb.net","service":"FocusFlow API","timestamp":"2026-09-11 10:02:14","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:02:20","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:02:51","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:03:21","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:03:51","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:04:21","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /api/v1/version {"ip":"172.20.0.3","service":"FocusFlow API","timestamp":"2026-09-11 10:04:46","userAgent":"curl/8.5.0","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"127.0.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:04:52","userAgent":"node","version":"1.0.0"}
+focusflow-api  | [32minfo[39m: GET /health {"ip":"172.20.0.1","service":"FocusFlow API","timestamp":"2026-09-11 10:05:01","userAgent":"curl/8.5.0","version":"1.0.0"}

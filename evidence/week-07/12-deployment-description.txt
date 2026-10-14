@@ -1,0 +1,57 @@
+Name:                   focusflow-api
+Namespace:              cloudpath
+CreationTimestamp:      Sat, 29 Aug 2026 14:29:29 +0530
+Labels:                 app.kubernetes.io/component=backend
+                        app.kubernetes.io/managed-by=kustomize
+                        app.kubernetes.io/name=focusflow-api
+                        app.kubernetes.io/part-of=cloudpath-focusflow
+                        app.kubernetes.io/version=0.1.0
+                        project=cloudpath-focusflow
+Annotations:            deployment.kubernetes.io/revision: 11
+Selector:               app.kubernetes.io/managed-by=kustomize,app.kubernetes.io/name=focusflow-api,project=cloudpath-focusflow
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  0 max unavailable, 1 max surge
+Pod Template:
+  Labels:       app.kubernetes.io/managed-by=kustomize
+                app.kubernetes.io/name=focusflow-api
+                app.kubernetes.io/part-of=cloudpath-focusflow
+                app.kubernetes.io/version=0.1.0
+                project=cloudpath-focusflow
+  Annotations:  kubectl.kubernetes.io/restartedAt: 2026-09-06T15:59:01+05:30
+  Containers:
+   focusflow-api:
+    Image:      focusflow-api:0.1.0
+    Port:       5000/TCP (http)
+    Host Port:  0/TCP (http)
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:      100m
+      memory:   128Mi
+    Liveness:   http-get http://:http/health delay=15s timeout=3s period=20s successThreshold=1 failureThreshold=3
+    Readiness:  http-get http://:http/health delay=5s timeout=3s period=10s successThreshold=1 failureThreshold=3
+    Startup:    http-get http://:http/health delay=0s timeout=1s period=5s successThreshold=1 failureThreshold=18
+    Environment Variables from:
+      focusflow-config  ConfigMap  Optional: false
+      focusflow-secret  Secret     Optional: false
+    Environment:        <none>
+    Mounts:
+      /tmp from tmp (rw)
+  Volumes:
+   tmp:
+    Type:          EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:        
+    SizeLimit:     <unset>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  focusflow-api-5c99c5f649 (0/0 replicas created), focusflow-api-59887588b7 (0/0 replicas created), focusflow-api-77bd5684bf (0/0 replicas created)
+NewReplicaSet:   focusflow-api-cdb9f6587 (2/2 replicas created)
+Events:          <none>

@@ -1,0 +1,32 @@
+{
+    "repositories": [
+        {
+            "repositoryArn": "arn:aws:ecr:ap-south-1:797989098577:repository/cloudpath-focusflow-web-dev",
+            "registryId": "797989098577",
+            "repositoryName": "cloudpath-focusflow-web-dev",
+            "repositoryUri": "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-web-dev",
+            "createdAt": "2026-09-14T13:21:56.698000+05:30",
+            "imageTagMutability": "IMMUTABLE",
+            "imageScanningConfiguration": {
+                "scanOnPush": true
+            },
+            "encryptionConfiguration": {
+                "encryptionType": "AES256"
+            }
+        },
+        {
+            "repositoryArn": "arn:aws:ecr:ap-south-1:797989098577:repository/cloudpath-focusflow-api-dev",
+            "registryId": "797989098577",
+            "repositoryName": "cloudpath-focusflow-api-dev",
+            "repositoryUri": "797989098577.dkr.ecr.ap-south-1.amazonaws.com/cloudpath-focusflow-api-dev",
+            "createdAt": "2026-09-14T13:21:56.695000+05:30",
+            "imageTagMutability": "IMMUTABLE",
+            "imageScanningConfiguration": {
+                "scanOnPush": true
+            },
+            "encryptionConfiguration": {
+                "encryptionType": "AES256"
+            }
+        }
+    ]
+}

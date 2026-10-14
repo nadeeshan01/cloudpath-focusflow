@@ -1,0 +1,3 @@
+NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+focusflow-api   ClusterIP   172.20.242.184   <none>        80/TCP    4h38m
+focusflow-web   ClusterIP   172.20.78.49     <none>        80/TCP    4h38m

@@ -1,0 +1,26 @@
+﻿apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+patches:
+  - path: api-image-patch.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: focusflow-api
+
+  - path: web-image-patch.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: focusflow-web
+
+  - path: configmap-patch.yaml
+    target:
+      version: v1
+      kind: ConfigMap
+      name: focusflow-config
