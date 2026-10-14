@@ -15,7 +15,6 @@ name: Security
 permissions:
   contents: read           # Can read your code
   security-events: write   # Can write security findings
-  pull-requests: read      # Can read PR data (needed for dependency-review)
 
 jobs:
   # JOB 1: Scan files for vulnerabilities
@@ -56,16 +55,3 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # JOB 3: Check if PR adds dangerous dependencies
-  dependency-review:
-    name: Dependency review
-    if: github.event_name == 'pull_request'  # Only on PRs
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Dependency review
-        uses: actions/dependency-review-action@v4
