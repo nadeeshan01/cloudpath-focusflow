@@ -1,0 +1,26 @@
+---
+name: Dependency Review
+
+# Only runs on pull requests — dependency-review-action requires PR context
+# (it compares base vs head branch to detect newly introduced vulnerable packages)
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+permissions:
+  contents: read        # Read repository code
+  pull-requests: read   # Read PR diff data (required by dependency-review-action)
+
+jobs:
+  dependency-review:
+    name: Dependency review
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@v4
