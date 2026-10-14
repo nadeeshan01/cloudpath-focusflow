@@ -28,6 +28,7 @@ The project was developed as an individual CloudPath DevOps Engineer internship 
 - [AWS ECR and EKS Showcase](#aws-ecr-and-eks-showcase)
 - [Terraform Infrastructure](#terraform-infrastructure)
 - [CI/CD and Security](#cicd-and-security)
+- [DevOps and Security Techniques](#devops-and-security-techniques)
 - [Monitoring and Operations](#monitoring-and-operations)
 - [Release and Rollback](#release-and-rollback)
 - [Troubleshooting](#troubleshooting)
@@ -398,8 +399,13 @@ flowchart TB
 | Database | MongoDB Atlas |
 | Containerisation | Docker and Docker Desktop |
 | Container scanning | Trivy |
-| Dependency checks | npm audit |
+| Dependency checks | npm audit and GitHub dependency review |
+| Secret scanning | Gitleaks |
 | Static/code scanning | CodeQL and security workflow |
+| Code quality | ESLint and Prettier |
+| Testing | Jest and Supertest |
+| Frontend build | Vite |
+| Task runner | Make (`Makefile`) |
 | CI/CD | GitHub Actions |
 | Cloud authentication | GitHub Actions OIDC with AWS IAM |
 | Image registry | Amazon ECR |
@@ -444,11 +450,13 @@ cloudpath-focusflow/
 │
 ├── .github/
 │   ├── workflows/
-│   │   ├── ci.yml                    # Quality, test, build workflow
-│   │   ├── codeql.yml                # Code security analysis
-│   │   ├── security.yml              # Security checks
-│   │   └── publish-ecr.yml           # ECR publication workflow
-│   └── dependabot.yml
+│   │   ├── ci.yml                    # Lint, format, test, build + Trivy image scan
+│   │   ├── codeql.yml                # CodeQL static code security analysis
+│   │   ├── security.yml              # Trivy filesystem scan + Gitleaks secret scan
+│   │   ├── dependency-review.yml     # PR-only vulnerable dependency check
+│   │   └── publish-ecr.yml           # OIDC auth, build, scan, push images to ECR
+│   ├── dependabot.yml                # Weekly npm and GitHub Actions update PRs
+│   └── pull_request_template.md      # Standard PR checklist for reviewers
 │
 ├── k8s/
 │   ├── base/                         # Shared Kubernetes resources
@@ -461,6 +469,8 @@ cloudpath-focusflow/
 │   │   ├── network-policy.yaml
 │   │   ├── pod-disruption-budget.yaml
 │   │   ├── patches/
+│   │   │   ├── broken-probe.yaml     # Injects a failing probe (failure evidence)
+│   │   │   └── fix-probe.yaml        # Restores the correct probe
 │   │   └── kustomization.yaml
 │   │
 │   ├── overlays/
@@ -470,15 +480,13 @@ cloudpath-focusflow/
 │   │       ├── configmap-patch.yaml
 │   │       └── kustomization.yaml
 │   │
-│   ├── secret.example.yaml            # Safe template only
-│   ├── secret.local.yaml              # Local only; ignored by Git
-│   └── deployment-broken-probe.yaml   # Controlled troubleshooting/failure evidence
+│   └── secret.example.yaml           # Safe template only; real secret.local.yaml is Git-ignored
 │
 ├── terraform/
 │   ├── modules/
-│   │   └── ecr/                       # Reusable ECR module
-│   ├── bootstrap/                     # Optional bootstrap configuration
-│   ├── eks-demo/                      # Temporary EKS showcase infrastructure
+│   │   └── ecr/                      # Reusable ECR module (main/variables/outputs)
+│   ├── bootstrap/                    # Optional bootstrap notes (budget)
+│   ├── eks-demo/                     # Temporary EKS showcase infrastructure
 │   │   ├── versions.tf
 │   │   ├── provider.tf
 │   │   ├── variables.tf
@@ -488,40 +496,57 @@ cloudpath-focusflow/
 │   │   ├── cloudwatch.tf
 │   │   ├── outputs.tf
 │   │   ├── security-groups.tf
+│   │   ├── rds-plan-only.tf          # RDS cost demonstration; never applied
 │   │   └── terraform.tfvars.example
-│   ├── cloudwatch.tf
-│   ├── oidc.tf
+│   ├── main.tf                       # AWS provider and default tags
+│   ├── versions.tf                   # Terraform and provider version pins
+│   ├── ecr.tf                        # ECR repositories and lifecycle policies
+│   ├── iam-github-oidc.tf            # GitHub OIDC provider and IAM role
+│   ├── cloudwatch.tf                 # CloudWatch log group
 │   ├── variables.tf
 │   ├── outputs.tf
-│   └── ...
+│   └── terraform.tfvars.example
 │
 ├── scripts/
-│   ├── release-kind.sh
-│   ├── rollback-kind.sh
-│   └── ...
+│   ├── release-kind.sh               # Local Kind release (v1 → v2) evidence
+│   └── rollback-kind.sh              # Local Kind rollback evidence
 │
-├── docs/
+├── docs/                             # Architecture, runbooks, cost and security docs
 │   ├── aws-final-week-cost-control.md
-│   ├── aws-eks-troubleshooting.md
 │   ├── aws-final-week-summary.md
+│   ├── aws-eks-troubleshooting.md
+│   ├── github-oidc.md
+│   ├── terraform-runbook.md
 │   ├── releases/
 │   └── ...
 │
-├── evidence/
+├── evidence/                         # Command output and screenshots per week
 │   ├── week-*/
 │   ├── final-release/
 │   └── aws-final/
 │
-├── compose.yaml
-├── compose.dev.yaml
-├── .env.example
+├── compose.yaml                      # Production-style local stack (API :5000, web :3000)
+├── compose.dev.yaml                  # Dev stack with hot reload (API :5000, web :5173)
+├── Makefile                          # Short run commands (make help)
+├── .env.example                      # Environment variable names only
+├── .gitleaks.toml                    # Gitleaks secret-scan allowlist config
 ├── .gitignore
-├── README.md
-└── package.json
+└── README.md
 ```
 
 > [!NOTE]
 > The exact file list may evolve as the project is maintained. Use `find . -maxdepth 3 -type f` for the current repository inventory.
+
+### Root files: what and why
+
+| File | What it does | Why it is used |
+|---|---|---|
+| `compose.yaml` | Builds and runs API + frontend containers with health checks, read-only roots, `no-new-privileges`, resource limits and log rotation | One command gives a production-like local stack with container hardening already applied |
+| `compose.dev.yaml` | Development stack: API with nodemon hot reload (`Dockerfile.dev`) and Vite dev server | Fast inner-loop development without rebuilding images |
+| `Makefile` | Short aliases: `build`, `up`, `down`, `logs`, `health`, `test`, `scan`, `dev`, `clean` | Removes long Docker/Trivy commands from memory; `make help` lists them |
+| `.env.example` / `app/.env.example` | Variable names only, no values | Template so no real secret ever enters Git |
+| `.gitleaks.toml` | Allowlist for Gitleaks (evidence files, example secrets, test placeholders) | Keeps the secret scan useful instead of noisy |
+| `.gitignore` | Excludes `.env`, `.terraform/`, `terraform.tfstate*`, `terraform.tfvars`, `secret.local.yaml`, `node_modules`, `dist` | Enforces the "never commit secrets or state" rule technically, not just by discipline |
 
 ---
 
@@ -780,7 +805,47 @@ docker compose down
 ```
 
 > [!NOTE]
-> Confirm the actual local ports in `compose.yaml`, `compose.dev.yaml`, and application configuration before running commands. The API health endpoint is expected at `/health`.
+> The API health endpoint is expected at `/health`. Local ports depend on the run mode:
+
+| Run mode | API | Frontend | Command |
+|---|---|---|---|
+| `compose.yaml` (production-style) | `http://localhost:5000` | `http://localhost:3000` | `docker compose up -d --build` |
+| `compose.dev.yaml` (hot reload) | `http://localhost:5000` | `http://localhost:5173` | `docker compose -f compose.dev.yaml up --build` |
+| Kubernetes (port-forward) | `http://localhost:5000` | `http://localhost:8080` | `kubectl -n cloudpath port-forward service/focusflow-web 8080:80` |
+
+### 7. Quality, test and scan commands (local)
+
+Run exactly what CI runs, locally:
+
+```bash
+# API: format check, lint, tests with coverage, dependency audit
+cd app
+npm run format:check
+npm run lint
+npm test
+npm audit --audit-level=high --omit=dev
+```
+
+```bash
+# Frontend: lint and production build
+cd frontend
+npm run lint
+npm run build
+```
+
+Makefile shortcuts (run from repository root):
+
+```bash
+make help        # list all targets
+make test        # npm test in app/
+make up          # docker compose up -d --build
+make logs        # follow API container logs
+make health      # curl /health (requires jq)
+make scan        # Trivy: HIGH+CRITICAL only
+make scan-ci     # Trivy with exit code 1 (fails like CI)
+make down        # stop containers
+make clean       # remove containers, local images, volumes
+```
 
 ---
 
@@ -849,6 +914,19 @@ kubectl -n cloudpath get secret focusflow-secret
 
 ## Docker Workflow
 
+### Files used and why
+
+| File | What it does | Why it exists |
+|---|---|---|
+| `app/Dockerfile` | Multi-stage production build: `npm ci --omit=dev` → runtime image, OS package upgrade, npm/yarn binaries removed, non-root `appuser`, `HEALTHCHECK` on `/health` | Small, hardened, self-checking production API image |
+| `app/Dockerfile.dev` | Single stage with all dependencies, runs `npm run dev` (nodemon) | Development image used by `compose.dev.yaml` for hot reload |
+| `app/Dockerfile.bookworm` | Same multi-stage build on `node:22-bookworm-slim` (Debian) | Alternative to Alpine where glibc-compatible native modules are needed |
+| `frontend/Dockerfile` | Multi-stage: Vite build (`VITE_API_BASE_URL` build-arg) → `nginx:1.27-alpine`, non-root, healthcheck on port 8080 | Serves the built SPA with hardening; used by `compose.yaml` and CI |
+| `frontend/Dockerfile.k8s` | Same pattern using `nginx/default.k8s.conf` | Nginx config tuned for Kubernetes (internal `/api` proxy, probes); this is the image pushed to ECR |
+| `frontend/nginx/default.conf` | Nginx server config for Docker Compose (listens 8080, proxies `/api`) | Keeps browser on one origin locally, no CORS needed |
+| `frontend/nginx/default.k8s.conf` | Nginx config for Kubernetes with `/api` proxy to the API Service | Browser → web pod → API pod internal traffic flow |
+| `app/.dockerignore`, `frontend/.dockerignore` | Exclude `node_modules`, `.env`, `dist`, evidence from build context | Faster, reproducible builds and no secret leakage into images |
+
 ### Build API image
 
 From repository root:
@@ -906,7 +984,7 @@ curl -i http://localhost:5000/health
 ```bash
 docker run --rm \
   --name focusflow-web-local \
-  -p 8080:80 \
+  -p 8080:8080 \
   focusflow-web:local
 ```
 
@@ -972,6 +1050,26 @@ k8s/
 ```
 
 The base contains shared Kubernetes objects. The EKS overlay applies environment-specific changes, particularly immutable Amazon ECR image references and production-oriented runtime configuration.
+
+### Files in `k8s/` and why
+
+| File | What it does | Why it exists |
+|---|---|---|
+| `base/namespace.yaml` | Creates namespace `cloudpath` | Isolates all project resources from other workloads |
+| `base/configmap.yaml` | Non-secret runtime config (`focusflow-config`) | Keeps config out of images and out of Git-ignored `.env` files |
+| `base/deployment.yaml` | API Deployment: probes, resources, `imagePullPolicy`, env from ConfigMap/Secret | Declarative desired state for the API; enables rollout and rollback |
+| `base/service.yaml` | ClusterIP Service `focusflow-api` | Stable in-cluster DNS name so pods can find the API |
+| `base/frontend-deployment.yaml` | Web Deployment with liveness/readiness probes | Same for the frontend; probes trigger the documented troubleshooting scenario |
+| `base/frontend-service.yaml` | ClusterIP Service `focusflow-web` | Port-forward and internal routing target |
+| `base/network-policy.yaml` | Restricts ingress to allowed pods/ports | Defence in depth: default-deny style network isolation |
+| `base/pod-disruption-budget.yaml` | Minimum available API pods during voluntary disruption | Protects availability during node drains/upgrades |
+| `base/patches/broken-probe.yaml` | Intentionally wrong probe configuration | Controlled failure for troubleshooting evidence |
+| `base/patches/fix-probe.yaml` | Restores the correct probe | Proves diagnosis and remediation, not just happy path |
+| `overlays/eks/api-image-patch.yaml` | Points API Deployment at the ECR SHA-tagged image | Immutable image reference per environment |
+| `overlays/eks/web-image-patch.yaml` | Points Web Deployment at the ECR SHA-tagged image | Same for frontend |
+| `overlays/eks/configmap-patch.yaml` | Environment-specific non-secret config | One base, many environments |
+| `overlays/eks/kustomization.yaml` | Composes base + patches | `kubectl apply -k` deploys the whole EKS environment in one command |
+| `secret.example.yaml` | Placeholder-only Secret template | Documents the required keys (`MONGODB_URI`, `JWT_SECRET`) without ever committing values |
 
 ### Render manifests before deployment
 
@@ -1064,7 +1162,7 @@ http://localhost:8080
 Test API health directly:
 
 ```bash
-kubectl -n cloudpath port-forward service/focusflow-api 5000:5000
+kubectl -n cloudpath port-forward service/focusflow-api 5000:80
 ```
 
 Then:
@@ -1089,6 +1187,17 @@ kubectl -n cloudpath logs deployment/focusflow-web --tail=100
 
 > [!WARNING]
 > Amazon EKS, EC2 worker nodes, CloudWatch logs, and load balancers can incur AWS charges. The EKS environment was designed as a short-lived evidence environment and must be destroyed after the demonstration.
+
+### Files used in this stage and why
+
+| File | Purpose in the AWS stage |
+|---|---|
+| `terraform/eks-demo/*.tf` | Creates the whole temporary AWS environment (VPC, subnets, EKS, IAM, CloudWatch) so it can be recreated and destroyed with two commands |
+| `k8s/overlays/eks/*-image-patch.yaml` | Replaces local image names with real ECR URIs (`:<git-sha>`) — proof that EKS pulls from ECR |
+| `k8s/overlays/eks/configmap-patch.yaml` | AWS-environment runtime configuration |
+| `k8s/secret.example.yaml` | Documents the two secret keys that must be created in-cluster, never committed |
+| `.github/workflows/publish-ecr.yml` | The automated path that builds, scans and pushes the images this stage deploys |
+| `docs/aws-final-week-cost-control.md` | Records budget alerts, resource limits and destroy proof for the cost-controls requirement |
 
 ### Amazon ECR repositories
 
@@ -1364,6 +1473,27 @@ ECR lifecycle policies
 Outputs for repository URLs and AWS configuration
 ```
 
+### Files in `terraform/` and why
+
+| File | What it manages | Why it exists |
+|---|---|---|
+| `versions.tf` | Terraform `>= 1.8.0`, AWS provider `~> 5.0`, TLS provider | Version pinning so every `terraform init` gives the same behaviour |
+| `main.tf` | AWS provider block, region `ap-south-1`, default tags (`Project`, `Environment`, `ManagedBy`, `Owner`) | One place for provider config; default tags make cost allocation in AWS Cost Explorer possible |
+| `variables.tf` | Input variables (region, project name, environment, owner) | Avoids hard-coded values; documented via examples |
+| `ecr.tf` | Private ECR repositories + lifecycle policies using `modules/ecr` | Registry for SHA-tagged images; lifecycle policies cap storage cost |
+| `iam-github-oidc.tf` | GitHub OIDC provider + IAM role with trust policy limited to this repo/branch | CI gets short-lived AWS credentials — no stored access keys |
+| `cloudwatch.tf` | CloudWatch log group with retention | Central log destination without unbounded log growth |
+| `outputs.tf` | Repository URLs, role ARN, region | Values consumed by GitHub Actions variables and kustomize patches |
+| `terraform.tfvars.example` | Documented variable template | Safe to commit; real `terraform.tfvars` is Git-ignored |
+| `modules/ecr/` | Reusable ECR module (main/variables/outputs) | Keeps the ECR definition DRY and reusable for API and web |
+| `eks-demo/vpc.tf` | VPC, two public subnets, internet gateway, route table | Network foundation for the temporary EKS cluster |
+| `eks-demo/iam.tf` | EKS cluster role and node IAM role | Least-privilege roles for control plane and nodes (node role gets ECR pull only) |
+| `eks-demo/eks.tf` | EKS cluster + one managed node group (desired: 1) | Real EKS experience at minimal cost |
+| `eks-demo/security-groups.tf` | Cluster/node security groups | Restricts control-plane-to-node traffic |
+| `eks-demo/cloudwatch.tf` | EKS control-plane log group with retention | Audit/diagnostic logs for troubleshooting evidence |
+| `eks-demo/rds-plan-only.tf` | RDS shown in plan only | Demonstrates cost decision: never applied, MongoDB Atlas is the database |
+| `eks-demo/outputs.tf` | Cluster name, region outputs | Feeds `aws eks update-kubeconfig` commands |
+
 Run from `terraform/`:
 
 ```bash
@@ -1454,11 +1584,33 @@ Use `terraform.tfvars.example` as a safe variable template.
 
 | Workflow | Purpose |
 |---|---|
-| `ci.yml` | Dependency installation, linting, tests, build validation |
-| `security.yml` | Security and dependency checks |
-| `codeql.yml` | Static code analysis / CodeQL |
-| `publish-ecr.yml` | Authenticates through GitHub OIDC and publishes images to ECR |
-| `dependabot.yml` | Dependency update configuration |
+| `ci.yml` | Format check, lint, tests, frontend build, `npm audit`, Docker build + Trivy image scan |
+| `security.yml` | Trivy filesystem scan (vuln/secret/misconfig) + Gitleaks secret scan on a weekly schedule |
+| `codeql.yml` | Static code analysis / CodeQL for JavaScript |
+| `dependency-review.yml` | PR-only check that blocks newly introduced vulnerable dependencies |
+| `publish-ecr.yml` | Authenticates through GitHub OIDC, scans, and publishes SHA-tagged images to ECR |
+| `dependabot.yml` | Weekly npm and GitHub Actions dependency update PRs |
+
+### Workflow files one by one (what, when, why)
+
+| File | Triggers | What it does and why |
+|---|---|---|
+| `.github/workflows/ci.yml` | PR and push to `develop`, `main` | Three jobs: `backend-quality` (`npm ci`, `format:check`, `lint`, `test`, `npm audit --audit-level=high --omit=dev`), `frontend-quality` (`npm ci`, `build`, uploads `dist` artifact), `docker-images` (builds both images, Trivy with `exit-code: 1` so CRITICAL/HIGH findings fail the pipeline). **Why:** quality and image security gate every merge — shift left |
+| `.github/workflows/codeql.yml` | Push/PR to `develop`, `main` + weekly cron | CodeQL init → autobuild → analyze for JavaScript; writes `security-events`. **Why:** finds code-level vulnerabilities (injection, unsafe deserialization) that linters miss |
+| `.github/workflows/security.yml` | PR, push to `develop`/`main`, weekly cron `30 2 * * 1` | Job 1: Trivy filesystem scan (`vuln,secret,misconfig`). Job 2: Gitleaks with `fetch-depth: 0` to scan **full Git history** for leaked credentials. **Why:** scheduled scans catch new CVEs in old code and secrets that were committed once |
+| `.github/workflows/dependency-review.yml` | PR only to `develop`, `main` | `actions/dependency-review-action@v4` diffs base vs head and blocks vulnerable **new** packages. **Why:** cheap PR-time gate; it needs PR context, hence a dedicated workflow |
+| `.github/workflows/publish-ecr.yml` | Push to `main` + manual `workflow_dispatch` | `configure-aws-credentials` with `role-to-assume` (OIDC, needs `id-token: write`), ECR login, build both images, Trivy scan, tag `:<github.sha>`, push to ECR, write a job summary. **Why:** only reviewed code on `main` reaches the registry; no long-lived AWS keys |
+| `.github/dependabot.yml` | Weekly Monday 04:00 | Opens up to 5 PRs each for `/app` npm dependencies and root GitHub Actions versions, labelled. **Why:** keeps dependencies and actions patched automatically |
+| `.github/pull_request_template.md` | Every PR | Checklist (tests, lint, secrets, evidence). **Why:** consistent review standard for the branch-protection gate |
+| `.gitleaks.toml` | Used by `security.yml` | Allowlists `evidence/`, `k8s/secret.example.yaml`, test placeholders. **Why:** prevents false positives from breaking the security gate |
+
+Local equivalents of the CI commands:
+
+```bash
+cd app && npm run format:check && npm run lint && npm test && npm audit --audit-level=high --omit=dev
+cd frontend && npm run lint && npm run build
+make scan-ci
+```
 
 ### GitHub OIDC to AWS
 
@@ -1516,6 +1668,47 @@ flowchart LR
 
 ---
 
+## DevOps and Security Techniques
+
+Every technique below is implemented in this repository, not just described.
+
+### DevOps techniques
+
+| Technique | Where it is used | Why |
+|---|---|---|
+| Infrastructure as Code | `terraform/` (ECR, OIDC, CloudWatch, EKS) | Reproducible, reviewable, destroyable infrastructure instead of console clicks |
+| Immutable image tags (Git SHA) | `publish-ecr.yml`, `k8s/overlays/eks/*-image-patch.yaml` | Every deployment is traceable to an exact commit; rollback is unambiguous |
+| Multi-stage Docker builds | `app/Dockerfile`, `frontend/Dockerfile` | Build tools never reach the runtime image → smaller, safer images |
+| Pipeline as code | `.github/workflows/*.yml` | The delivery process is versioned, reviewed and repeatable |
+| Shift-left quality gates | `ci.yml` (lint/test/audit before merge) | Problems are caught in seconds at PR time, not in production |
+| Declarative deployment | `k8s/base` + Kustomize overlays | Same base, environment-specific patches; `kubectl apply -k` is the single deploy command |
+| GitOps-style environment overlays | `k8s/overlays/eks` | Environment differences live in Git, not in someone's terminal history |
+| Automated rollback | `kubectl rollout undo`, `scripts/rollback-kind.sh` | Failure recovery is a tested command, not a runbook guess |
+| Scheduled re-scanning | `security.yml` and `codeql.yml` cron triggers | New CVEs in old dependencies are found without waiting for the next commit |
+| Idempotent helper commands | `Makefile` and the `--dry-run=client` secret pattern piped into `kubectl apply -f -` | Commands are safe to re-run; no manual "click order" in the console |
+| Evidence-driven operation | `evidence/`, `docs/` runbooks | Every claim in this README has a saved command output behind it |
+
+### Security techniques
+
+| Technique | Where it is used | Why |
+|---|---|---|
+| OIDC federation instead of AWS keys | `publish-ecr.yml` + `terraform/iam-github-oidc.tf` | Short-lived credentials; nothing long-lived to leak from GitHub secrets |
+| Least-privilege IAM | OIDC role limited to ECR push; node role limited to ECR pull | A compromised CI job cannot touch other AWS services |
+| Secret scanning (history) | `security.yml` + `.gitleaks.toml` | Finds credentials even in old commits, not only in the current tree |
+| Dependency vulnerability scanning | `npm audit` in `ci.yml`; `dependency-review.yml` on PRs | Blocks known-vulnerable packages before they merge |
+| Container image scanning | Trivy in `ci.yml` and `publish-ecr.yml` (`exit-code: 1`) | CRITICAL/HIGH CVEs fail the pipeline — security is a gate, not a report |
+| Static application security testing | CodeQL (`codeql.yml`) | Detects code-level flaws such as injection paths |
+| Non-root containers | `app/Dockerfile` (`USER appuser`), `frontend/Dockerfile` (`USER webuser`) | Containers break out with less impact if compromised |
+| Read-only root filesystem + `no-new-privileges` | `compose.yaml` | Runtime tampering and privilege escalation blocked |
+| Resource requests/limits | `compose.yaml`, Kubernetes Deployments | One noisy container cannot starve the node (noisy-neighbour protection) |
+| Runtime secrets outside Git | `kubectl create secret` imperative creation; `secret.example.yaml` is a placeholder | Real credentials never exist in repository history |
+| Network segmentation | `k8s/base/network-policy.yaml` | Pods only accept traffic the policy allows |
+| Availability protection | `k8s/base/pod-disruption-budget.yaml` | Voluntary disruptions cannot take the API fully offline |
+| Secrets template + allowlist | `.env.example`, `.gitleaks.toml` | Developers get guidance; scanners do not fire on placeholders |
+| Security headers and rate limiting | `helmet`, `express-rate-limit` in `app/package.json` | Basic application-layer hardening alongside infrastructure controls |
+
+---
+
 ## Monitoring and Operations
 
 ### Minimum operational checks
@@ -1552,7 +1745,7 @@ kubectl -n cloudpath top pods
 API health check:
 
 ```bash
-kubectl -n cloudpath port-forward service/focusflow-api 5000:5000
+kubectl -n cloudpath port-forward service/focusflow-api 5000:80
 ```
 
 In another terminal:
@@ -1984,7 +2177,7 @@ kubectl -n cloudpath get events --sort-by=.lastTimestamp
 
 # API logs and health
 kubectl -n cloudpath logs deployment/focusflow-api --tail=100
-kubectl -n cloudpath port-forward service/focusflow-api 5000:5000
+kubectl -n cloudpath port-forward service/focusflow-api 5000:80
 curl -i http://localhost:5000/health
 
 # Frontend access
