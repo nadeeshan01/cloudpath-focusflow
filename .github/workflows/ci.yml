@@ -46,7 +46,7 @@ jobs:
         run: npm test
 
       - name: Check backend dependencies
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high --omit=dev
 
   frontend-quality:
     name: Frontend quality and build

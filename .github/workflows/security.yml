@@ -15,6 +15,7 @@ name: Security
 permissions:
   contents: read           # Can read your code
   security-events: write   # Can write security findings
+  pull-requests: read      # Can read PR data (needed for dependency-review)
 
 jobs:
   # JOB 1: Scan files for vulnerabilities
@@ -63,5 +64,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Dependency review
         uses: actions/dependency-review-action@v4
