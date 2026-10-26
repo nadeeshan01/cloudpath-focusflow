@@ -30,14 +30,14 @@ jobs:
 
       # Step 2: Set up CodeQL
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: javascript  # Tell CodeQL we're using JavaScript
 
       # Step 3: Let CodeQL analyze your code automatically
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@v4
 
       # Step 4: Run the analysis
       - name: Analyze
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
